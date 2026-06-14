@@ -1357,10 +1357,13 @@
                     </p>
                 </div>
                 
-                <!-- 按鈕組：探究問題、指南與結論 -->
-                <div class="flex gap-2">
+                <!-- 按鈕組：探究問題、地理比較、指南與結論 -->
+                <div class="flex gap-2 flex-wrap justify-end">
                     <button onclick="navigateTo('view-inquiry')" class="flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-white/90 px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-white">
                         <iconify-icon icon="ph:question-light"></iconify-icon> 探究問題
+                    </button>
+                    <button onclick="navigateTo('view-compare')" class="flex items-center gap-2 text-vintage-cream hover:bg-white hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-vintage-charcoal px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-vintage-charcoal/20">
+                        <iconify-icon icon="ph:table-light"></iconify-icon> 地理比較
                     </button>
                     <button onclick="navigateTo('view-guide')" class="flex items-center gap-2 text-vintage-cream hover:bg-white hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-vintage-burgundy px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-vintage-burgundy/20">
                         <iconify-icon icon="ph:book-open-text"></iconify-icon> 踏查指南
@@ -1465,6 +1468,129 @@
         </div>
     </div>
 
+    <!-- 3b. 地理比較分析 -->
+    <div id="view-compare" class="view bg-vintage-cream">
+        <button onclick="navigateTo('view-map')" class="floating-nav flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase bg-white/90 px-6 py-3 rounded-full backdrop-blur-md shadow-lg transition-all border border-white">
+            <iconify-icon icon="ph:map-trifold"></iconify-icon> 返回地圖
+        </button>
+        <div class="max-w-6xl mx-auto px-6 md:px-12 py-32 relative z-10">
+            <div class="text-center mb-16">
+                <h1 class="text-4xl md:text-5xl font-black text-vintage-charcoal tracking-widest mb-4">地理比較分析</h1>
+                <p class="text-vintage-charcoal/60 font-sans tracking-widest">COMPARATIVE GEOGRAPHIC ANALYSIS</p>
+                <div class="w-16 h-1 bg-vintage-burgundy mx-auto mt-6"></div>
+            </div>
+
+            <!-- 比較表 -->
+            <div class="bg-white/60 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden border border-white p-8 mb-12">
+                <h2 class="text-2xl font-bold text-vintage-charcoal mb-2 flex items-center gap-3">
+                    <iconify-icon icon="ph:table-light" class="text-vintage-burgundy text-3xl"></iconify-icon> 蘭陽三神社地理比較分析
+                </h2>
+                <p class="text-vintage-charcoal/50 font-sans text-xs tracking-widest mb-6">＊銅馬與狛犬（員山）均為戰後重製複製品，非日治時期原物</p>
+                <div class="overflow-x-auto pb-2">
+                    <table class="w-full text-left border-collapse compare-table min-w-[1100px]">
+                        <thead>
+                            <tr>
+                                <th class="rounded-tl-lg">神社名稱</th>
+                                <th>社格</th>
+                                <th>建立年</th>
+                                <th>主祀神明</th>
+                                <th>選址地形特徵</th>
+                                <th>產業╱軍事關聯</th>
+                                <th>戰後空間轉置</th>
+                                <th class="rounded-tr-lg">現存遺構</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">宜蘭神社</td>
+                                <td><span class="px-2 py-1 bg-vintage-burgundy/10 text-vintage-burgundy rounded text-xs font-sans font-bold whitespace-nowrap">縣社</span></td>
+                                <td class="text-sm">1906年<br><span class="text-xs text-gray-400">（1919年遷建員山）</span></td>
+                                <td class="text-sm">天照大神、北白川宮能久親王、開拓三神</td>
+                                <td class="text-sm">員山山麓高地（神社平台標高約30米，山丘最高點海拔43公尺）</td>
+                                <td class="text-sm">連結宜蘭農業平原行政核心，為在台日人主要精神寄託場所</td>
+                                <td class="text-sm">改建為宜蘭縣忠烈祠（神聖性延續），參道與空間格局大致保留</td>
+                                <td class="text-sm">參道石階、捐款芳名柱、石燈籠基座（原物）；銅馬＊、狛犬＊（戰後重製）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">羅東神社</td>
+                                <td><span class="px-2 py-1 bg-vintage-charcoal/10 text-vintage-charcoal rounded text-xs font-sans font-bold whitespace-nowrap">無格社</span></td>
+                                <td class="text-sm">1937年</td>
+                                <td class="text-sm">明治天皇、開拓三神（大國魂命、大己貴命、少彥名命）</td>
+                                <td class="text-sm">平原沖積扇平地，位於羅東街西側外圍邊緣</td>
+                                <td class="text-sm">大量使用太平山上等檜木建造，與林業出張所、鐵道集散區緊密呼應</td>
+                                <td class="text-sm">原址拆除開闢為環鎮道路（純精路），遺構移往中山公園（空間碎裂）</td>
+                                <td class="text-sm">心字池、神橋遺跡、石燈籠、鐵燈籠、狛犬（中山公園）</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">蘇澳神社</td>
+                                <td><span class="px-2 py-1 bg-vintage-charcoal/10 text-vintage-charcoal rounded text-xs font-sans font-bold whitespace-nowrap">無格社</span></td>
+                                <td class="text-sm">1940年</td>
+                                <td class="text-sm">明治天皇、北白川宮能久親王</td>
+                                <td class="text-sm">七星嶺山腳內側谷地（聖湖里後湖山麓），四周山丘環繞，視野受限，非制高點選址</td>
+                                <td class="text-sm">守護蘇澳軍港與漁港，主要服務日本海軍及港口從業人員</td>
+                                <td class="text-sm">原址改建為蘇澳國中校舍（完全世俗化），記憶幾近抹除</td>
+                                <td class="text-sm">石燈籠基座（蘇澳國中內）、狛犬（晉安宮）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 三種空間記憶模式 -->
+            <div class="bg-white/60 backdrop-blur-md rounded-2xl shadow-xl border border-white p-8 mb-12">
+                <h2 class="text-2xl font-bold text-vintage-charcoal mb-2 flex items-center gap-3">
+                    <iconify-icon icon="ph:git-fork-light" class="text-vintage-burgundy text-3xl"></iconify-icon> 戰後空間記憶的三種模式
+                </h2>
+                <p class="text-vintage-charcoal/50 font-sans text-xs tracking-widest mb-8">三座神社在政權轉換後，各自走上截然不同的空間命運</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-vintage-cream/60 rounded-xl p-6 border-t-4 border-vintage-burgundy">
+                        <div class="text-3xl mb-3">⛩️</div>
+                        <div class="text-xs font-sans text-vintage-burgundy font-bold tracking-widest mb-1 uppercase">模式一・員山</div>
+                        <h3 class="text-lg font-bold text-vintage-charcoal mb-3">神聖性延續</h3>
+                        <p class="text-sm text-vintage-charcoal/70 leading-relaxed">神社改建為忠烈祠，主神與名稱雖換，但參道、階梯、莊嚴空間格局仍完整保留。神聖性以「中華民族烈士」的敘事框架重新詮釋延續，是三社中歷史記憶保存最完整的案例。</p>
+                    </div>
+                    <div class="bg-vintage-cream/60 rounded-xl p-6 border-t-4 border-vintage-gold">
+                        <div class="text-3xl mb-3">🏮</div>
+                        <div class="text-xs font-sans text-vintage-gold font-bold tracking-widest mb-1 uppercase">模式二・羅東</div>
+                        <h3 class="text-lg font-bold text-vintage-charcoal mb-3">空間碎裂與異地重組</h3>
+                        <p class="text-sm text-vintage-charcoal/70 leading-relaxed">神社本體因開闢純精路而徹底消失，但狛犬、石燈籠、鐵燈籠被移置至中山公園。遺構「碎裂」後在新地點「重組」，夾雜在羅東夜市喧囂中，歷史記憶變得破碎且被稀釋。</p>
+                    </div>
+                    <div class="bg-vintage-cream/60 rounded-xl p-6 border-t-4 border-vintage-ocean">
+                        <div class="text-3xl mb-3">🏫</div>
+                        <div class="text-xs font-sans text-vintage-charcoal/60 font-bold tracking-widest mb-1 uppercase">模式三・蘇澳</div>
+                        <h3 class="text-lg font-bold text-vintage-charcoal mb-3">完全世俗化覆蓋</h3>
+                        <p class="text-sm text-vintage-charcoal/70 leading-relaxed">原址直接興建蘇澳國中校舍，神聖空間被日常教育場所徹底取代，記憶幾乎被抹除。僅校內散落石燈籠基座，以及移至晉安宮的狛犬，成為這段歷史僅剩的線索。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 殖民地理與神社選址理論框架 -->
+            <div class="bg-white/60 backdrop-blur-md rounded-2xl shadow-xl border border-white p-8">
+                <h2 class="text-2xl font-bold text-vintage-charcoal mb-2 flex items-center gap-3">
+                    <iconify-icon icon="ph:compass-light" class="text-vintage-burgundy text-3xl"></iconify-icon> 殖民地理與神社選址：三個原則
+                </h2>
+                <p class="text-vintage-charcoal/50 font-sans text-xs tracking-widest mb-8">日治時期神社選址並非隨機，而是遵循地理政治的空間邏輯——蘇澳神社的例外，恰恰更凸顯了這套邏輯的複雜性</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex flex-col gap-3">
+                        <div class="w-10 h-10 rounded-full bg-vintage-burgundy/10 flex items-center justify-center text-vintage-burgundy font-bold font-sans text-lg">01</div>
+                        <h3 class="font-bold text-vintage-charcoal text-base">制高點原則</h3>
+                        <p class="text-sm text-vintage-charcoal/70 leading-relaxed">神社幾乎都選在山丘或高地，從上往下俯瞰聚落。這是一種視覺上的「權力展示」，讓住在下方的人每天抬頭都能看見神社，潛移默化地感受帝國存在。員山神社是最典型的案例。</p>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <div class="w-10 h-10 rounded-full bg-vintage-burgundy/10 flex items-center justify-center text-vintage-burgundy font-bold font-sans text-lg">02</div>
+                        <h3 class="font-bold text-vintage-charcoal text-base">邊緣與門戶原則</h3>
+                        <p class="text-sm text-vintage-charcoal/70 leading-relaxed">神社通常設於聚落邊緣或重要入口，象徵帝國守護領土的邊界。羅東神社在街區西側邊緣，與林業鐵道集散區呼應，宣告「這裡是我們的疆域」。</p>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <div class="w-10 h-10 rounded-full bg-vintage-burgundy/10 flex items-center justify-center text-vintage-burgundy font-bold font-sans text-lg">03</div>
+                        <h3 class="font-bold text-vintage-charcoal text-base">產業╱軍事連結原則</h3>
+                        <p class="text-sm text-vintage-charcoal/70 leading-relaxed">神社選址往往與當地最重要的產業或軍事功能結合。羅東神社以上等檜木建造，是「林業之都」的空間宣示；蘇澳神社則嵌入聚落谷地，靠近軍港行政核心，偏向「社區整合」功能，是三社中選址邏輯最特殊的案例。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 3. 踏查指南與比較表 -->
     <div id="view-guide" class="view bg-vintage-cream">
         <button onclick="navigateTo('view-map')" class="floating-nav flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase bg-white/90 px-6 py-3 rounded-full backdrop-blur-md shadow-lg transition-all border border-white">
@@ -1475,57 +1601,6 @@
                 <h1 class="text-4xl md:text-5xl font-black text-vintage-charcoal tracking-widest mb-4">探究與踏查指南</h1>
                 <p class="text-vintage-charcoal/60 font-sans tracking-widest">GUIDE & COMPARISON</p>
                 <div class="w-16 h-1 bg-vintage-burgundy mx-auto mt-6"></div>
-            </div>
-
-            <!-- 地理比較分析表 -->
-            <div class="guide-card mb-20 bg-white/60 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden border border-white p-8">
-                <h2 class="text-2xl font-bold text-vintage-charcoal mb-6 flex items-center gap-3">
-                    <iconify-icon icon="ph:table-light" class="text-vintage-burgundy text-3xl"></iconify-icon> 蘭陽三神社地理比較分析
-                </h2>
-                <div class="overflow-x-auto pb-2">
-                    <table class="w-full text-left border-collapse compare-table min-w-[900px]">
-                        <thead>
-                            <tr>
-                                <th class="rounded-tl-lg">神社名稱</th>
-                                <th>社格</th>
-                                <th>建立年</th>
-                                <th>選址地形特徵</th>
-                                <th>與日治聚落中心關係</th>
-                                <th>戰後空間與土地轉置</th>
-                                <th class="rounded-tr-lg">現存遺構</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-bold">宜蘭神社</td>
-                                <td><span class="px-2 py-1 bg-vintage-burgundy/10 text-vintage-burgundy rounded text-xs font-sans font-bold whitespace-nowrap">縣社</span></td>
-                                <td>1906年<br><span class="text-xs text-gray-500">（1919年遷建員山）</span></td>
-                                <td class="text-sm">員山山麓高地（標高30米之丘陵）</td>
-                                <td class="text-sm">位於宜蘭街西側郊野，與舊城區隔宜蘭河相望，居高臨下</td>
-                                <td class="text-sm">改建為宜蘭縣忠烈祠（延續紀念性），階梯與綠地改為常民公園</td>
-                                <td>參道階梯、銅馬、狛犬、石燈籠基座</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold">羅東神社</td>
-                                <td><span class="px-2 py-1 bg-vintage-charcoal/10 text-vintage-charcoal rounded text-xs font-sans font-bold whitespace-nowrap">無格社</span></td>
-                                <td>1937年</td>
-                                <td class="text-sm">平原沖積扇平地（周圍渠道交織）</td>
-                                <td class="text-sm">位於羅東街西側外圍邊緣，與太平山林業出張所、鐵道集散區呼應</td>
-                                <td class="text-sm">原址拆除開闢為環鎮道路（純精路），重要遺構移往鬧區中山公園</td>
-                                <td>心字池、神橋遺跡、石燈籠、鐵燈籠、狛犬</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold">蘇澳神社</td>
-                                <td><span class="px-2 py-1 bg-vintage-charcoal/10 text-vintage-charcoal rounded text-xs font-sans font-bold whitespace-nowrap">無格社</span></td>
-                                <td>1940年</td>
-                                <td class="text-sm">金面山與七星嶺交界之山麓（背山面海）</td>
-                                <td class="text-sm">位於蘇澳街市區西側後湖山下，掌控與守護蘇澳軍港、漁港關口</td>
-                                <td class="text-sm">改建為蘇澳國中（校園空間化），部分遺構移至市區廟宇（晉安宮）保存</td>
-                                <td>石燈籠基座（蘇澳國中內）、狛犬（晉安宮）</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
 
             <!-- 一日踏查路線與實用指南 -->
@@ -2502,7 +2577,7 @@
                     <ul class="list-disc pl-6 mt-4 space-y-3 font-sans text-sm text-vintage-charcoal/70 leading-relaxed">
                         <li><strong>宜蘭神社：</strong>最初位於宜蘭公園，但因蟻害與空間狹小，於大正八年遷建至外員山。在此處依傍孤丘（標高30公尺），東望平原，其「居高臨下」的地勢具有強烈的精神防衛意涵，既象徵神明庇護，也暗示帝國行政威權對蘭陽農業心臟的視覺監控。</li>
                         <li><strong>羅東神社：</strong>配合昭和時期皇民化運動，建立於羅東街區的西側邊緣。此處鄰近太平山林鐵集散地，整座神殿大量運用上等檜木建成，其空間配置與當地的檜木產業資本（如營林所、昭和製糖株式會社）緊密交織。</li>
-                        <li><strong>蘇澳神社：</strong>選址於金面山下的後湖山麓。蘇澳作爲天然良港，神社的背山面海選址，不僅守護著出入港口的海軍與漁民，也在地理疆域上宣告了殖民帝國對「海洋與國境最前線」的絕對控制力。</li>
+                        <li><strong>蘇澳神社：</strong>選址於七星嶺山腳內側谷地（聖湖里後湖山麓），地處蘇澳市區西側，四周山丘環繞、視野受限，並非居高臨下的制高點選址。神社位置靠近蘇澳軍港行政核心，功能偏向「聚落整合」，守護港口的海軍與漁民，是三社中選址邏輯最不同於「制高點原則」的案例。</li>
                     </ul>
                 </div>
 
