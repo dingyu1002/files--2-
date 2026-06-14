@@ -517,9 +517,14 @@
 
     <!-- 燈箱 -->
     <div id="lightbox" class="fixed inset-0 bg-vintage-charcoal/90 opacity-0 pointer-events-none transition-all duration-500 flex justify-center items-center p-4 md:p-12 cursor-zoom-out" onclick="closeLightbox()">
-        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-500" alt="放大圖片">
-        <button class="absolute top-6 right-8 text-white/50 hover:text-white text-5xl transition-colors">&times;</button>
-        <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/70 font-sans text-sm tracking-widest bg-black/50 px-6 py-2 rounded-full pointer-events-none">點擊任意處還原縮小</div>
+        <div class="flex flex-col md:flex-row items-center gap-6 max-w-5xl w-full" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" class="max-w-full max-h-[80vh] object-contain rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-500 md:max-w-[65%]" alt="放大圖片">
+            <div id="lightbox-desc" class="text-vintage-cream max-w-xs text-left hidden md:block">
+                <p id="lightbox-caption" class="text-vintage-gold font-serif text-lg font-bold mb-3"></p>
+                <p id="lightbox-text" class="font-serif text-sm leading-relaxed opacity-90"></p>
+            </div>
+        </div>
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-vintage-cream opacity-60 hover:opacity-100 text-3xl leading-none">✕</button>
     </div>
 
     <!-- ============================================================
@@ -1717,15 +1722,21 @@
   .photo-desc { font-size: 0.78rem; color: #4a4540; line-height: 1.6; margin-top: 0.5rem; padding: 0 0.2rem; font-family: 'Noto Serif TC', serif; }
 </style>
 <div class="bento-grid">
-  <div class="bento-item bento-large" onclick="openLightbox(this)"><img loading="lazy" src="ys scene.jpg"><span class="photo-caption">參道廣場</span></div>
-  <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="ys jewelry.jpg" alt="員山照片2"><span class="photo-caption">鳥居上的擬寶珠</span></div>
-  <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="ys left.jpg" alt="員山照片3"><span class="photo-caption">左側贊助遺構</span></div>
-  <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="ys lion.jpg" alt="員山照片4"><span class="photo-caption">石雕狛犬</span></div>
-  <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="ys long stone.jpg" alt="員山照片5"><span class="photo-caption">忠烈祠石碑</span></div>
-  <div class="bento-item bento-wide" onclick="openLightbox(this)"><img loading="lazy" src="ys horse.jpg" alt="員山照片X" style="object-position: top center;"><span class="photo-caption">銅馬像（忠烈祠）</span></div>
-  <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="ys temple.jpg" alt="員山照片7"><span class="photo-caption">忠烈祠主殿</span></div>
-  <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="ys torii.jpg" alt="員山照片8"><span class="photo-caption">鳥居遺址</span></div>
-</div>
+  <div class="bento-item bento-large" onclick="openLightbox(this)" data-desc="宜蘭神社構築分為參拜道、拜殿、本殿、外苑林四大部分，從石橋越過後，石燈籠排列於路兩旁，拾級而上直達拜殿，從上往下可俯瞰整個蘭陽平原。這片廣場正是昔日參道的入口起點。"><img loading="lazy" src="ys scene.jpg"><span class="photo-caption">參道廣場</span></div>
+
+<div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="擬寶珠是日本傳統建築的裝飾，用於橋樑或寺院、神社的樓梯與欄杆柱頭，可能源自佛教的寶珠。宜蘭神社的鳥居原為未削去樹皮的「黑木鳥居」，戰後改造後漆成紅色，成為今日所見的樣貌。"><img loading="lazy" src="ys jewelry.jpg" alt="員山照片2"><span class="photo-caption">鳥居上的擬寶珠</span></div>
+
+<div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="石柱上刻有當年地方仕紳的捐款芳名，是地方社群參與神社建設的歷史見證。公園設計者刻意將這些遺跡散落各處，讓神社與忠烈祠的記憶同時長存。"><img loading="lazy" src="ys left.jpg" alt="員山照片3"><span class="photo-caption">左側贊助遺構</span></div>
+
+<div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="狛犬通常兩隻面對面，右邊嘴巴張著、左邊閉著。原有的狛犬早已遭到毀壞消失，現今所見為重新鑄造的複製品。"><img loading="lazy" src="ys lion.jpg" alt="員山照片4"><span class="photo-caption">石雕狛犬</span></div>
+
+<div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="光復後神社改建為中式祠堂，更名「忠烈祠」，山丘下方的神社參道及林園則被改建為「興國新村」，安置當時由大陸撤退來台的軍民。石碑正是這段歷史轉換的實物見證。"><img loading="lazy" src="ys long stone.jpg" alt="員山照片5"><span class="photo-caption">忠烈祠石碑</span></div>
+
+<div class="bento-item bento-wide" onclick="openLightbox(this)" data-desc="銅馬立於建社後三、四年間，供為神御，與銅獅、石燈共列階前。1945年終戰後，有心人士不忍銅馬被毀，遂將其移至文昌宮保存。1997年員山公園竣工時，依原馬翻模重鑄，重新安座於原址。" style="object-position: top center;"><img loading="lazy" src="ys horse.jpg" alt="員山照片X"><span class="photo-caption">銅馬像（忠烈祠）</span></div>
+
+<div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="宜蘭神社是台灣最早設立的地方神社，光復後改建為閩南式中式祠堂，1996年重建完成。祠內奉祀黃花崗七十二烈士、八二三砲戰將士及宜蘭籍抗日烈士，是政權更迭與歷史層疊最鮮明的縮影。"><img loading="lazy" src="ys temple.jpg" alt="員山照片7"><span class="photo-caption">忠烈祠主殿</span></div>
+
+<div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="石階共有128個台階，是昔日神社的參拜道，石階中段佇立著一座當年神社的鳥居，戰後被漆成象徵中國正色的朱紅色，「忠烈祠」的字樣高掛在正中央。"><img loading="lazy" src="ys torii.jpg" alt="員山照片8"><span class="photo-caption">鳥居遺址</span></div>
 <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:1.25rem; margin-top:1rem;">
   <div style="grid-column:span 2;"><p class="photo-desc">宜蘭神社構築分為參拜道、拜殿、本殿、外苑林四大部分，從石橋越過後，石燈籠排列於路兩旁，拾級而上直達拜殿，從上往下可俯瞰整個蘭陽平原。這片廣場正是昔日參道的入口起點。</p></div>
   <div><p class="photo-desc">擬寶珠是日本傳統建築的裝飾，用於橋樑或寺院、神社的樓梯與欄杆柱頭，可能源自佛教的寶珠。宜蘭神社的鳥居原為未削去樹皮的「黑木鳥居」，戰後改造後漆成紅色，成為今日所見的樣貌。</p></div>
@@ -2785,6 +2796,12 @@
         function openLightbox(element) {
             const lightbox = document.getElementById('lightbox'), lightboxImg = document.getElementById('lightbox-img');
             lightboxImg.src = element.querySelector('img').src;
+            const caption = element.querySelector('.photo-caption')?.innerText || '';
+            const desc = element.dataset.desc || '';
+            document.getElementById('lightbox-caption').innerText = caption;
+            document.getElementById('lightbox-text').innerText = desc;
+            const descBox = document.getElementById('lightbox-desc');
+            descBox.classList.toggle('hidden', !desc);
             lightbox.classList.remove('opacity-0', 'pointer-events-none'); lightbox.classList.add('opacity-100', 'pointer-events-auto');
             setTimeout(() => { lightboxImg.classList.remove('scale-95'); lightboxImg.classList.add('scale-100'); }, 10);
         }
