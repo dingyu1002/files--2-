@@ -610,6 +610,8 @@
             <div class="chat-circle-sub" id="circSub4">
                 <button class="chat-quick-btn" onclick="sendQuickMsg('皇民化是什麼？')">皇民化運動</button>
                 <button class="chat-quick-btn" onclick="sendQuickMsg('社格是什麼？')">社格制度</button>
+                <button class="chat-quick-btn" onclick="sendQuickMsg('神社的意義是什麼？')">神社的意義</button>
+                <button class="chat-quick-btn" onclick="sendQuickMsg('神社的分布？')">神社的分布</button>
             </div>
             <div class="chat-circle-sub" id="circSub5">
                 <button class="chat-quick-btn" onclick="sendQuickMsg('供奉什麼神？')">三社神明</button>
@@ -2933,6 +2935,8 @@
             { keys: ['狛犬象徵', '阿吽意義', '石獸意義', '石狗'], answer: '狛犬……妾身對牠們有著特殊的情感。一開口、一閉口，「阿」與「吽」，天地之始末也。它們守在神域入口，阻擋惡靈，引渡善念。無論時代如何更迭，它們始終守在原地，等候那些願意駐足細看的人。' },
             { keys: ['戰後三社各有怎樣的命運', '戰後命運', '三社命運', '戰後各有怎樣'], answer: '一九四五年，那個時代落幕了。宜蘭神社拆去主殿，百階參道留存，換上忠烈祠的牌匾——神聖性延續。羅東神社七〇年代被純精路夷平，遺構移至中山公園，在夜市喧囂旁沉默守望——空間碎裂。蘇澳神社化作學校，孩子們的笑聲填滿了原本誦經的空間——完全世俗化。三社各有歸宿，皆是時代的印記。還想深探某一社嗎？' },
             { keys: ['為何改忠烈祠', '忠烈祠原因', '神社為何改建', '戰後改建'], answer: '1945年終戰後，中華民國政府接收台灣，內政部要求各地設置忠烈祠，以奉祀為國殉難的烈士。全台神社幾乎都在此波政令下改建——宜蘭保留最完整；羅東消失最徹底；蘇澳化為校舍。三種命運，各自訴說著不同的歷史態度。' },
+            { keys: ['神社的意義是什麼', '神社意義', '神社是什麼'], answer: '神社是日本神道信仰的代表建築，1868年明治維新之後，將近代國家觀念融入神道信仰，作為國教全面發展。但甲午戰爭之後，日本對台灣進行殖民統治，神社成為改造台灣人民思想的宗教設施——它不只是信仰場所，更是帝國將政治權威神聖化的空間工具，讓殖民統治披上了宗教的外衣。' },
+            { keys: ['神社的分布', '宜蘭神社分布', '宜蘭有哪些神社'], answer: '日本治台之初，行漸進主義政策，大致尊重台民風俗習慣，神社集中於重要都市和日人社區。但隨著侵略中國腳步加快，殖民政府改行同化政策，推動「一街庄一神社」，希望達成皇民化目標。後因戰時財力困難，改鼓勵推動無格社。宜蘭除縣社宜蘭神社外，依性質分類尚有：地方神社三所、行業神社四所、學校神社六所與原住民神社六所。<br><br><img src="yilan shrine map.jpg" alt="宜蘭地區神社分布圖" style="width:100%;max-width:340px;border-radius:10px;cursor:zoom-in;margin-top:0.5rem;" onclick="event.stopPropagation();openImgLightbox(this.src)" title="點擊放大">' },
             { keys: ['皇民化是什麼', '皇民化運動', '一街庄一神社'], answer: '皇民化運動是1937年中日戰爭爆發後，日本政府在台灣推行的一系列政策，目的是讓台灣人「成為真正的日本人」。強制參拜神社、廢棄漢姓改日本姓、禁止台語……神社在這段時期大量興建，羅東神社（1937年）與蘇澳神社（1940年），都是皇民化運動的具體產物。' },
             { keys: ['社格', '縣社', '無格社', '社格是什麼', '神社等級'], answer: '社格是日本政府對神社的官方等級制度，由高至低：官幣大社、國幣大社、縣社、鄉社、無格社。宜蘭神社於1927年升格為「縣社」，是蘭陽地區社格最高的神社；羅東神社與蘇澳神社皆為「無格社」，社格雖低，仍具官方認可地位。' },
             { keys: ['供奉什麼神', '拜什麼神', '祭神是誰', '神明掌管', '三社神明'], answer: '三社祭神各有不同，背後各有政治意涵——宜蘭神社主祀天照大神、北白川宮能久親王與開拓三神；羅東神社主祀明治天皇與開拓三神；蘇澳神社則主祀明治天皇與北白川宮能久親王。想聽妾身細說每位神明的象徵嗎？' },
@@ -2998,9 +3002,20 @@
             }
 
             loadingBubble.className = 'chat-bubble ai';
-            loadingBubble.textContent = reply;
+            loadingBubble.innerHTML = reply;
             messages.scrollTop = messages.scrollHeight;
             chatLoading = false;
+        }
+
+        function openImgLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = src;
+            const descBox = document.getElementById('lightbox-desc');
+            if (descBox) { descBox.classList.add('hidden'); descBox.classList.remove('flex'); }
+            lightbox.classList.remove('opacity-0', 'pointer-events-none');
+            lightbox.classList.add('opacity-100', 'pointer-events-auto');
+            setTimeout(() => { lightboxImg.classList.remove('scale-95'); lightboxImg.classList.add('scale-100'); }, 10);
         }
 
         /* ============================================================
