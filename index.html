@@ -33,294 +33,31 @@
         .timeline-scroll::-webkit-scrollbar { display: none; } .timeline-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
         .transition-curtain { display: none; }
-        /* 保留舊 flip-page 但改為隱藏不使用 */
-        #flip-page { display: none !important; }
-
-        /* ===== 鳥居過場 OVERLAY ===== */
-        #torii-transition {
+        #flip-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #5C1A1B;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
             z-index: 10000; pointer-events: none; display: none;
             align-items: center; justify-content: center;
-            overflow: hidden;
+            box-shadow: -12px 0 40px rgba(0,0,0,0.4), 12px 0 40px rgba(0,0,0,0.4);
         }
-        /* 背景：深夜参道 */
-        #torii-bg {
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 50% 60%, #0a0d1c 0%, #06080f 60%, #03040a 100%);
-            opacity: 0;
+        #flip-page::before {
+            content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
+            width: 3px; transform: translateX(-50%);
+            background: linear-gradient(to right, rgba(0,0,0,0.25), rgba(255,255,255,0.08), rgba(0,0,0,0.25));
         }
-        /* 霧氣效果 */
-        #torii-bg::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 50% 80%, rgba(92,26,27,0.15) 0%, transparent 65%),
-                        radial-gradient(ellipse at 50% 22%, rgba(200,144,64,0.07) 0%, transparent 50%);
+        #flip-page::after {
+            content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 80px;
+            background: linear-gradient(to left, rgba(0,0,0,0.25), transparent);
         }
-        /* 参道地面 */
-        #torii-path {
-            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; height: 100%;
-            pointer-events: none; opacity: 0;
-        }
-        /* SVG 鳥居容器 */
-        #torii-svg-wrap {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0;
-        }
-        /* 光暈文字 */
-        #torii-label {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(245, 232, 200, 0.0);
-            font-family: 'Noto Serif TC', serif;
-            font-size: 1.1rem;
-            letter-spacing: 0.6em;
-            font-weight: 300;
-            text-shadow: 0 0 30px rgba(255,200,100,0.6);
-            white-space: nowrap;
-            z-index: 2;
-            pointer-events: none;
-            margin-top: 5rem;
-        }
-        /* 白光穿越閃光 */
-        #torii-flash {
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 50% 50%, rgba(255,245,230,1) 0%, rgba(255,230,180,0.4) 40%, transparent 75%);
-            opacity: 0;
-            pointer-events: none;
-        }
-        .curtain-logo { display: none; }
-
-        /* ===== 封面→地圖：石板踏步 OVERLAY ===== */
-        #walkpath-transition {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10000; pointer-events: none; display: none;
-            overflow: hidden;
-            background: linear-gradient(180deg, #05060e 0%, #080a18 40%, #0a0d1c 100%);
-        }
-        #walkpath-transition canvas {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-        }
-        #walkpath-label {
-            position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%);
-            color: rgba(245,232,200,0); font-family: 'Noto Serif TC', serif;
-            font-size: 1rem; letter-spacing: 0.55em; font-weight: 300;
-            white-space: nowrap; z-index: 2; pointer-events: none;
-        }
-
-        /* ===== 地圖→比較：摺頁攤開 OVERLAY ===== */
-        #unfold-transition {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10000; pointer-events: none; display: none;
-            perspective: 1400px;
-        }
-        #unfold-left, #unfold-right {
-            position: absolute; top: 0; height: 100%; width: 50%;
-            background: #E8DFC8;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            backface-visibility: hidden;
-        }
-        #unfold-left  { left: 0; transform-origin: right center; }
-        #unfold-right { left: 50%; transform-origin: left center; }
-        .unfold-crease {
-            position: absolute; top: 0; bottom: 0;
-            width: 6px;
-            background: linear-gradient(to right, rgba(92,26,27,0.30), rgba(255,255,255,0.20), rgba(92,26,27,0.22));
-            pointer-events: none; z-index: 2;
-        }
-        #unfold-left  .unfold-crease { right: 0; }
-        #unfold-right .unfold-crease { left: 0; }
-        .unfold-texture {
-            position: absolute; inset: 0;
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(92,26,27,0.045) 27px, rgba(92,26,27,0.045) 28px),
-                repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(92,26,27,0.025) 27px, rgba(92,26,27,0.025) 28px),
-                radial-gradient(ellipse at 30% 40%, rgba(160,120,60,0.08) 0%, transparent 55%),
-                radial-gradient(ellipse at 70% 60%, rgba(92,26,27,0.06) 0%, transparent 50%);
-            opacity: 0.85;
-        }
-        #unfold-title {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-family: 'Noto Serif TC', serif; font-size: 1.4rem; font-weight: 700;
-            color: #5C1A1B; letter-spacing: 0.35em; opacity: 0; white-space: nowrap; z-index: 5;
-            text-shadow: 0 1px 8px rgba(245,240,232,0.9);
-        }
-
-        /* ===== 地圖→踏查指南：捲軸展開 OVERLAY ===== */
-        #scroll-transition {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10000; pointer-events: none;
-            background: #100c08;
-            display: none; align-items: center; justify-content: center;
-        }
-        #scroll-roll-top, #scroll-roll-bottom {
-            position: absolute; left: 0; right: 0; height: 50%;
-            background: linear-gradient(180deg, #c4a060 0%, #a87840 50%, #8c6030 100%);
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-        }
-        #scroll-roll-top    { top: 0; transform-origin: top center; }
-        #scroll-roll-bottom { bottom: 0; transform-origin: bottom center; }
-        /* 竹節紋路 */
-        #scroll-roll-top::before, #scroll-roll-bottom::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: repeating-linear-gradient(90deg,
-                transparent, transparent 38px,
-                rgba(0,0,0,0.12) 38px, rgba(0,0,0,0.12) 40px,
-                transparent 40px, transparent 42px,
-                rgba(255,255,255,0.06) 42px, rgba(255,255,255,0.06) 43px);
-        }
-        .scroll-rod {
-            position: absolute; left: 0; right: 0; height: 24px;
-            background: linear-gradient(to bottom, #a07028, #6a4010, #9a6820);
-            border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
-        }
-        #scroll-roll-top    .scroll-rod { bottom: 0; }
-        #scroll-roll-bottom .scroll-rod { top: 0; }
-        #scroll-inner {
-            position: absolute; top: 0; bottom: 0; left: 0; right: 0;
-            background: #f2e8d0;
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(140,110,80,0.16) 27px, rgba(140,110,80,0.16) 28px),
-                radial-gradient(ellipse at 50% 0%, rgba(200,160,80,0.06) 0%, transparent 60%);
-            clip-path: inset(50% 0 50% 0);
-            display: flex; align-items: center; justify-content: center;
-        }
-        #scroll-kanji {
-            font-family: 'Noto Serif TC', serif; font-size: 2.5rem; font-weight: 900;
-            color: #5C1A1B; letter-spacing: 0.5em; opacity: 0;
-            text-shadow: 0 2px 12px rgba(92,26,27,0.18);
-        }
-
-        /* ===== 地圖→結論：時光軸年份掠過 OVERLAY ===== */
-        #timeline-transition {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10000; pointer-events: none; display: none;
-            overflow: hidden;
-        }
-        #timeline-bg {
-            position: absolute; inset: 0;
-            background: linear-gradient(180deg, #06060e 0%, #0e0808 55%, #180e06 100%);
-            transition: background 0.8s;
-        }
-        #timeline-line {
-            position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
-            background: linear-gradient(to bottom, transparent, rgba(184,155,114,0.45) 15%, rgba(184,155,114,0.45) 85%, transparent);
-            transform: translateX(-50%);
-        }
-        #timeline-years-wrap {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 0;
-        }
-        .tl-year {
-            font-family: 'Noto Serif TC', serif;
-            font-weight: 900; line-height: 1;
-            color: rgba(184,155,114,0.88);
-            letter-spacing: 0.08em;
-            opacity: 0; position: relative;
-        }
-        .tl-year-sub {
-            font-family: 'Inter', sans-serif; font-size: 0.65rem;
-            color: rgba(184,155,114,0.42); letter-spacing: 0.18em;
-            text-align: center; margin-top: 3px; display: block;
-        }
-        /* 1945 裂縫元素 */
-        #tl-crack {
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            width: 340px; height: 2px; opacity: 0; pointer-events: none;
-        }
-        #tl-crack::before {
-            content: ''; position: absolute; left: 0; right: 0; top: 0;
-            height: 1px; background: linear-gradient(to right, transparent, rgba(220,80,40,0.7) 40%, rgba(220,80,40,0.7) 60%, transparent);
-        }
-        #tl-crack::after {
-            content: ''; position: absolute; left: 40px; right: 40px; top: -1px;
-            height: 3px; background: radial-gradient(ellipse at 50% 50%, rgba(255,120,60,0.35) 0%, transparent 100%);
-            filter: blur(2px);
-        }
-        #timeline-now {
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            font-family: 'Noto Serif TC', serif; font-size: 1.1rem; font-weight: 300;
-            color: rgba(245,232,200,0.88); letter-spacing: 0.5em; opacity: 0;
-            white-space: nowrap;
-        }
-        #timeline-flash {
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 50% 50%, rgba(255,240,200,0.92) 0%, rgba(255,200,100,0.25) 50%, transparent 80%);
-            opacity: 0; pointer-events: none;
-        }
-
-        /* ===== 任何頁→封面：鏡頭後拉星空 OVERLAY ===== */
-        #starpull-transition {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10000; pointer-events: none; display: none;
-            overflow: hidden;
-        }
-        #starpull-bg {
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 38% 28%, #0e1020 0%, #07080f 55%, #030408 100%);
-            opacity: 0;
-        }
-        #starpull-moon {
-            position: absolute; top: 20%; left: 26%;
-            width: 64px; height: 64px; border-radius: 50%;
-            background: radial-gradient(circle at 42% 38%, #F0E8D0, #C8C0A0);
-            box-shadow: 0 0 40px 12px rgba(200,190,150,0.12);
-            opacity: 0; transform: scale(0.4);
-        }
-        #starpull-stars {
-            position: absolute; inset: 0; opacity: 0;
-        }
-        #starpull-label {
-            position: absolute; bottom: 22%; left: 50%; transform: translateX(-50%);
-            font-family: 'Noto Serif TC', serif; font-size: 1rem; letter-spacing: 0.55em;
-            color: rgba(245,232,200,0); font-weight: 300; white-space: nowrap;
-        }
-
-        /* ===== 封面→探究：紙張撕裂 OVERLAY ===== */
-        #tear-transition {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10000; pointer-events: none; display: none;
-            overflow: hidden;
-        }
-        #tear-left, #tear-right {
-            position: absolute; top: 0; height: 100%;
-            background: #F5F0E8;
-        }
-        #tear-left  { left: 0; width: 50%; transform-origin: left center; }
-        #tear-right { right: 0; width: 50%; transform-origin: right center; }
-        #tear-edge-left, #tear-edge-right {
-            position: absolute; top: 0; bottom: 0; width: 32px;
-            pointer-events: none;
-        }
-        #tear-edge-left  { right: -16px; }
-        #tear-edge-right { left: -16px; }
-        .tear-paper-bg {
-            position: absolute; inset: 0;
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(160,140,110,0.12) 27px, rgba(160,140,110,0.12) 28px);
-        }
-        #tear-kanji {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-family: 'Noto Serif TC', serif; font-size: 1.8rem; font-weight: 900;
-            color: #5C1A1B; letter-spacing: 0.3em; opacity: 0; white-space: nowrap;
-            z-index: 10;
-        }
+        .curtain-logo { color: #F5F0E8; font-size: 2rem; opacity: 0; position: relative; z-index: 1; }
         .historical-filter { filter: sepia(0.15) contrast(1.05) brightness(0.95); }
         
         /* 地圖標記 */
         .map-marker { position: absolute; transform: translate(-50%, -50%); cursor: pointer; z-index: 50; width: 80px; height: 80px; border-radius: 50%; }
-        .marker-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 36px; height: 36px; background-color: transparent; border: 2.5px solid #8B1515; border-radius: 50%; box-shadow: 0 0 0 1px rgba(184,155,114,0.25) inset; }
-        .marker-pulse::after  { content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; border: 2px solid #8B1515; border-radius: 50%; animation: pulseRing1 2.4s infinite ease-out; }
-        .marker-pulse::before { content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; border: 1.5px solid rgba(184,155,114,0.5); border-radius: 50%; animation: pulseRing2 2.4s 0.7s infinite ease-out; }
-        @keyframes pulseRing1 { 0%{transform:scale(1);opacity:0.9;border-color:#8B1515}  100%{transform:scale(2.6);opacity:0;border-color:#B89B72} }
-        @keyframes pulseRing2 { 0%{transform:scale(1);opacity:0.6;border-color:#B89B72} 100%{transform:scale(2.2);opacity:0;border-color:#8B1515} }
+        .marker-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 36px; height: 36px; background-color: transparent; border: 3px solid #5C1A1B; border-radius: 50%; }
+        .marker-pulse::after { content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; border: 2px solid #5C1A1B; border-radius: 50%; animation: pulse 2s infinite ease-out; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
         .map-tooltip { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(10px); width: 280px; background: rgba(245, 240, 232, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(92, 26, 27, 0.15); padding: 1.25rem; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 15px 35px rgba(0,0,0,0.15); border-radius: 12px; }
         .map-tooltip.tooltip-left { left: auto; right: 0; transform: translateX(0) translateY(10px); }
         .map-marker:hover .map-tooltip, .map-marker.active .map-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
@@ -384,8 +121,8 @@
         #lightbox { z-index: 99999; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
 
         /* 地圖頁佈局 */
-        #view-map { overflow: hidden; background: #d4c498; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"), radial-gradient(ellipse at 20% 50%, rgba(160,120,50,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 30%, rgba(92,26,27,0.1) 0%, transparent 50%), linear-gradient(160deg, #e2d4a8 0%, #cfc091 40%, #bfad7e 100%); }
-        .map-page-layout { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 1.25rem; gap: 1rem; box-sizing: border-box; }
+        #view-map { overflow: hidden; position: relative; background: #d4c498; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"), radial-gradient(ellipse at 20% 50%, rgba(160,120,50,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 30%, rgba(92,26,27,0.1) 0%, transparent 50%), linear-gradient(160deg, #e2d4a8 0%, #cfc091 40%, #bfad7e 100%); }
+        .map-page-layout { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 1.25rem; gap: 1rem; box-sizing: border-box; position: relative; z-index: 1; }
         .map-topbar { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
         .map-main { display: flex; gap: 1.25rem; flex: 1; min-height: 0; align-items: center; overflow: visible; }
         .map-image-area { flex: 1; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; height: 100%; overflow: visible; }
@@ -427,12 +164,7 @@
             transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
             animation: chatPulse 3s ease-in-out infinite;
         }
-        @keyframes chatPulse {
-            0%  { box-shadow: 0 6px 24px rgba(92,26,27,0.55), 0 0 0 0 rgba(92,26,27,0.30), 0 0 0 0 rgba(184,155,114,0.15); }
-            40% { box-shadow: 0 6px 24px rgba(92,26,27,0.55), 0 0 0 10px rgba(92,26,27,0.08), 0 0 0 5px rgba(184,155,114,0.10); }
-            70% { box-shadow: 0 6px 24px rgba(92,26,27,0.55), 0 0 0 18px rgba(92,26,27,0.02), 0 0 0 12px rgba(184,155,114,0.05); }
-            100%{ box-shadow: 0 6px 24px rgba(92,26,27,0.55), 0 0 0 0 rgba(92,26,27,0), 0 0 0 0 rgba(184,155,114,0); }
-        }
+        @keyframes chatPulse { 0%,100%{box-shadow:0 8px 28px rgba(92,26,27,0.5),0 0 0 0 rgba(92,26,27,0.25)} 50%{box-shadow:0 8px 28px rgba(92,26,27,0.5),0 0 0 12px rgba(92,26,27,0)} }
         #ai-chat-btn:hover { transform: scale(1.12) rotate(-5deg); }
         #ai-chat-btn .btn-badge { position:absolute; top:-4px; right:-4px; width:18px; height:18px; background:#B89B72; border-radius:50%; border:2px solid #F5F0E8; font-size:9px; display:flex; align-items:center; justify-content:center; color:#2D2A26; font-weight:700; font-family:'Inter',sans-serif; }
 
@@ -507,21 +239,8 @@
             box-shadow:inset 0 0 0 1px rgba(92,26,27,0.15), 0 4px 12px rgba(92,26,27,0.2);
         }
         .stamp.stamped::before { content:''; position:absolute; inset:4px; border-radius:50%; border:1px solid rgba(92,26,27,0.2); }
-        @keyframes stampAnim {
-            0%  { transform:scale(3.2) rotate(-18deg); opacity:0; filter:blur(2px); }
-            45% { transform:scale(0.85) rotate(3deg);  opacity:1; filter:blur(0); }
-            58% { transform:scale(1.06) rotate(-0.8deg); }
-            72% { transform:scale(0.96) rotate(0.3deg); }
-            85% { transform:scale(1.02) rotate(0); }
-            100%{ transform:scale(1)    rotate(0); opacity:1; }
-        }
-        @keyframes stampInk {
-            0%  { box-shadow: 0 0 0 0 rgba(92,26,27,0); }
-            45% { box-shadow: 0 0 0 8px rgba(92,26,27,0.18); }
-            80% { box-shadow: 0 0 0 16px rgba(92,26,27,0.04); }
-            100%{ box-shadow: 0 0 0 22px rgba(92,26,27,0); }
-        }
-        .stamp.do-stamp { animation: stampAnim 0.72s cubic-bezier(0.34,1.4,0.64,1) forwards, stampInk 0.72s ease-out forwards; }
+        @keyframes stampAnim { 0%{transform:scale(2.5) rotate(-20deg);opacity:0} 60%{transform:scale(0.88) rotate(4deg);opacity:1} 80%{transform:scale(1.08) rotate(-1deg)} 100%{transform:scale(1) rotate(0);opacity:1} }
+        .stamp.do-stamp { animation:stampAnim 0.65s cubic-bezier(0.34,1.56,0.64,1) forwards; }
         .passport-progress { margin-top:0.55rem; font-size:0.6rem; color:rgba(45,42,38,0.45); font-family:'Inter',sans-serif; text-align:center; letter-spacing:0.05em; transition:all 0.4s; }
         .passport-progress.done { color:#5C1A1B; font-weight:700; letter-spacing:0.08em; }
 
@@ -593,22 +312,23 @@
         /* ===== AI AVATAR STICKER ===== */
         .chat-avatar-sticker { font-size:1.4rem; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
 
-        /* ===== AMBER EMBER (cover bg) ===== */
-        .ember { position:absolute; border-radius:50%; background:rgba(180,100,20,0.55); box-shadow:0 0 6px 3px rgba(160,80,10,0.3); animation:emberGlow ease-in-out infinite; }
-        @keyframes emberGlow {
-            0%,100%{ opacity:0.08; transform:translate(0,0) scale(1); }
-            30%    { opacity:0.52; transform:translate(10px,-16px) scale(1.15); }
-            60%    { opacity:0.22; transform:translate(-8px,-28px) scale(0.9); }
-            80%    { opacity:0.42; transform:translate(14px,-12px) scale(1.1); }
+        /* ===== SAKURA PETALS (cover bg) ===== */
+        .sakura-wrap { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+        .petal { position:absolute; top:-20px; border-radius:50% 0 50% 0; opacity:0.8; animation:petalFall linear infinite; }
+        @keyframes petalFall {
+            0%   { transform:translateY(0) rotate(0deg) translateX(0); opacity:0.85; }
+            30%  { transform:translateY(30vh) rotate(110deg) translateX(25px); }
+            60%  { transform:translateY(60vh) rotate(200deg) translateX(-18px); }
+            100% { transform:translateY(108vh) rotate(360deg) translateX(12px); opacity:0; }
         }
-        /* ===== BAMBOO SWAY ===== */
-        @keyframes bamSway {
-            0%,100%{ transform:rotate(0deg); transform-origin:50% 100%; }
-            40%    { transform:rotate(0.7deg); transform-origin:50% 100%; }
-            70%    { transform:rotate(-0.45deg); transform-origin:50% 100%; }
+        /* ===== FIREFLY (cover bg) ===== */
+        .firefly { position:absolute; border-radius:50%; background:#C8E87A; box-shadow:0 0 8px 4px rgba(200,232,122,0.5); animation:fireflyGlow ease-in-out infinite; }
+        @keyframes fireflyGlow {
+            0%,100%{ opacity:0.1; transform:translate(0,0); }
+            25%    { opacity:0.9; transform:translate(18px,-22px); }
+            50%    { opacity:0.5; transform:translate(-12px,-38px); }
+            75%    { opacity:0.8; transform:translate(22px,-16px); }
         }
-        .bam-group  { animation:bamSway 9s ease-in-out infinite; display:block; }
-        .bam-group2 { animation:bamSway 11s ease-in-out infinite reverse; display:block; }
         /* ===== COVER CARD PSYCHOLOGY ===== */
         @keyframes ctaGlow {
             0%,100% { box-shadow:0 0 18px 2px rgba(160,90,20,0.38), 0 10px 36px rgba(0,0,0,0.45); }
@@ -798,32 +518,6 @@
         .field-note-body { font-family:'Noto Serif TC',serif; color:#2a2535; opacity:0.82; }
         .field-note-body p { margin-bottom:0; }
         .field-note-thought { font-family:'Noto Serif TC',serif; font-style:italic; color:rgba(92,26,27,0.72); margin-top:0.25rem; }
-
-        /* ===== 神社頁背景裝飾 — 穩定定位系統 =====
-           每個裝飾元素獨立 position:absolute，用絕對 px 固定位置，
-           不再依賴 SVG viewBox + slice，徹底解決跑版 */
-        .shrine-deco-layer {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1100px;          /* 只在頁首區域顯示，不延伸到正文 */
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .shrine-deco {
-            position: absolute;
-            pointer-events: none;
-            line-height: 0;          /* 避免 svg inline 空隙 */
-        }
-        .shrine-deco svg { width: 100%; height: 100%; display: block; }
-        /* 平板隱藏次要裝飾 */
-        @media (max-width: 1023px) {
-            .shrine-deco.hide-tablet { display: none; }
-        }
-        /* 手機隱藏所有裝飾，避免擁擠 */
-        @media (max-width: 767px) {
-            .shrine-deco-layer { display: none; }
-        }
     </style>
 </head>
 <body class="font-serif text-vintage-charcoal">
@@ -971,422 +665,347 @@
     </div>
 
 
-    <!-- 過場遮罩（舊，保留結構不渲染） -->
-    <div id="flip-page" style="display:none!important;"></div>
-
-    <!-- ===== 鳥居穿越過場 OVERLAY ===== -->
-    <div id="torii-transition">
-        <!-- 背景夜空 -->
-        <div id="torii-bg"></div>
-        <!-- 参道光暈地面 -->
-        <svg id="torii-path" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <radialGradient id="tg-path" cx="50%" cy="0%" r="100%">
-                    <stop offset="0%" stop-color="#C8901A" stop-opacity="0.28"/>
-                    <stop offset="60%" stop-color="#8B1515" stop-opacity="0.08"/>
-                    <stop offset="100%" stop-color="#8B1515" stop-opacity="0"/>
-                </radialGradient>
-                <radialGradient id="tg-glow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#FFBE50" stop-opacity="1"/>
-                    <stop offset="100%" stop-color="#E8A030" stop-opacity="0"/>
-                </radialGradient>
-                <filter id="tf-blur3"><feGaussianBlur stdDeviation="3"/></filter>
-                <filter id="tf-blur6"><feGaussianBlur stdDeviation="6"/></filter>
-                <filter id="tf-blur12"><feGaussianBlur stdDeviation="12"/></filter>
-            </defs>
-            <!-- 参道地板透視 -->
-            <path d="M370,700 L490,0 L510,0 L630,700 Z" fill="url(#tg-path)" opacity="0.6"/>
-            <!-- 消失點光暈 -->
-            <ellipse cx="500" cy="8" rx="80" ry="28" fill="#FFE480" opacity="0.13" filter="url(#tf-blur6)"/>
-            <!-- 石燈籠 左右各4對 (遠→近) -->
-            <!-- pair 1 遠 -->
-            <g opacity="0.35">
-                <rect x="456" y="62" width="5" height="75" rx="1" fill="#6B1010"/>
-                <rect x="452" y="59" width="13" height="8" rx="1" fill="#4a1010"/>
-                <rect x="449" y="51" width="19" height="10" rx="2" fill="#160808"/>
-                <path d="M445,51 L461,42 L477,51 Z" fill="#1a3015"/>
-                <ellipse cx="461" cy="57" rx="10" ry="8" fill="url(#tg-glow)" filter="url(#tf-blur3)" opacity="0.5"/>
-            </g>
-            <g opacity="0.35">
-                <rect x="539" y="62" width="5" height="75" rx="1" fill="#6B1010"/>
-                <rect x="535" y="59" width="13" height="8" rx="1" fill="#4a1010"/>
-                <rect x="532" y="51" width="19" height="10" rx="2" fill="#160808"/>
-                <path d="M528,51 L544,42 L560,51 Z" fill="#1a3015"/>
-                <ellipse cx="544" cy="57" rx="10" ry="8" fill="url(#tg-glow)" filter="url(#tf-blur3)" opacity="0.5"/>
-            </g>
-            <!-- pair 2 -->
-            <g opacity="0.48">
-                <rect x="444" y="150" width="7" height="110" rx="1" fill="#6B1010"/>
-                <rect x="439" y="146" width="18" height="10" rx="1" fill="#4a1010"/>
-                <rect x="435" y="136" width="26" height="13" rx="2" fill="#160808"/>
-                <path d="M430,136 L448,124 L466,136 Z" fill="#1a3015"/>
-                <ellipse cx="448" cy="143" rx="13" ry="10" fill="url(#tg-glow)" filter="url(#tf-blur3)" opacity="0.55"/>
-            </g>
-            <g opacity="0.48">
-                <rect x="549" y="150" width="7" height="110" rx="1" fill="#6B1010"/>
-                <rect x="543" y="146" width="18" height="10" rx="1" fill="#4a1010"/>
-                <rect x="539" y="136" width="26" height="13" rx="2" fill="#160808"/>
-                <path d="M535,136 L553,124 L571,136 Z" fill="#1a3015"/>
-                <ellipse cx="553" cy="143" rx="13" ry="10" fill="url(#tg-glow)" filter="url(#tf-blur3)" opacity="0.55"/>
-            </g>
-            <!-- pair 3 -->
-            <g opacity="0.62">
-                <rect x="424" y="290" width="10" height="170" rx="1" fill="#6B1010"/>
-                <rect x="417" y="285" width="24" height="14" rx="1" fill="#4a1010"/>
-                <rect x="411" y="270" width="36" height="18" rx="2" fill="#160808"/>
-                <path d="M404,270 L429,255 L454,270 Z" fill="#1a3015"/>
-                <ellipse cx="429" cy="278" rx="18" ry="14" fill="url(#tg-glow)" filter="url(#tf-blur3)" opacity="0.62"/>
-            </g>
-            <g opacity="0.62">
-                <rect x="566" y="290" width="10" height="170" rx="1" fill="#6B1010"/>
-                <rect x="559" y="285" width="24" height="14" rx="1" fill="#4a1010"/>
-                <rect x="553" y="270" width="36" height="18" rx="2" fill="#160808"/>
-                <path d="M547,270 L572,255 L597,270 Z" fill="#1a3015"/>
-                <ellipse cx="572" cy="278" rx="18" ry="14" fill="url(#tg-glow)" filter="url(#tf-blur3)" opacity="0.62"/>
-            </g>
-            <!-- pair 4 近 -->
-            <g opacity="0.78">
-                <rect x="388" y="490" width="16" height="210" rx="2" fill="#7B1515"/>
-                <rect x="377" y="483" width="38" height="18" rx="2" fill="#5a1010"/>
-                <rect x="368" y="462" width="56" height="24" rx="3" fill="#160808"/>
-                <path d="M358,462 L396,442 L434,462 Z" fill="#1e3818"/>
-                <ellipse cx="396" cy="473" rx="28" ry="21" fill="url(#tg-glow)" filter="url(#tf-blur6)" opacity="0.68"/>
-                <ellipse cx="396" cy="473" rx="12" ry="9" fill="#FFB040" opacity="0.28"/>
-            </g>
-            <g opacity="0.78">
-                <rect x="596" y="490" width="16" height="210" rx="2" fill="#7B1515"/>
-                <rect x="585" y="483" width="38" height="18" rx="2" fill="#5a1010"/>
-                <rect x="576" y="462" width="56" height="24" rx="3" fill="#160808"/>
-                <path d="M566,462 L604,442 L642,462 Z" fill="#1e3818"/>
-                <ellipse cx="604" cy="473" rx="28" ry="21" fill="url(#tg-glow)" filter="url(#tf-blur6)" opacity="0.68"/>
-                <ellipse cx="604" cy="473" rx="12" ry="9" fill="#FFB040" opacity="0.28"/>
-            </g>
-        </svg>
-        <!-- 鳥居 SVG（動態縮放） -->
-        <div id="torii-svg-wrap">
-            <svg id="torii-main-svg" viewBox="0 0 600 520" xmlns="http://www.w3.org/2000/svg"
-                 style="width:min(90vw,680px); height:auto; filter:drop-shadow(0 0 40px rgba(139,20,20,0.55))">
-                <defs>
-                    <radialGradient id="trg-wood" cx="50%" cy="30%" r="70%">
-                        <stop offset="0%" stop-color="#C04040"/>
-                        <stop offset="60%" stop-color="#8B1515"/>
-                        <stop offset="100%" stop-color="#5C0A0A"/>
-                    </radialGradient>
-                    <radialGradient id="trg-glow2" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#FF9040" stop-opacity="0.7"/>
-                        <stop offset="100%" stop-color="#FF9040" stop-opacity="0"/>
-                    </radialGradient>
-                    <filter id="trf-glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                    <filter id="trf-softglow"><feGaussianBlur stdDeviation="3"/></filter>
-                    <!-- 木紋紋理模擬 -->
-                    <linearGradient id="trg-pillarL" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stop-color="rgba(0,0,0,0.25)"/>
-                        <stop offset="30%" stop-color="rgba(255,255,255,0.06)"/>
-                        <stop offset="70%" stop-color="rgba(0,0,0,0.0)"/>
-                        <stop offset="100%" stop-color="rgba(0,0,0,0.18)"/>
-                    </linearGradient>
-                </defs>
-                <!-- 遠景霧氣背景光 -->
-                <ellipse cx="300" cy="200" rx="240" ry="100" fill="#FF8020" opacity="0.04" filter="url(#trf-glow)"/>
-                <!-- 主柱左 -->
-                <rect x="102" y="140" width="52" height="380" rx="8" fill="url(#trg-wood)"/>
-                <rect x="102" y="140" width="52" height="380" rx="8" fill="url(#trg-pillarL)" opacity="0.8"/>
-                <!-- 主柱左金屬箍 -->
-                <rect x="100" y="185" width="56" height="7" rx="2" fill="#4A0A0A" opacity="0.6"/>
-                <rect x="100" y="440" width="56" height="7" rx="2" fill="#4A0A0A" opacity="0.6"/>
-                <!-- 主柱右 -->
-                <rect x="446" y="140" width="52" height="380" rx="8" fill="url(#trg-wood)"/>
-                <rect x="446" y="140" width="52" height="380" rx="8" fill="url(#trg-pillarL)" opacity="0.8"/>
-                <rect x="444" y="185" width="56" height="7" rx="2" fill="#4A0A0A" opacity="0.6"/>
-                <rect x="444" y="440" width="56" height="7" rx="2" fill="#4A0A0A" opacity="0.6"/>
-                <!-- 笠木（上梁，弧形） -->
-                <path d="M42,132 Q300,46 558,132" fill="none" stroke="url(#trg-wood)" stroke-width="40" stroke-linecap="round" filter="url(#trf-glow)"/>
-                <!-- 笠木陰影面 -->
-                <path d="M42,132 Q300,46 558,132" fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="40" stroke-linecap="round"/>
-                <!-- 笠木高光面 -->
-                <path d="M60,122 Q300,38 540,122" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="12" stroke-linecap="round"/>
-                <!-- 島木（下梁） -->
-                <rect x="68" y="150" width="464" height="26" rx="5" fill="url(#trg-wood)"/>
-                <rect x="68" y="150" width="464" height="26" rx="5" fill="rgba(0,0,0,0.15)"/>
-                <!-- 島木高光 -->
-                <rect x="68" y="151" width="464" height="7" rx="3" fill="rgba(255,255,255,0.06)"/>
-                <!-- 貫（中間横木） -->
-                <rect x="95" y="230" width="410" height="18" rx="4" fill="url(#trg-wood)"/>
-                <rect x="95" y="230" width="410" height="18" rx="4" fill="rgba(0,0,0,0.12)"/>
-                <!-- 柱礎石（底部石台） -->
-                <ellipse cx="128" cy="520" rx="44" ry="10" fill="#2a1a10" opacity="0.5"/>
-                <rect x="90" y="506" width="76" height="16" rx="3" fill="#2a1a10" opacity="0.45"/>
-                <ellipse cx="472" cy="520" rx="44" ry="10" fill="#2a1a10" opacity="0.5"/>
-                <rect x="434" y="506" width="76" height="16" rx="3" fill="#2a1a10" opacity="0.45"/>
-                <!-- 柱頂金色裝飾環 -->
-                <rect x="100" y="140" width="56" height="10" rx="3" fill="#B89B72" opacity="0.55"/>
-                <rect x="444" y="140" width="56" height="10" rx="3" fill="#B89B72" opacity="0.55"/>
-                <!-- 中央光暈（消失點聖光） -->
-                <ellipse cx="300" cy="200" rx="90" ry="60" fill="url(#trg-glow2)" filter="url(#trf-softglow)" opacity="0.6"/>
-                <ellipse cx="300" cy="210" rx="35" ry="25" fill="#FFF0D0" opacity="0.07"/>
-            </svg>
-        </div>
-        <!-- 神社名稱文字 -->
-        <div id="torii-label">⛩ &nbsp; 進入神域</div>
-        <!-- 白光穿越閃 -->
-        <div id="torii-flash"></div>
-    </div>
-
-    <!-- ===== 封面→地圖：石板踏步 OVERLAY ===== -->
-    <div id="walkpath-transition">
-        <canvas id="walkpath-canvas"></canvas>
-        <div id="walkpath-label">踏上參道</div>
-    </div>
-
-    <!-- ===== 地圖→比較：摺頁攤開 OVERLAY ===== -->
-    <div id="unfold-transition">
-        <div id="unfold-left">
-            <div class="unfold-texture"></div>
-            <div class="unfold-crease"></div>
-        </div>
-        <div id="unfold-right">
-            <div class="unfold-texture"></div>
-            <div class="unfold-crease"></div>
-        </div>
-        <div id="unfold-title">地理比較分析</div>
-    </div>
-
-    <!-- ===== 地圖→踏查指南：捲軸展開 OVERLAY ===== -->
-    <div id="scroll-transition">
-        <div id="scroll-roll-top"><div class="scroll-rod"></div></div>
-        <div id="scroll-roll-bottom"><div class="scroll-rod"></div></div>
-        <div id="scroll-inner">
-            <div id="scroll-kanji">踏查指南</div>
+    <!-- 過場遮罩 -->
+    <div id="flip-page" style="display:none;">
+        <div class="curtain-logo font-bold tracking-widest flex items-center gap-3">
+            <iconify-icon icon="ph:torii-light"></iconify-icon> 蘭陽神域
         </div>
     </div>
 
-    <!-- ===== 地圖→結論：時光軸年份掠過 OVERLAY ===== -->
-    <div id="timeline-transition">
-        <div id="timeline-bg"></div>
-        <div id="timeline-line"></div>
-        <div id="timeline-years-wrap">
-            <div class="tl-year" style="font-size:3.4rem"             data-year="1895"><span>1895</span><span class="tl-year-sub">乙未割台</span></div>
-            <div class="tl-year" style="font-size:3.0rem;margin-top:0.35em" data-year="1906"><span>1906</span><span class="tl-year-sub">宜蘭神社創建</span></div>
-            <div class="tl-year" style="font-size:2.8rem;margin-top:0.4em" data-year="1919"><span>1919</span><span class="tl-year-sub">羅東社上樑</span></div>
-            <div class="tl-year" style="font-size:3.0rem;margin-top:0.35em" data-year="1937"><span>1937</span><span class="tl-year-sub">皇民化運動</span></div>
-            <div class="tl-year" style="font-size:3.4rem;margin-top:0.3em"  data-year="1940"><span>1940</span><span class="tl-year-sub">蘇澳社遷座</span></div>
-            <div class="tl-year" style="font-size:4.6rem;margin-top:0.25em" data-year="1945"><span>1945</span><span class="tl-year-sub">終戰．轉折</span></div>
-        </div>
-        <div id="tl-crack"></div>
-        <div id="timeline-now">— 現在 —</div>
-        <div id="timeline-flash"></div>
-    </div>
-
-    <!-- ===== 任何頁→封面：星空後拉 OVERLAY ===== -->
-    <div id="starpull-transition">
-        <div id="starpull-bg"></div>
-        <div id="starpull-moon"></div>
-        <svg id="starpull-stars" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <g fill="white">
-                <circle cx="120" cy="80"  r="1.4"/><circle cx="280" cy="45"  r="0.9"/><circle cx="440" cy="110" r="1.2"/>
-                <circle cx="600" cy="30"  r="1.0"/><circle cx="760" cy="90"  r="1.5"/><circle cx="920" cy="55"  r="0.8"/>
-                <circle cx="1080" cy="75" r="1.3"/><circle cx="1240" cy="40" r="1.0"/><circle cx="1380" cy="95" r="1.1"/>
-                <circle cx="180" cy="160" r="0.8"/><circle cx="360" cy="190" r="1.2"/><circle cx="540" cy="140" r="0.9"/>
-                <circle cx="700" cy="175" r="1.4"/><circle cx="860" cy="155" r="0.8"/><circle cx="1020" cy="180" r="1.1"/>
-                <circle cx="1200" cy="145" r="0.9"/><circle cx="1350" cy="170" r="1.3"/>
-                <circle cx="60"  cy="240" r="1.0"/><circle cx="220" cy="265" r="1.2"/><circle cx="400" cy="250" r="0.8"/>
-                <circle cx="580" cy="280" r="1.1"/><circle cx="740" cy="240" r="1.3"/><circle cx="900" cy="270" r="0.9"/>
-                <circle cx="1060" cy="255" r="1.0"/><circle cx="1300" cy="260" r="1.2"/>
-                <circle cx="150" cy="330" r="0.8"/><circle cx="330" cy="310" r="1.1"/><circle cx="510" cy="345" r="0.9"/>
-                <circle cx="690" cy="320" r="1.3"/><circle cx="850" cy="355" r="0.8"/><circle cx="1110" cy="335" r="1.0"/>
-                <circle cx="1260" cy="350" r="1.2"/><circle cx="1420" cy="325" r="0.9"/>
-            </g>
-        </svg>
-        <div id="starpull-label">返回蘭陽神域</div>
-    </div>
-
-    <!-- ===== 封面→探究：紙張撕裂 OVERLAY ===== -->
-    <div id="tear-transition">
-        <div id="tear-left"><div class="tear-paper-bg"></div></div>
-        <div id="tear-right"><div class="tear-paper-bg"></div></div>
-        <svg id="tear-edge-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;" xmlns="http://www.w3.org/2000/svg">
-            <path id="tear-path-fill" fill="#F5F0E8" d=""/>
-        </svg>
-        <div id="tear-kanji">探究問題與架構</div>
-    </div>
+    <!-- 1. 封面頁 -->
     <div id="view-cover" class="view active bg-vintage-cream">
         <div class="relative w-full min-h-screen flex flex-col items-center">
             
             <!-- Hero 視覺與標題 -->
             <div class="relative w-full min-h-screen flex items-center justify-center p-6 md:p-12">
-                <div class="absolute inset-0 z-0 overflow-hidden" style="background:linear-gradient(180deg,#05060e 0%,#080a18 18%,#0c0f22 42%,#0a0d1c 72%,#06080f 100%)">
+                <div class="absolute inset-0 z-0 overflow-hidden" style="background:linear-gradient(180deg,#06081c 0%,#0d0d2e 25%,#160d38 55%,#0e0a28 80%,#08061a 100%)">
+                    <!-- 星空 SVG -->
                     <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                            <radialGradient id="kyMoon" cx="42%" cy="38%" r="60%"><stop offset="0%" stop-color="#F0E8D0"/><stop offset="65%" stop-color="#D8CCB0"/><stop offset="100%" stop-color="#A89880"/></radialGradient>
-                            <radialGradient id="kyMoonHalo" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8DFC0" stop-opacity="0.18"/><stop offset="55%" stop-color="#C0B898" stop-opacity="0.06"/><stop offset="100%" stop-color="#E8DFC0" stop-opacity="0"/></radialGradient>
-                            <clipPath id="kyMoonClip"><circle cx="310" cy="155" r="42"/></clipPath>
-                            <radialGradient id="kyLg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C07018" stop-opacity="1"/><stop offset="100%" stop-color="#903808" stop-opacity="0"/></radialGradient>
-                            <linearGradient id="kyMist" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2035" stop-opacity="0"/><stop offset="100%" stop-color="#0e1525" stop-opacity="0.88"/></linearGradient>
-                            <linearGradient id="kyMistMid" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8898b8" stop-opacity="0"/><stop offset="50%" stop-color="#8898b8" stop-opacity="0.065"/><stop offset="100%" stop-color="#8898b8" stop-opacity="0"/></linearGradient>
-                            <radialGradient id="kyVig" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="transparent"/><stop offset="100%" stop-color="#040608" stop-opacity="0.82"/></radialGradient>
-                            <linearGradient id="kyVigL" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#040608" stop-opacity="0.88"/><stop offset="100%" stop-color="#040608" stop-opacity="0"/></linearGradient>
-                            <linearGradient id="kyVigR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#040608" stop-opacity="0"/><stop offset="100%" stop-color="#040608" stop-opacity="0.88"/></linearGradient>
-                            <linearGradient id="kyVigT" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#040608" stop-opacity="0.75"/><stop offset="100%" stop-color="#040608" stop-opacity="0"/></linearGradient>
-                            <linearGradient id="kyMoonbeam" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#E8DFC0" stop-opacity="0.08"/><stop offset="100%" stop-color="#E8DFC0" stop-opacity="0"/></linearGradient>
-                            <radialGradient id="kyVP" cx="50%" cy="0%" r="70%"><stop offset="0%" stop-color="#C89040" stop-opacity="0.28"/><stop offset="100%" stop-color="#C89040" stop-opacity="0"/></radialGradient>
-                            <linearGradient id="kyPath" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#180e08" stop-opacity="0.25"/><stop offset="100%" stop-color="#100806" stop-opacity="0.72"/></linearGradient>
-                            <filter id="kyBlur2"><feGaussianBlur stdDeviation="2"/></filter>
-                            <filter id="kyBlur5"><feGaussianBlur stdDeviation="5"/></filter>
-                            <filter id="kyBlur10"><feGaussianBlur stdDeviation="10"/></filter>
+                            <radialGradient id="moonG" cx="50%" cy="23%" r="34%"><stop offset="0%" stop-color="#FFF8E7" stop-opacity="0.72"/><stop offset="55%" stop-color="#C8C0E8" stop-opacity="0.20"/><stop offset="100%" stop-color="#FFF8E7" stop-opacity="0"/></radialGradient>
+                            <radialGradient id="moonBody" cx="42%" cy="38%" r="60%"><stop offset="0%" stop-color="#FFF8EC"/><stop offset="70%" stop-color="#EDE0C4"/><stop offset="100%" stop-color="#C8BA98"/></radialGradient>
+                            <clipPath id="moonClip"><circle cx="720" cy="210" r="54"/></clipPath>
+                            <radialGradient id="lgGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFBE50" stop-opacity="1"/><stop offset="100%" stop-color="#E8A030" stop-opacity="0"/></radialGradient>
+                            <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+                            <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
+                            <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+                            <linearGradient id="pathG" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#1a0e0a" stop-opacity="0.45"/><stop offset="100%" stop-color="#120a08" stop-opacity="0.82"/></linearGradient>
+                            <linearGradient id="mbG" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#FFF8D0" stop-opacity="0.13"/><stop offset="100%" stop-color="#FFF8D0" stop-opacity="0"/></linearGradient>
+                            <radialGradient id="vpGlow" cx="50%" cy="0%" r="70%"><stop offset="0%" stop-color="#FFE880" stop-opacity="0.55"/><stop offset="100%" stop-color="#FFE880" stop-opacity="0"/></radialGradient>
+                            <radialGradient id="pathSurf" cx="50%" cy="20%" r="60%"><stop offset="0%" stop-color="#C8A060" stop-opacity="0.18"/><stop offset="100%" stop-color="#C8A060" stop-opacity="0"/></radialGradient>
+                            <linearGradient id="vigL" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#06081c" stop-opacity="0.95"/><stop offset="100%" stop-color="#06081c" stop-opacity="0"/></linearGradient>
+                            <linearGradient id="vigR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#06081c" stop-opacity="0"/><stop offset="100%" stop-color="#06081c" stop-opacity="0.95"/></linearGradient>
+                            <linearGradient id="vigT" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06081c" stop-opacity="0.85"/><stop offset="100%" stop-color="#06081c" stop-opacity="0"/></linearGradient>
                         </defs>
-                        <!-- Stars (sparse, cool white) -->
-                        <g fill="#E8E4D8" opacity="0.58">
-                            <circle cx="88" cy="48" r="0.9"/><circle cx="210" cy="32" r="0.7"/><circle cx="390" cy="62" r="1.1"/><circle cx="520" cy="22" r="0.8"/>
-                            <circle cx="148" cy="88" r="0.6"/><circle cx="620" cy="42" r="0.9"/><circle cx="980" cy="38" r="0.8"/><circle cx="1120" cy="55" r="1.0"/>
-                            <circle cx="1260" cy="28" r="0.7"/><circle cx="1380" cy="70" r="0.9"/><circle cx="1050" cy="88" r="0.6"/><circle cx="840" cy="52" r="0.8"/>
-                            <circle cx="72" cy="140" r="0.6"/><circle cx="192" cy="160" r="0.8"/><circle cx="1310" cy="110" r="0.7"/><circle cx="1420" cy="130" r="0.6"/>
+                        <!-- Moon -->
+                        <ellipse cx="720" cy="210" rx="320" ry="290" fill="url(#moonG)"/>
+                        <!-- 大氣散射暈 atmosphere halo -->
+                        <circle cx="720" cy="210" r="82" fill="#D8D0B8" opacity="0.07" filter="url(#blur8)"/>
+                        <circle cx="720" cy="210" r="66" fill="#EEE4C0" opacity="0.13" filter="url(#blur4)"/>
+                        <!-- 月球本體 + limb darkening -->
+                        <circle cx="720" cy="210" r="54" fill="url(#moonBody)" opacity="0.96"/>
+                        <!-- 月海 maria（暗斑） -->
+                        <g clip-path="url(#moonClip)" opacity="0.22" fill="#7A7060">
+                            <ellipse cx="706" cy="198" rx="14" ry="10"/>
+                            <ellipse cx="732" cy="215" rx="10" ry="7"/>
+                            <ellipse cx="698" cy="220" rx="8" ry="6"/>
+                            <ellipse cx="744" cy="200" rx="6" ry="5"/>
+                            <ellipse cx="718" cy="232" rx="9" ry="5"/>
                         </g>
-                        <circle cx="468" cy="40" r="1.3" fill="#F0ECD8" opacity="0.80"/>
-                        <circle cx="1188" cy="46" r="1.2" fill="#F0ECD8" opacity="0.76"/>
-                        <!-- Moon (offset left, atmospheric) -->
-                        <ellipse cx="310" cy="155" rx="240" ry="180" fill="url(#kyMoonHalo)"/>
-                        <circle cx="310" cy="155" r="60" fill="#C8C0A0" opacity="0.06" filter="url(#kyBlur10)"/>
-                        <circle cx="310" cy="155" r="48" fill="#DDD4B8" opacity="0.10" filter="url(#kyBlur5)"/>
-                        <circle cx="310" cy="155" r="42" fill="url(#kyMoon)" opacity="0.88"/>
-                        <g clip-path="url(#kyMoonClip)" opacity="0.17" fill="#6A6050">
-                            <ellipse cx="298" cy="144" rx="11" ry="8"/><ellipse cx="320" cy="160" rx="8" ry="6"/>
-                            <ellipse cx="292" cy="165" rx="6" ry="5"/><ellipse cx="330" cy="147" rx="5" ry="4"/>
+                        <!-- 月緣高光 limb highlight -->
+                        <circle cx="720" cy="210" r="54" fill="none" stroke="#FFF8E0" stroke-width="2" opacity="0.30"/>
+                        <!-- Stars -->
+                        <g fill="white" opacity="0.82">
+                            <circle cx="80" cy="55" r="1.2"/><circle cx="185" cy="38" r="0.8"/><circle cx="338" cy="72" r="1.4"/><circle cx="468" cy="28" r="0.9"/><circle cx="138" cy="112" r="0.7"/>
+                            <circle cx="948" cy="62" r="0.8"/><circle cx="1158" cy="44" r="1.2"/><circle cx="1288" cy="26" r="1.0"/><circle cx="1388" cy="60" r="1.3"/>
+                            <circle cx="258" cy="92" r="1.0"/><circle cx="1198" cy="108" r="0.9"/><circle cx="1338" cy="132" r="0.7"/>
+                            <circle cx="52" cy="192" r="0.9"/><circle cx="162" cy="172" r="0.6"/><circle cx="308" cy="208" r="1.1"/>
                         </g>
-                        <circle cx="310" cy="155" r="42" fill="none" stroke="#F8F0E0" stroke-width="1.2" opacity="0.16"/>
-                        <!-- Mountains (ink wash, 3 layers) -->
-                        <path d="M0,900 L0,520 Q80,420 180,460 Q300,370 440,420 Q560,340 680,390 Q780,320 900,370 Q1020,310 1140,350 Q1260,300 1380,340 Q1420,330 1440,340 L1440,900 Z" fill="#0c1020" opacity="0.72"/>
-                        <path d="M0,900 L0,620 Q120,550 260,580 Q400,510 540,555 Q660,490 780,530 Q900,468 1040,505 Q1180,455 1320,488 Q1400,465 1440,475 L1440,900 Z" fill="#090d1a" opacity="0.86"/>
-                        <path d="M0,900 L0,730 Q180,688 360,710 Q520,672 680,698 Q840,665 1000,688 Q1160,658 1320,675 Q1400,660 1440,668 L1440,900 Z" fill="#060810" opacity="0.96"/>
-                        <!-- Bamboo left -->
-                        <g class="bam-group">
-                            <rect x="38" y="340" width="5" height="560" rx="2" fill="#0e1808" opacity="0.92"/>
-                            <rect x="62" y="290" width="6" height="610" rx="2" fill="#101c08" opacity="0.88"/>
-                            <rect x="90" y="310" width="5" height="590" rx="2" fill="#0c1606" opacity="0.90"/>
-                            <rect x="116" y="260" width="7" height="640" rx="2" fill="#121e0a" opacity="0.85"/>
-                            <rect x="148" y="300" width="5" height="600" rx="2" fill="#0e1808" opacity="0.88"/>
-                            <rect x="172" y="340" width="4" height="560" rx="2" fill="#0c1606" opacity="0.82"/>
-                            <rect x="196" y="280" width="6" height="620" rx="2" fill="#101c08" opacity="0.86"/>
-                            <rect x="22" y="380" width="4" height="520" rx="2" fill="#0a1406" opacity="0.78"/>
-                            <g opacity="0.20" fill="#1a2c10">
-                                <rect x="37" y="420" width="7" height="2" rx="1"/><rect x="37" y="530" width="7" height="2" rx="1"/>
-                                <rect x="61" y="380" width="8" height="2" rx="1"/><rect x="61" y="490" width="8" height="2" rx="1"/>
-                                <rect x="89" y="400" width="7" height="2" rx="1"/><rect x="89" y="515" width="7" height="2" rx="1"/>
-                                <rect x="115" y="350" width="9" height="2" rx="1"/><rect x="115" y="470" width="9" height="2" rx="1"/>
-                                <rect x="147" y="390" width="7" height="2" rx="1"/><rect x="171" y="435" width="6" height="2" rx="1"/>
-                            </g>
-                            <g opacity="0.70" fill="#0d1c08">
-                                <ellipse cx="62" cy="295" rx="22" ry="6" transform="rotate(-28,62,295)"/>
-                                <ellipse cx="62" cy="295" rx="18" ry="5" transform="rotate(18,62,295)"/>
-                                <ellipse cx="116" cy="265" rx="24" ry="6" transform="rotate(-22,116,265)"/>
-                                <ellipse cx="116" cy="265" rx="20" ry="5" transform="rotate(24,116,265)"/>
-                                <ellipse cx="196" cy="284" rx="22" ry="6" transform="rotate(-30,196,284)"/>
-                                <ellipse cx="196" cy="284" rx="16" ry="5" transform="rotate(15,196,284)"/>
-                                <ellipse cx="90" cy="315" rx="18" ry="5" transform="rotate(-20,90,315)"/>
-                                <ellipse cx="148" cy="305" rx="16" ry="4" transform="rotate(25,148,305)"/>
-                            </g>
+                        <!-- Far mountains -->
+                        <path d="M0,900 L0,558 Q102,448 222,518 Q362,413 502,478 Q642,373 722,438 Q802,373 942,473 Q1082,373 1222,433 Q1342,393 1440,448 L1440,900 Z" fill="#110d2a" opacity="0.92"/>
+                        <path d="M0,900 L0,692 Q202,625 422,662 Q582,612 722,642 Q862,610 1022,654 Q1242,620 1440,662 L1440,900 Z" fill="#0c0a20" opacity="0.96"/>
+                        <!-- Trees left -->
+                        <g fill="#0d0c22" opacity="0.88">
+                            <ellipse cx="92" cy="542" rx="88" ry="108"/><rect x="85" y="648" width="22" height="252"/>
+                            <ellipse cx="245" cy="555" rx="76" ry="94"/><rect x="238" y="645" width="20" height="255"/>
+                            <ellipse cx="46" cy="588" rx="58" ry="75"/><rect x="41" y="658" width="16" height="242"/>
+                            <ellipse cx="368" cy="570" rx="62" ry="80"/><rect x="362" y="646" width="18" height="254"/>
+                            <ellipse cx="172" cy="618" rx="48" ry="62"/><rect x="168" y="676" width="14" height="224"/>
                         </g>
-                        <!-- Bamboo right -->
-                        <g class="bam-group2">
-                            <rect x="1244" y="320" width="6" height="580" rx="2" fill="#0e1808" opacity="0.90"/>
-                            <rect x="1268" y="270" width="5" height="630" rx="2" fill="#101c08" opacity="0.86"/>
-                            <rect x="1292" y="295" width="7" height="605" rx="2" fill="#0c1606" opacity="0.88"/>
-                            <rect x="1320" y="250" width="6" height="650" rx="2" fill="#121e0a" opacity="0.84"/>
-                            <rect x="1348" y="310" width="5" height="590" rx="2" fill="#0e1808" opacity="0.87"/>
-                            <rect x="1374" y="280" width="6" height="620" rx="2" fill="#101c08" opacity="0.85"/>
-                            <rect x="1400" y="350" width="4" height="550" rx="2" fill="#0c1606" opacity="0.80"/>
-                            <rect x="1420" y="300" width="5" height="600" rx="2" fill="#0a1406" opacity="0.76"/>
-                            <g opacity="0.20" fill="#1a2c10">
-                                <rect x="1243" y="410" width="8" height="2" rx="1"/><rect x="1243" y="520" width="8" height="2" rx="1"/>
-                                <rect x="1267" y="360" width="7" height="2" rx="1"/><rect x="1267" y="475" width="7" height="2" rx="1"/>
-                                <rect x="1291" y="385" width="9" height="2" rx="1"/><rect x="1291" y="500" width="9" height="2" rx="1"/>
-                                <rect x="1319" y="340" width="8" height="2" rx="1"/><rect x="1319" y="455" width="8" height="2" rx="1"/>
-                                <rect x="1347" y="400" width="7" height="2" rx="1"/><rect x="1373" y="370" width="8" height="2" rx="1"/>
-                            </g>
-                            <g opacity="0.70" fill="#0d1c08">
-                                <ellipse cx="1268" cy="274" rx="22" ry="6" transform="rotate(25,1268,274)"/>
-                                <ellipse cx="1268" cy="274" rx="18" ry="5" transform="rotate(-20,1268,274)"/>
-                                <ellipse cx="1320" cy="254" rx="24" ry="6" transform="rotate(28,1320,254)"/>
-                                <ellipse cx="1320" cy="254" rx="19" ry="5" transform="rotate(-22,1320,254)"/>
-                                <ellipse cx="1374" cy="284" rx="20" ry="6" transform="rotate(22,1374,284)"/>
-                                <ellipse cx="1374" cy="284" rx="16" ry="5" transform="rotate(-28,1374,284)"/>
-                                <ellipse cx="1244" cy="325" rx="16" ry="4" transform="rotate(-18,1244,325)"/>
-                                <ellipse cx="1292" cy="299" rx="18" ry="5" transform="rotate(20,1292,299)"/>
-                            </g>
+                        <!-- Trees right -->
+                        <g fill="#0d0c22" opacity="0.88">
+                            <ellipse cx="1348" cy="542" rx="88" ry="108"/><rect x="1341" y="648" width="22" height="252"/>
+                            <ellipse cx="1195" cy="555" rx="76" ry="94"/><rect x="1188" y="645" width="20" height="255"/>
+                            <ellipse cx="1394" cy="588" rx="58" ry="75"/><rect x="1389" y="658" width="16" height="242"/>
+                            <ellipse cx="1072" cy="570" rx="62" ry="80"/><rect x="1066" y="646" width="18" height="254"/>
+                            <ellipse cx="1268" cy="618" rx="48" ry="62"/><rect x="1264" y="676" width="14" height="224"/>
                         </g>
-                        <!-- Sanmichi (stone path, perspective) -->
-                        <path d="M470,900 L686,300 L754,300 L970,900 Z" fill="url(#kyPath)"/>
-                        <g stroke="#1a1008" stroke-width="0.7" opacity="0.18">
-                            <line x1="470" y1="900" x2="686" y2="300"/><line x1="970" y1="900" x2="754" y2="300"/>
-                            <line x1="480" y1="866" x2="960" y2="866"/><line x1="492" y1="830" x2="948" y2="830"/>
-                            <line x1="506" y1="794" x2="934" y2="794"/><line x1="522" y1="758" x2="918" y2="758"/>
-                            <line x1="538" y1="722" x2="902" y2="722"/><line x1="554" y1="688" x2="886" y2="688"/>
-                            <line x1="569" y1="655" x2="871" y2="655"/><line x1="582" y1="623" x2="858" y2="623"/>
-                            <line x1="595" y1="593" x2="845" y2="593"/><line x1="607" y1="564" x2="833" y2="564"/>
-                            <line x1="618" y1="537" x2="822" y2="537"/><line x1="628" y1="511" x2="812" y2="511"/>
-                            <line x1="638" y1="487" x2="802" y2="487"/><line x1="647" y1="464" x2="793" y2="464"/>
-                            <line x1="655" y1="443" x2="785" y2="443"/><line x1="663" y1="423" x2="777" y2="423"/>
-                            <line x1="670" y1="404" x2="770" y2="404"/>
+                        <!-- 参道 Stone path perspective (vanishing pt 720,300) -->
+                        <path d="M432,900 L688,300 L752,300 L1008,900 Z" fill="url(#pathG)"/>
+                        <g stroke="#2a1a10" stroke-width="1" opacity="0.28">
+                            <line x1="432" y1="900" x2="688" y2="300"/><line x1="1008" y1="900" x2="752" y2="300"/>
+                            <line x1="442" y1="868" x2="998" y2="868"/><line x1="455" y1="832" x2="985" y2="832"/><line x1="470" y1="796" x2="970" y2="796"/>
+                            <line x1="487" y1="760" x2="953" y2="760"/><line x1="504" y1="726" x2="936" y2="726"/><line x1="520" y1="694" x2="920" y2="694"/>
+                            <line x1="536" y1="663" x2="904" y2="663"/><line x1="550" y1="634" x2="890" y2="634"/><line x1="563" y1="607" x2="877" y2="607"/>
+                            <line x1="575" y1="581" x2="865" y2="581"/><line x1="585" y1="557" x2="855" y2="557"/><line x1="604" y1="513" x2="836" y2="513"/>
+                            <line x1="620" y1="474" x2="820" y2="474"/><line x1="634" y1="439" x2="806" y2="439"/><line x1="646" y1="408" x2="794" y2="408"/>
+                            <line x1="656" y1="381" x2="784" y2="381"/><line x1="665" y1="356" x2="775" y2="356"/><line x1="672" y1="334" x2="768" y2="334"/>
                         </g>
-                        <polygon points="706,300 734,300 830,900 610,900" fill="url(#kyMoonbeam)"/>
-                        <ellipse cx="720" cy="305" rx="88" ry="40" fill="url(#kyVP)" filter="url(#kyBlur10)"/>
-                        <!-- Torii (silhouette, low contrast) -->
-                        <!-- Torii (frames the central card — columns spread wide, top raised) -->
-                        <g opacity="0.68">
-                            <!-- 左立柱：外推到 x=420，更高更粗 -->
-                            <rect x="420" y="290" width="22" height="610" rx="4" fill="#4a0a0a"/>
-                            <!-- 右立柱：外推到 x=998 -->
-                            <rect x="998" y="290" width="22" height="610" rx="4" fill="#4a0a0a"/>
-                            <!-- 笠木：拉長、最高點抬到 y=200，跨距 380→1040 -->
-                            <path d="M380,290 Q710,200 1060,290" fill="none" stroke="#4a0a0a" stroke-width="28" stroke-linecap="round"/>
-                            <!-- 笠木下方深色陰影 -->
-                            <path d="M380,290 Q710,200 1060,290" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="28" stroke-linecap="round"/>
-                            <!-- 笠木高光 -->
-                            <path d="M400,278 Q710,196 1040,278" fill="none" stroke="rgba(255,200,160,0.12)" stroke-width="8" stroke-linecap="round"/>
-                            <!-- 第二橫梁（島木） -->
-                            <path d="M408,348 Q710,302 1032,348" fill="none" stroke="#4a0a0a" stroke-width="18" stroke-linecap="round"/>
-                            <!-- 額束（中央横木） -->
-                            <rect x="430" y="408" width="580" height="13" rx="3" fill="#4a0a0a" opacity="0.88"/>
-                            <!-- 柱底金屬箍 -->
-                            <rect x="416" y="350" width="30" height="6" rx="2" fill="#2a0606" opacity="0.7"/>
-                            <rect x="994" y="350" width="30" height="6" rx="2" fill="#2a0606" opacity="0.7"/>
-                            <rect x="414" y="870" width="34" height="6" rx="2" fill="#2a0606" opacity="0.7"/>
-                            <rect x="992" y="870" width="34" height="6" rx="2" fill="#2a0606" opacity="0.7"/>
+                        <!-- 月光柱 moonbeam shaft down the center path -->
+                        <polygon points="710,264 730,264 820,900 620,900" fill="url(#mbG)" opacity="0.85"/>
+                        <!-- 消失點光暈 vanishing-point glow -->
+                        <ellipse cx="720" cy="300" rx="110" ry="55" fill="url(#vpGlow)" filter="url(#blur8)"/>
+                        <ellipse cx="720" cy="308" rx="42" ry="21" fill="#FFF4A0" opacity="0.10" filter="url(#blur4)"/>
+                        <!-- 參道地面暖光 path surface warm glow -->
+                        <ellipse cx="720" cy="680" rx="230" ry="110" fill="url(#pathSurf)" filter="url(#blur8)"/>
+                        <!-- Torii mid-distance -->
+                        <g opacity="0.8">
+                            <rect x="533" y="388" width="19" height="512" rx="4" fill="#8B1515"/>
+                            <rect x="888" y="388" width="19" height="512" rx="4" fill="#8B1515"/>
+                            <path d="M494,388 Q720,314 946,388" fill="none" stroke="#8B1515" stroke-width="25" stroke-linecap="round"/>
+                            <path d="M524,438 Q720,394 916,438" fill="none" stroke="#8B1515" stroke-width="15" stroke-linecap="round"/>
+                            <rect x="540" y="478" width="360" height="11" rx="3" fill="#8B1515" opacity="0.9"/>
                         </g>
-                        <!-- 遠景小鳥居（消失點） -->
-                        <g opacity="0.22">
-                            <rect x="698" y="312" width="6" height="288" rx="1" fill="#3d0808"/>
-                            <rect x="736" y="312" width="6" height="288" rx="1" fill="#3d0808"/>
-                            <path d="M688,312 Q720,299 752,312" fill="none" stroke="#3d0808" stroke-width="8" stroke-linecap="round"/>
-                            <path d="M692,328 Q720,318 748,328" fill="none" stroke="#3d0808" stroke-width="5" stroke-linecap="round"/>
+                        <!-- Torii distant near vanishing point -->
+                        <g opacity="0.35">
+                            <rect x="688" y="308" width="8" height="292" rx="1" fill="#8B1515"/>
+                            <rect x="744" y="308" width="8" height="292" rx="1" fill="#8B1515"/>
+                            <path d="M678,308 Q720,291 762,308" fill="none" stroke="#8B1515" stroke-width="10" stroke-linecap="round"/>
+                            <path d="M682,326 Q720,315 758,326" fill="none" stroke="#8B1515" stroke-width="6" stroke-linecap="round"/>
                         </g>
-                        <!-- Stone lanterns (4 pairs, restrained glow) -->
-                        <g opacity="0.80"><rect x="418" y="668" width="11" height="232" rx="2" fill="#3a1808"/><rect x="413" y="663" width="21" height="8" rx="1" fill="#2a1008"/><rect x="408" y="620" width="32" height="44" rx="2" fill="#100806"/><path d="M402,620 L424,604 L446,620 Z" fill="#0e1a0a"/><ellipse cx="424" cy="642" rx="15" ry="12" fill="url(#kyLg)" filter="url(#kyBlur5)" opacity="0.52"/></g>
-                        <g opacity="0.80"><rect x="1011" y="668" width="11" height="232" rx="2" fill="#3a1808"/><rect x="1006" y="663" width="21" height="8" rx="1" fill="#2a1008"/><rect x="1000" y="620" width="32" height="44" rx="2" fill="#100806"/><path d="M994,620 L1016,604 L1038,620 Z" fill="#0e1a0a"/><ellipse cx="1016" cy="642" rx="15" ry="12" fill="url(#kyLg)" filter="url(#kyBlur5)" opacity="0.52"/></g>
-                        <g opacity="0.65"><rect x="446" y="710" width="9" height="190" rx="1" fill="#3a1808"/><rect x="442" y="706" width="17" height="6" rx="1" fill="#2a1008"/><rect x="437" y="672" width="26" height="36" rx="2" fill="#100806"/><path d="M432,672 L450,659 L468,672 Z" fill="#0e1a0a"/><ellipse cx="450" cy="690" rx="11" ry="9" fill="url(#kyLg)" filter="url(#kyBlur2)" opacity="0.44"/></g>
-                        <g opacity="0.65"><rect x="985" y="710" width="9" height="190" rx="1" fill="#3a1808"/><rect x="981" y="706" width="17" height="6" rx="1" fill="#2a1008"/><rect x="977" y="672" width="26" height="36" rx="2" fill="#100806"/><path d="M972,672 L990,659 L1008,672 Z" fill="#0e1a0a"/><ellipse cx="990" cy="690" rx="11" ry="9" fill="url(#kyLg)" filter="url(#kyBlur2)" opacity="0.44"/></g>
-                        <g opacity="0.48"><rect x="482" y="742" width="7" height="158" rx="1" fill="#3a1808"/><rect x="479" y="738" width="13" height="5" rx="1" fill="#2a1008"/><rect x="475" y="712" width="20" height="27" rx="1" fill="#100806"/><path d="M472,712 L485,703 L498,712 Z" fill="#0e1a0a"/><ellipse cx="485" cy="725" rx="8" ry="7" fill="url(#kyLg)" filter="url(#kyBlur2)" opacity="0.36"/></g>
-                        <g opacity="0.48"><rect x="951" y="742" width="7" height="158" rx="1" fill="#3a1808"/><rect x="948" y="738" width="13" height="5" rx="1" fill="#2a1008"/><rect x="944" y="712" width="20" height="27" rx="1" fill="#100806"/><path d="M941,712 L954,703 L967,712 Z" fill="#0e1a0a"/><ellipse cx="954" cy="725" rx="8" ry="7" fill="url(#kyLg)" filter="url(#kyBlur2)" opacity="0.36"/></g>
-                        <g opacity="0.32"><rect x="510" y="760" width="5" height="140" rx="1" fill="#3a1808"/><rect x="508" y="757" width="10" height="4" rx="1" fill="#2a1008"/><rect x="504" y="738" width="16" height="20" rx="1" fill="#100806"/><path d="M502,738 L512,731 L522,738 Z" fill="#0e1a0a"/><ellipse cx="512" cy="748" rx="6" ry="5" fill="url(#kyLg)" filter="url(#kyBlur2)" opacity="0.28"/></g>
-                        <g opacity="0.32"><rect x="925" y="760" width="5" height="140" rx="1" fill="#3a1808"/><rect x="923" y="757" width="10" height="4" rx="1" fill="#2a1008"/><rect x="919" y="738" width="16" height="20" rx="1" fill="#100806"/><path d="M917,738 L927,731 L937,738 Z" fill="#0e1a0a"/><ellipse cx="927" cy="748" rx="6" ry="5" fill="url(#kyLg)" filter="url(#kyBlur2)" opacity="0.28"/></g>
-                        <!-- Ground mist (3 layers) -->
-                        <rect x="0" y="682" width="1440" height="118" fill="url(#kyMistMid)" opacity="0.85"/>
-                        <rect x="150" y="745" width="1140" height="75" fill="url(#kyMistMid)" opacity="0.65"/>
-                        <rect x="0" y="792" width="1440" height="108" fill="url(#kyMist)"/>
-                        <ellipse cx="720" cy="872" rx="500" ry="58" fill="#0e1525" opacity="0.52" filter="url(#kyBlur10)"/>
-                        <ellipse cx="720" cy="900" rx="400" ry="52" fill="#080c18" opacity="0.42"/>
-                        <!-- Vignette -->
-                        <rect x="0" y="0" width="320" height="900" fill="url(#kyVigL)"/>
-                        <rect x="1120" y="0" width="320" height="900" fill="url(#kyVigR)"/>
-                        <rect x="0" y="0" width="1440" height="280" fill="url(#kyVigT)"/>
-                        <ellipse cx="0" cy="900" rx="260" ry="200" fill="#040608" opacity="0.70"/>
-                        <ellipse cx="1440" cy="900" rx="260" ry="200" fill="#040608" opacity="0.70"/>
+                        <!-- 朱塗り燈籠台 Pair 1 front (baseY≈870) -->
+                        <g opacity="0.9"><!-- LEFT cx=435 -->
+                            <rect x="418" y="862" width="36" height="10" rx="2" fill="#5a1010"/>
+                            <rect x="428" y="644" width="14" height="219" rx="2" fill="#8B1515"/>
+                            <rect x="425" y="638" width="20" height="8" rx="2" fill="#6B1010"/>
+                            <rect x="407" y="578" width="56" height="61" rx="3" fill="#160c08"/>
+                            <path d="M399,578 L435,554 L471,578 Z" fill="#1e4020"/>
+                            <path d="M399,578 Q435,563 471,578" fill="none" stroke="#2a5828" stroke-width="3"/>
+                            <ellipse cx="435" cy="608" rx="30" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.72"/>
+                            <ellipse cx="435" cy="608" rx="14" ry="11" fill="#FFB040" opacity="0.42"/>
+                        </g>
+                        <g opacity="0.9"><!-- RIGHT cx=1005 -->
+                            <rect x="986" y="862" width="36" height="10" rx="2" fill="#5a1010"/>
+                            <rect x="998" y="644" width="14" height="219" rx="2" fill="#8B1515"/>
+                            <rect x="995" y="638" width="20" height="8" rx="2" fill="#6B1010"/>
+                            <rect x="977" y="578" width="56" height="61" rx="3" fill="#160c08"/>
+                            <path d="M969,578 L1005,554 L1041,578 Z" fill="#1e4020"/>
+                            <path d="M969,578 Q1005,563 1041,578" fill="none" stroke="#2a5828" stroke-width="3"/>
+                            <ellipse cx="1005" cy="608" rx="30" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.72"/>
+                            <ellipse cx="1005" cy="608" rx="14" ry="11" fill="#FFB040" opacity="0.42"/>
+                        </g>
+                        <!-- Pair 2 (baseY≈800) -->
+                        <g opacity="0.83"><!-- LEFT cx=465 -->
+                            <rect x="451" y="793" width="28" height="8" rx="1" fill="#5a1010"/>
+                            <rect x="460" y="617" width="11" height="177" rx="2" fill="#8B1515"/>
+                            <rect x="458" y="611" width="16" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="442" y="562" width="46" height="50" rx="2" fill="#160c08"/>
+                            <path d="M434,562 L465,544 L496,562 Z" fill="#1e4020"/>
+                            <path d="M434,562 Q465,549 496,562" fill="none" stroke="#2a5828" stroke-width="2.5"/>
+                            <ellipse cx="465" cy="587" rx="24" ry="19" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.62"/>
+                            <ellipse cx="465" cy="587" rx="11" ry="9" fill="#FFB040" opacity="0.36"/>
+                        </g>
+                        <g opacity="0.83"><!-- RIGHT cx=975 -->
+                            <rect x="961" y="793" width="28" height="8" rx="1" fill="#5a1010"/>
+                            <rect x="969" y="617" width="11" height="177" rx="2" fill="#8B1515"/>
+                            <rect x="967" y="611" width="16" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="952" y="562" width="46" height="50" rx="2" fill="#160c08"/>
+                            <path d="M944,562 L975,544 L1006,562 Z" fill="#1e4020"/>
+                            <path d="M944,562 Q975,549 1006,562" fill="none" stroke="#2a5828" stroke-width="2.5"/>
+                            <ellipse cx="975" cy="587" rx="24" ry="19" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.62"/>
+                            <ellipse cx="975" cy="587" rx="11" ry="9" fill="#FFB040" opacity="0.36"/>
+                        </g>
+                        <!-- Pair 3 (baseY≈738) -->
+                        <g opacity="0.76"><!-- LEFT cx=498 -->
+                            <rect x="489" y="731" width="22" height="7" rx="1" fill="#5a1010"/>
+                            <rect x="493" y="588" width="9" height="144" rx="2" fill="#8B1515"/>
+                            <rect x="491" y="582" width="14" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="479" y="542" width="38" height="41" rx="2" fill="#160c08"/>
+                            <path d="M471,542 L498,528 L525,542 Z" fill="#1e4020"/>
+                            <path d="M471,542 Q498,531 525,542" fill="none" stroke="#2a5828" stroke-width="2"/>
+                            <ellipse cx="498" cy="562" rx="20" ry="16" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.56"/>
+                            <ellipse cx="498" cy="562" rx="9" ry="7" fill="#FFB040" opacity="0.3"/>
+                        </g>
+                        <g opacity="0.76"><!-- RIGHT cx=942 -->
+                            <rect x="929" y="731" width="22" height="7" rx="1" fill="#5a1010"/>
+                            <rect x="938" y="588" width="9" height="144" rx="2" fill="#8B1515"/>
+                            <rect x="936" y="582" width="14" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="923" y="542" width="38" height="41" rx="2" fill="#160c08"/>
+                            <path d="M915,542 L942,528 L969,542 Z" fill="#1e4020"/>
+                            <path d="M915,542 Q942,531 969,542" fill="none" stroke="#2a5828" stroke-width="2"/>
+                            <ellipse cx="942" cy="562" rx="20" ry="16" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.56"/>
+                            <ellipse cx="942" cy="562" rx="9" ry="7" fill="#FFB040" opacity="0.3"/>
+                        </g>
+                        <!-- Pair 4 (baseY≈686) -->
+                        <g opacity="0.68"><!-- LEFT cx=524 -->
+                            <rect x="517" y="680" width="18" height="6" rx="1" fill="#5a1010"/>
+                            <rect x="521" y="558" width="7" height="123" rx="1" fill="#8B1515"/>
+                            <rect x="519" y="552" width="12" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="509" y="519" width="31" height="34" rx="2" fill="#160c08"/>
+                            <path d="M503,519 L524,507 L545,519 Z" fill="#1e4020"/>
+                            <path d="M503,519 Q524,510 545,519" fill="none" stroke="#2a5828" stroke-width="1.5"/>
+                            <ellipse cx="524" cy="536" rx="16" ry="13" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.5"/>
+                        </g>
+                        <g opacity="0.68"><!-- RIGHT cx=916 -->
+                            <rect x="905" y="680" width="18" height="6" rx="1" fill="#5a1010"/>
+                            <rect x="913" y="558" width="7" height="123" rx="1" fill="#8B1515"/>
+                            <rect x="911" y="552" width="12" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="901" y="519" width="31" height="34" rx="2" fill="#160c08"/>
+                            <path d="M895,519 L916,507 L937,519 Z" fill="#1e4020"/>
+                            <path d="M895,519 Q916,510 937,519" fill="none" stroke="#2a5828" stroke-width="1.5"/>
+                            <ellipse cx="916" cy="536" rx="16" ry="13" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.5"/>
+                        </g>
+                        <!-- Pair 5 (baseY≈642) -->
+                        <g opacity="0.60"><!-- LEFT cx=548 -->
+                            <rect x="542" y="637" width="14" height="5" rx="1" fill="#5a1010"/>
+                            <rect x="545" y="537" width="6" height="101" rx="1" fill="#8B1515"/>
+                            <rect x="543" y="531" width="10" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="535" y="502" width="26" height="30" rx="2" fill="#160c08"/>
+                            <path d="M529,502 L548,492 L567,502 Z" fill="#1e4020"/>
+                            <ellipse cx="548" cy="517" rx="14" ry="11" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.46"/>
+                        </g>
+                        <g opacity="0.60"><!-- RIGHT cx=892 -->
+                            <rect x="885" y="637" width="14" height="5" rx="1" fill="#5a1010"/>
+                            <rect x="889" y="537" width="6" height="101" rx="1" fill="#8B1515"/>
+                            <rect x="887" y="531" width="10" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="879" y="502" width="26" height="30" rx="2" fill="#160c08"/>
+                            <path d="M873,502 L892,492 L911,502 Z" fill="#1e4020"/>
+                            <ellipse cx="892" cy="517" rx="14" ry="11" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.46"/>
+                        </g>
+                        <!-- Pair 6 smallest (baseY≈606) -->
+                        <g opacity="0.50"><!-- LEFT cx=568 -->
+                            <rect x="564" y="601" width="10" height="4" rx="1" fill="#5a1010"/>
+                            <rect x="566" y="519" width="5" height="83" rx="1" fill="#8B1515"/>
+                            <rect x="564" y="513" width="8" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="557" y="489" width="22" height="25" rx="1" fill="#160c08"/>
+                            <path d="M553,489 L568,481 L583,489 Z" fill="#1e4020"/>
+                            <ellipse cx="568" cy="501" rx="11" ry="9" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.4"/>
+                        </g>
+                        <g opacity="0.50"><!-- RIGHT cx=872 -->
+                            <rect x="866" y="601" width="10" height="4" rx="1" fill="#5a1010"/>
+                            <rect x="869" y="519" width="5" height="83" rx="1" fill="#8B1515"/>
+                            <rect x="867" y="513" width="8" height="7" rx="1" fill="#6B1010"/>
+                            <rect x="861" y="489" width="22" height="25" rx="1" fill="#160c08"/>
+                            <path d="M857,489 L872,481 L887,489 Z" fill="#1e4020"/>
+                            <ellipse cx="872" cy="501" rx="11" ry="9" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.4"/>
+                        </g>
+                        <!-- 石燈籠 Stone lanterns between posts -->
+                        <g opacity="0.62"><!-- LEFT y≈835 -->
+                            <rect x="447" y="800" width="8" height="36" rx="1" fill="#3a2a18"/><rect x="440" y="834" width="22" height="6" rx="1" fill="#2a1e10"/>
+                            <rect x="438" y="839" width="26" height="4" rx="1" fill="#221808"/><rect x="441" y="775" width="20" height="26" rx="3" fill="#4a3825"/>
+                            <rect x="437" y="771" width="28" height="6" rx="2" fill="#3a2a18"/><rect x="441" y="762" width="20" height="10" rx="3" fill="#4a3825"/>
+                            <ellipse cx="451" cy="788" rx="10" ry="8" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.24"/>
+                        </g>
+                        <g opacity="0.62"><!-- RIGHT y≈835 -->
+                            <rect x="985" y="800" width="8" height="36" rx="1" fill="#3a2a18"/><rect x="978" y="834" width="22" height="6" rx="1" fill="#2a1e10"/>
+                            <rect x="976" y="839" width="26" height="4" rx="1" fill="#221808"/><rect x="979" y="775" width="20" height="26" rx="3" fill="#4a3825"/>
+                            <rect x="975" y="771" width="28" height="6" rx="2" fill="#3a2a18"/><rect x="979" y="762" width="20" height="10" rx="3" fill="#4a3825"/>
+                            <ellipse cx="989" cy="788" rx="10" ry="8" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.24"/>
+                        </g>
+                        <g opacity="0.54"><!-- LEFT y≈766 -->
+                            <rect x="478" y="734" width="7" height="33" rx="1" fill="#3a2a18"/><rect x="472" y="765" width="19" height="5" rx="1" fill="#2a1e10"/>
+                            <rect x="471" y="721" width="17" height="14" rx="2" fill="#4a3825"/><rect x="468" y="717" width="22" height="5" rx="1" fill="#3a2a18"/>
+                            <ellipse cx="480" cy="728" rx="9" ry="7" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.2"/>
+                        </g>
+                        <g opacity="0.54"><!-- RIGHT y≈766 -->
+                            <rect x="955" y="734" width="7" height="33" rx="1" fill="#3a2a18"/><rect x="949" y="765" width="19" height="5" rx="1" fill="#2a1e10"/>
+                            <rect x="949" y="721" width="17" height="14" rx="2" fill="#4a3825"/><rect x="946" y="717" width="22" height="5" rx="1" fill="#3a2a18"/>
+                            <ellipse cx="958" cy="728" rx="9" ry="7" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.2"/>
+                        </g>
+                        <!-- 夏祭 Festival stall left edge -->
+                        <ellipse cx="148" cy="720" rx="200" ry="80" fill="#C86820" opacity="0.10" filter="url(#blur8)"/>
+                        <g opacity="0.92" fill="#4a2c14">
+                            <path d="M-20,655 L295,655 L314,675 L-20,675 Z"/>
+                            <path d="M-20,675 Q10,690 40,675 Q70,690 100,675 Q130,690 160,675 Q190,690 220,675 Q250,690 280,675 Q298,690 314,675" fill="none" stroke="#6a3c1c" stroke-width="5"/>
+                            <rect x="-20" y="675" width="12" height="225"/><rect x="296" y="675" width="12" height="225"/>
+                            <rect x="-20" y="768" width="338" height="11" rx="2" fill="#5a3018"/>
+                            <rect x="-20" y="779" width="12" height="121"/><rect x="296" y="779" width="12" height="121"/>
+                            <circle cx="38" cy="760" r="10" fill="#7a4020"/><circle cx="78" cy="760" r="10" fill="#6a3818"/>
+                            <circle cx="118" cy="760" r="10" fill="#7a4824"/><circle cx="158" cy="760" r="10" fill="#6a3018"/>
+                            <circle cx="198" cy="760" r="10" fill="#7a4020"/><circle cx="238" cy="760" r="10" fill="#6a3818"/>
+                            <ellipse cx="76" cy="645" rx="14" ry="18" fill="#C02020"/>
+                            <ellipse cx="156" cy="643" rx="14" ry="18" fill="#C02020"/>
+                            <ellipse cx="236" cy="646" rx="12" ry="16" fill="#C02020"/>
+                            <ellipse cx="76" cy="645" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
+                            <ellipse cx="156" cy="643" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
+                            <ellipse cx="236" cy="646" rx="24" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.68"/>
+                            <circle cx="148" cy="712" r="14" fill="#3a2010"/>
+                            <path d="M134,726 Q148,733 162,726 L165,766 Q148,771 131,766 Z" fill="#3a2010"/>
+                        </g>
+                        <!-- Festival stall right edge -->
+                        <ellipse cx="1292" cy="720" rx="200" ry="80" fill="#C86820" opacity="0.10" filter="url(#blur8)"/>
+                        <g opacity="0.92" fill="#4a2c14">
+                            <path d="M1126,655 L1460,655 L1460,675 L1106,675 Z"/>
+                            <path d="M1126,675 Q1146,690 1166,675 Q1186,690 1206,675 Q1226,690 1246,675 Q1266,690 1286,675 Q1306,690 1326,675 Q1346,690 1366,675 Q1386,690 1406,675 Q1426,690 1446,675 Q1456,690 1460,675" fill="none" stroke="#6a3c1c" stroke-width="5"/>
+                            <rect x="1132" y="675" width="12" height="225"/><rect x="1448" y="675" width="12" height="225"/>
+                            <rect x="1126" y="768" width="334" height="11" rx="2" fill="#5a3018"/>
+                            <rect x="1132" y="779" width="12" height="121"/><rect x="1448" y="779" width="12" height="121"/>
+                            <circle cx="1174" cy="760" r="10" fill="#7a4020"/><circle cx="1214" cy="760" r="10" fill="#6a3818"/>
+                            <circle cx="1254" cy="760" r="10" fill="#7a4824"/><circle cx="1294" cy="760" r="10" fill="#6a3018"/>
+                            <circle cx="1334" cy="760" r="10" fill="#7a4020"/><circle cx="1374" cy="760" r="10" fill="#6a3818"/>
+                            <ellipse cx="1196" cy="645" rx="14" ry="18" fill="#C02020"/>
+                            <ellipse cx="1276" cy="643" rx="14" ry="18" fill="#C02020"/>
+                            <ellipse cx="1356" cy="646" rx="12" ry="16" fill="#C02020"/>
+                            <ellipse cx="1196" cy="645" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
+                            <ellipse cx="1276" cy="643" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
+                            <ellipse cx="1356" cy="646" rx="24" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.68"/>
+                            <circle cx="1292" cy="712" r="14" fill="#3a2010"/>
+                            <path d="M1278,726 Q1292,733 1306,726 L1309,766 Q1292,771 1275,766 Z" fill="#3a2010"/>
+                        </g>
+                        <!-- Walking figures on path -->
+                        <g transform="translate(698,678)" fill="#160e0a" opacity="0.58">
+                            <circle cx="0" cy="-50" r="11"/>
+                            <path d="M-14,-38 Q0,-30 14,-38 L18,10 Q0,16 -18,10 Z"/>
+                            <path d="M-18,10 L-28,56 L28,56 L18,10 Q0,20 -18,10 Z"/>
+                            <path d="M-14,-28 L-32,-10 L-27,-4 L-10,-20 Z"/><path d="M14,-28 L32,-10 L27,-4 L10,-20 Z"/>
+                        </g>
+                        <g transform="translate(730,682)" fill="#160e0a" opacity="0.52">
+                            <circle cx="0" cy="-45" r="10"/>
+                            <path d="M-10,-35 Q0,-28 10,-35 L11,4 Q0,8 -11,4 Z"/>
+                            <path d="M-10,-26 L-24,-10 L-19,-5 L-7,-18 Z"/><path d="M10,-26 L20,-8 L15,-3 L5,-18 Z"/>
+                            <path d="M-8,4 L-12,46 L-3,46 L0,18 Z"/><path d="M8,4 L12,46 L3,46 L0,18 Z"/>
+                        </g>
+                        <g transform="translate(716,658)" fill="#160e0a" opacity="0.42">
+                            <circle cx="0" cy="-38" r="9"/>
+                            <path d="M-9,-29 Q0,-23 9,-29 L10,3 Q0,7 -10,3 Z"/>
+                            <path d="M-13,3 L-18,40 L18,40 L13,3 Q0,11 -13,3 Z"/>
+                        </g>
+                        <!-- 大氣霧帶 — 3 depth layers, figures emerge from mist -->
+                        <rect x="330" y="590" width="780" height="28" fill="#8898C8" opacity="0.07" filter="url(#blur8)" rx="14"/>
+                        <rect x="290" y="678" width="860" height="38" fill="#8898C8" opacity="0.09" filter="url(#blur8)" rx="18"/>
+                        <rect x="220" y="760" width="1000" height="52" fill="#8898C8" opacity="0.12" filter="url(#blur8)" rx="24"/>
+                        <!-- Mist at bottom -->
+                        <linearGradient id="mistG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06081c" stop-opacity="0"/><stop offset="100%" stop-color="#04060e" stop-opacity="0.94"/></linearGradient>
+                        <rect x="0" y="800" width="1440" height="100" fill="url(#mistG)"/>
+                        <ellipse cx="720" cy="900" rx="400" ry="80" fill="#04060e" opacity="0.35"/>
+                        <!-- 暗角 vignette tunnel -->
+                        <rect x="0" y="0" width="400" height="900" fill="url(#vigL)"/>
+                        <rect x="1040" y="0" width="400" height="900" fill="url(#vigR)"/>
+                        <rect x="0" y="0" width="1440" height="340" fill="url(#vigT)"/>
+                        <!-- 四角加深 corner darks -->
+                        <ellipse cx="0" cy="900" rx="300" ry="220" fill="#04060e" opacity="0.65"/>
+                        <ellipse cx="1440" cy="900" rx="300" ry="220" fill="#04060e" opacity="0.65"/>
+                        <ellipse cx="0" cy="0" rx="260" ry="180" fill="#04060e" opacity="0.50"/>
+                        <ellipse cx="1440" cy="0" rx="260" ry="180" fill="#04060e" opacity="0.50"/>
                     </svg>
-                    <!-- Amber embers (3, very restrained) -->
-                    <div class="ember" style="left:31%;top:62%;width:3px;height:3px;animation-duration:7s;animation-delay:0s"></div>
-                    <div class="ember" style="left:66%;top:68%;width:3px;height:3px;animation-duration:9s;animation-delay:2.5s"></div>
-                    <div class="ember" style="left:48%;top:74%;width:2px;height:2px;animation-duration:11s;animation-delay:5s"></div>
+                    <!-- 螢火蟲 -->
+                    <div class="firefly" style="left:22%;top:55%;width:4px;height:4px;animation-duration:5s;animation-delay:0s"></div>
+                    <div class="firefly" style="left:35%;top:65%;width:3px;height:3px;animation-duration:7s;animation-delay:1.5s"></div>
+                    <div class="firefly" style="left:58%;top:72%;width:4px;height:4px;animation-duration:6s;animation-delay:3s"></div>
+                    <div class="firefly" style="left:72%;top:60%;width:3px;height:3px;animation-duration:8s;animation-delay:0.8s"></div>
+                    <div class="firefly" style="left:82%;top:68%;width:4px;height:4px;animation-duration:5.5s;animation-delay:2s"></div>
+                    <!-- 落花 sakura -->
+                    <div class="sakura-wrap">
+                        <div class="petal" style="left:8%;width:9px;height:11px;background:rgba(255,190,200,0.7);animation-duration:9s;animation-delay:0s"></div>
+                        <div class="petal" style="left:18%;width:7px;height:9px;background:rgba(240,170,185,0.65);animation-duration:11s;animation-delay:2s"></div>
+                        <div class="petal" style="left:32%;width:8px;height:10px;background:rgba(255,200,210,0.7);animation-duration:8s;animation-delay:4s"></div>
+                        <div class="petal" style="left:48%;width:6px;height:8px;background:rgba(230,160,175,0.6);animation-duration:12s;animation-delay:1s"></div>
+                        <div class="petal" style="left:63%;width:9px;height:11px;background:rgba(255,190,200,0.65);animation-duration:9.5s;animation-delay:5s"></div>
+                        <div class="petal" style="left:75%;width:7px;height:9px;background:rgba(240,175,190,0.7);animation-duration:10s;animation-delay:3s"></div>
+                        <div class="petal" style="left:88%;width:8px;height:10px;background:rgba(255,200,210,0.65);animation-duration:8.5s;animation-delay:6s"></div>
+                    </div>
                 </div>
-                <div class="card-shimmer relative z-10 w-full max-w-xl bg-vintage-cream/85 backdrop-blur-xl p-9 md:p-12 text-center rounded-[2rem] cover-content" style="border:1px solid rgba(140,80,10,0.22); box-shadow:0 30px 80px rgba(0,0,0,0.42);">
+                <div class="card-shimmer relative z-10 w-full max-w-2xl bg-vintage-cream/90 backdrop-blur-2xl p-10 md:p-14 text-center rounded-[2rem] cover-content" style="border:1px solid rgba(140,80,10,0.18);">
 
                     <!-- 社會證明 × 稀缺感 — 注意力捕捉 -->
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-red-950/8 border border-red-900/20 text-red-900 font-sans text-[11px] tracking-[0.18em] mb-7 rounded-full">
@@ -1765,6 +1384,66 @@
 
     <!-- 2. 大地圖頁 -->
     <div id="view-map" class="view">
+        <!-- 裝飾剪影背景 -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- 鳥居（左上） -->
+            <g transform="translate(120,80)" opacity="0.09" fill="#5C1A1B">
+                <rect x="0" y="30" width="90" height="8" rx="2"/>
+                <rect x="5" y="16" width="80" height="6" rx="1"/>
+                <rect x="12" y="20" width="9" height="65" rx="2"/>
+                <rect x="69" y="20" width="9" height="65" rx="2"/>
+            </g>
+            <!-- 石燈籠（右上） -->
+            <g transform="translate(1260,80)" opacity="0.09" fill="#5C1A1B">
+                <rect x="-18" y="0" width="36" height="22" rx="3"/>
+                <rect x="-12" y="22" width="24" height="5"/>
+                <rect x="-22" y="27" width="44" height="32" rx="2"/>
+                <rect x="-10" y="59" width="20" height="7"/>
+                <rect x="-25" y="66" width="50" height="9" rx="2"/>
+                <rect x="-5" y="75" width="10" height="24"/>
+                <rect x="-26" y="99" width="52" height="8" rx="2"/>
+            </g>
+            <!-- 指南針（右下） -->
+            <g transform="translate(1280,760)" opacity="0.1">
+                <circle cx="0" cy="0" r="36" fill="none" stroke="#5C1A1B" stroke-width="2"/>
+                <circle cx="0" cy="0" r="28" fill="none" stroke="#5C1A1B" stroke-width="0.5"/>
+                <polygon points="0,-22 6,0 0,-5 -6,0" fill="#5C1A1B"/>
+                <polygon points="0,22 6,0 0,5 -6,0" fill="#8B6914"/>
+                <text x="0" y="-26" font-size="11" fill="#5C1A1B" text-anchor="middle" font-family="sans-serif" font-weight="700">N</text>
+                <text x="0" y="36" font-size="11" fill="#5C1A1B" text-anchor="middle" font-family="sans-serif">S</text>
+                <text x="30" y="5" font-size="11" fill="#5C1A1B" text-anchor="middle" font-family="sans-serif">E</text>
+                <text x="-30" y="5" font-size="11" fill="#5C1A1B" text-anchor="middle" font-family="sans-serif">W</text>
+                <line x1="0" y1="-20" x2="0" y2="20" stroke="#5C1A1B" stroke-width="0.5"/>
+                <line x1="-20" y1="0" x2="20" y2="0" stroke="#5C1A1B" stroke-width="0.5"/>
+            </g>
+            <!-- 放大鏡（左下） -->
+            <g transform="translate(120,720)" opacity="0.09">
+                <circle cx="35" cy="35" r="30" fill="rgba(92,26,27,0.06)" stroke="#5C1A1B" stroke-width="5"/>
+                <circle cx="35" cy="35" r="18" fill="none" stroke="#5C1A1B" stroke-width="2"/>
+                <line x1="57" y1="57" x2="82" y2="82" stroke="#5C1A1B" stroke-width="6" stroke-linecap="round"/>
+                <rect x="76" y="72" width="18" height="30" rx="8" fill="#5C1A1B" transform="rotate(45,85,87)"/>
+            </g>
+            <!-- 小石燈籠（左中） -->
+            <g transform="translate(120,380)" opacity="0.08" fill="#5C1A1B">
+                <rect x="5" y="0" width="24" height="16" rx="2"/>
+                <rect x="9" y="16" width="14" height="4"/>
+                <rect x="0" y="20" width="34" height="28" rx="3"/>
+                <rect x="12" y="48" width="10" height="5"/>
+                <rect x="-4" y="53" width="42" height="7" rx="2"/>
+                <rect x="12" y="60" width="10" height="18"/>
+                <rect x="-5" y="78" width="44" height="7" rx="2"/>
+            </g>
+            <!-- 小鳥居（右中） -->
+            <g transform="translate(1260,390)" opacity="0.07" fill="#5C1A1B">
+                <rect x="-28" y="20" width="56" height="6" rx="1"/>
+                <rect x="-22" y="11" width="44" height="5" rx="1"/>
+                <rect x="-20" y="14" width="6" height="40" rx="1"/>
+                <rect x="14" y="14" width="6" height="40" rx="1"/>
+            </g>
+            <!-- 波浪裝飾（底部） -->
+            <path d="M 0 860 Q 90 845 180 860 Q 270 875 360 860 Q 450 845 540 860 Q 630 875 720 860 Q 810 845 900 860 Q 990 875 1080 860 Q 1170 845 1260 860 Q 1350 875 1440 860" fill="none" stroke="#5C1A1B" stroke-width="2" opacity="0.07"/>
+            <path d="M 0 875 Q 90 860 180 875 Q 270 890 360 875 Q 450 860 540 875 Q 630 890 720 875 Q 810 860 900 875 Q 990 890 1080 875 Q 1170 860 1260 875 Q 1350 890 1440 875" fill="none" stroke="#5C1A1B" stroke-width="1.5" opacity="0.05"/>
+        </svg>
         <div class="map-page-layout">
             <div class="map-topbar animate-fade-in">
                 <button onclick="navigateTo('view-cover')" class="flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-white/90 px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-white">
@@ -2092,55 +1771,45 @@
 
     <!-- 4. 宜蘭神社 -->
     <div id="view-yilan" class="view bg-vintage-cream">
-        <!-- 員山背景裝飾：鳥居 + 官印 + 石燈籠（穩定定位） -->
-        <div aria-hidden="true" class="shrine-deco-layer" style="opacity:0.42;">
-            <!-- 鳥居（左上） -->
-            <div class="shrine-deco" style="top:90px; left:max(2vw, 18px); width:clamp(110px, 11vw, 160px); height:auto; color:#5C1A1B;">
-                <svg viewBox="0 0 150 230" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="6">
-                    <rect x="22" y="14" width="11" height="210" rx="3"/>
-                    <rect x="117" y="14" width="11" height="210" rx="3"/>
-                    <path d="M4,16 Q75,-12 146,16" stroke-width="17" stroke-linecap="round"/>
-                    <path d="M18,52 Q75,32 132,52" stroke-width="9" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <!-- 官方印章紋（右上） -->
-            <div class="shrine-deco hide-tablet" style="top:70px; right:max(3vw, 24px); width:clamp(90px, 9vw, 130px); height:auto; color:#5C1A1B;">
-                <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3">
-                    <circle cx="80" cy="80" r="68"/>
-                    <circle cx="80" cy="80" r="58"/>
-                    <circle cx="80" cy="80" r="5" fill="currentColor"/>
-                    <line x1="80" y1="20" x2="80" y2="10"/>
-                    <line x1="80" y1="140" x2="80" y2="150"/>
-                    <line x1="20" y1="80" x2="10" y2="80"/>
-                    <line x1="140" y1="80" x2="150" y2="80"/>
-                    <text x="80" y="88" text-anchor="middle" font-family="serif" font-size="32" font-weight="900" fill="currentColor" stroke="none">宜</text>
-                </svg>
-            </div>
-            <!-- 石燈籠（右側中部） -->
-            <div class="shrine-deco hide-tablet" style="top:380px; right:max(4vw, 30px); width:clamp(38px, 4vw, 56px); height:auto; color:#5C1A1B;">
-                <svg viewBox="0 0 50 120" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                    <rect x="20" y="68" width="10" height="48"/>
-                    <rect x="15" y="115" width="20" height="6" rx="1"/>
-                    <rect x="13" y="50" width="24" height="20" rx="3"/>
-                    <rect x="9" y="44" width="32" height="8" rx="2"/>
-                    <rect x="13" y="32" width="24" height="14" rx="3"/>
-                    <path d="M7,32 L25,18 L43,32 Z"/>
-                </svg>
-            </div>
-            <!-- 檜木枝紋（左下） -->
-            <div class="shrine-deco hide-tablet" style="top:520px; left:max(2vw, 16px); width:clamp(120px, 12vw, 170px); height:auto; color:#5C1A1B;">
-                <svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.7">
-                    <line x1="80" y1="195" x2="80" y2="20"/>
-                    <line x1="80" y1="60" x2="40" y2="40"/>
-                    <line x1="80" y1="60" x2="120" y2="40"/>
-                    <line x1="80" y1="90" x2="35" y2="80"/>
-                    <line x1="80" y1="90" x2="125" y2="80"/>
-                    <line x1="80" y1="120" x2="30" y2="120"/>
-                    <line x1="80" y1="120" x2="130" y2="120"/>
-                    <line x1="80" y1="150" x2="38" y2="160"/>
-                    <line x1="80" y1="150" x2="122" y2="160"/>
-                </svg>
-            </div>
+        <!-- 員山背景裝飾：鳥居＋檜木＋官印 -->
+        <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;opacity:0.5;">
+            <svg width="100%" height="100%" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <!-- 鳥居 left -->
+                <g transform="translate(30,140)" fill="none" stroke="#5C1A1B" stroke-width="6">
+                    <rect x="18" y="0" width="12" height="220" rx="3"/>
+                    <rect x="108" y="0" width="12" height="220" rx="3"/>
+                    <path d="M0,0 Q69,-28 138,0" stroke-width="18" stroke-linecap="round"/>
+                    <path d="M14,38 Q69,18 124,38" stroke-width="10" stroke-linecap="round"/>
+                </g>
+                <!-- 鳥居 right (faint) -->
+                <g transform="translate(1280,200)" fill="none" stroke="#5C1A1B" stroke-width="5" opacity="0.5">
+                    <rect x="14" y="0" width="9" height="160" rx="2"/>
+                    <rect x="78" y="0" width="9" height="160" rx="2"/>
+                    <path d="M0,0 Q50,-20 100,0" stroke-width="13" stroke-linecap="round"/>
+                    <path d="M10,26 Q50,12 90,26" stroke-width="7" stroke-linecap="round"/>
+                </g>
+                <!-- 檜木樹 left cluster -->
+                <g transform="translate(0,400)" fill="#5C1A1B">
+                    <path d="M40,300 L40,80 L20,110 L40,80 L0,140 L40,80 L10,170 L40,80 L5,200 L40,80"/><rect x="35" y="290" width="10" height="15"/>
+                    <path d="M90,280 L90,100 L70,130 L90,100 L52,150 L90,100 L62,180 L90,100" fill="none" stroke="#5C1A1B" stroke-width="3"/>
+                    <rect x="86" y="270" width="8" height="12"/>
+                </g>
+                <!-- 官方印章紋 center-right -->
+                <g transform="translate(1190,580)" fill="none" stroke="#5C1A1B" stroke-width="3">
+                    <circle cx="80" cy="80" r="70"/><circle cx="80" cy="80" r="60"/>
+                    <circle cx="80" cy="80" r="5" fill="#5C1A1B"/>
+                    <line x1="80" y1="20" x2="80" y2="10"/><line x1="80" y1="140" x2="80" y2="150"/>
+                    <line x1="20" y1="80" x2="10" y2="80"/><line x1="140" y1="80" x2="150" y2="80"/>
+                </g>
+                <!-- 石燈籠 -->
+                <g transform="translate(1320,350)" fill="#5C1A1B">
+                    <rect x="15" y="80" width="10" height="60"/>
+                    <rect x="10" y="138" width="20" height="7" rx="1"/>
+                    <rect x="8" y="60" width="24" height="24" rx="4"/>
+                    <rect x="5" y="55" width="30" height="8" rx="2"/>
+                    <rect x="8" y="46" width="24" height="12" rx="4"/>
+                </g>
+            </svg>
         </div>
         <button onclick="navigateTo('view-map')" class="floating-nav flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase bg-white/90 px-6 py-3 rounded-full backdrop-blur-md shadow-lg transition-all border border-white ">
             <iconify-icon icon="ph:map-trifold"></iconify-icon> 返回地圖
@@ -2256,100 +1925,256 @@
 
     <!-- 5. 羅東神社 -->
     <div id="view-luodong" class="view bg-vintage-cream">
-        <!-- 羅東背景裝飾：林業火車 + 鐵軌 + 木材印章（穩定定位） -->
-        <div aria-hidden="true" class="shrine-deco-layer" style="opacity:0.28;">
-            <!-- 鐵軌（橫貫頁面頂部下方） -->
-            <div class="shrine-deco" style="top:240px; left:0; right:0; width:100%; height:30px; color:#2D2A26;">
-                <svg viewBox="0 0 1440 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:30px;">
-                    <line x1="0" y1="6"  x2="1440" y2="6"  stroke="currentColor" stroke-width="3.5"/>
-                    <line x1="0" y1="22" x2="1440" y2="22" stroke="currentColor" stroke-width="3.5"/>
-                    <g stroke="currentColor" stroke-width="5" stroke-linecap="square">
-                        <line x1="40"   y1="2" x2="40"   y2="26"/><line x1="120"  y1="2" x2="120"  y2="26"/>
-                        <line x1="200"  y1="2" x2="200"  y2="26"/><line x1="280"  y1="2" x2="280"  y2="26"/>
-                        <line x1="360"  y1="2" x2="360"  y2="26"/><line x1="440"  y1="2" x2="440"  y2="26"/>
-                        <line x1="520"  y1="2" x2="520"  y2="26"/><line x1="600"  y1="2" x2="600"  y2="26"/>
-                        <line x1="680"  y1="2" x2="680"  y2="26"/><line x1="760"  y1="2" x2="760"  y2="26"/>
-                        <line x1="840"  y1="2" x2="840"  y2="26"/><line x1="920"  y1="2" x2="920"  y2="26"/>
-                        <line x1="1000" y1="2" x2="1000" y2="26"/><line x1="1080" y1="2" x2="1080" y2="26"/>
-                        <line x1="1160" y1="2" x2="1160" y2="26"/><line x1="1240" y1="2" x2="1240" y2="26"/>
-                        <line x1="1320" y1="2" x2="1320" y2="26"/><line x1="1400" y1="2" x2="1400" y2="26"/>
+        <!-- 羅東背景裝飾：右側林業鐵道 + 左側慶典人群 -->
+        <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;opacity:0.18;">
+            <svg width="100%" height="100%" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+
+                <!-- ══════════════════════════════════════
+                     鐵軌（獨立群組）
+                     改 translate(RAIL_X, RAIL_Y) 移動整條鐵軌
+                     目前 RAIL_X=680  RAIL_Y=610
+                ══════════════════════════════════════ -->
+                <g transform="translate(100, 195)" opacity="0.5"><!-- 改 opacity 調整鐵軌深淺 -->
+                    <!-- 鐵軌雙軌 -->
+                    <line x1="0" y1="0" x2="760" y2="0" stroke="#2D2A26" stroke-width="5"/>
+                    <line x1="0" y1="16" x2="760" y2="16" stroke="#2D2A26" stroke-width="5"/>
+                    <!-- 枕木 (每 40px 一根) -->
+                    <g stroke="#2D2A26" stroke-width="7" stroke-linecap="square">
+                        <line x1="20" y1="-4" x2="20" y2="20"/><line x1="60" y1="-4" x2="60" y2="20"/>
+                        <line x1="100" y1="-4" x2="100" y2="20"/><line x1="140" y1="-4" x2="140" y2="20"/>
+                        <line x1="180" y1="-4" x2="180" y2="20"/><line x1="220" y1="-4" x2="220" y2="20"/>
+                        <line x1="260" y1="-4" x2="260" y2="20"/><line x1="300" y1="-4" x2="300" y2="20"/>
+                        <line x1="340" y1="-4" x2="340" y2="20"/><line x1="380" y1="-4" x2="380" y2="20"/>
+                        <line x1="420" y1="-4" x2="420" y2="20"/><line x1="460" y1="-4" x2="460" y2="20"/>
+                        <line x1="500" y1="-4" x2="500" y2="20"/><line x1="540" y1="-4" x2="540" y2="20"/>
+                        <line x1="580" y1="-4" x2="580" y2="20"/><line x1="620" y1="-4" x2="620" y2="20"/>
+                        <line x1="660" y1="-4" x2="660" y2="20"/><line x1="700" y1="-4" x2="700" y2="20"/>
+                        <line x1="740" y1="-4" x2="740" y2="20"/>
                     </g>
-                </svg>
-            </div>
-            <!-- 蒸汽火車（鐵軌左側上方） -->
-            <div class="shrine-deco" style="top:130px; left:max(3vw, 24px); width:clamp(220px, 22vw, 320px); height:auto; color:#2D2A26;">
-                <svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                    <!-- 煙霧（左上方飄散） -->
-                    <circle cx="56"  cy="20" r="11" opacity="0.18"/>
-                    <circle cx="76"  cy="8"  r="8"  opacity="0.13"/>
-                    <circle cx="94"  cy="2"  r="6"  opacity="0.09"/>
-                    <!-- 煙囪 -->
-                    <rect x="42" y="32" width="12" height="22" rx="2"/>
-                    <rect x="36" y="28" width="24" height="8"  rx="3"/>
-                    <!-- 煙箱 + 鍋爐 -->
-                    <ellipse cx="62" cy="80" rx="26" ry="22"/>
-                    <rect x="50" y="60" width="120" height="40" rx="6"/>
-                    <!-- 蒸汽穹 -->
-                    <ellipse cx="120" cy="56" rx="14" ry="11"/>
-                    <ellipse cx="148" cy="56" rx="7"  ry="6"/>
-                    <!-- 走板 -->
-                    <rect x="38" y="96" width="170" height="6" rx="2"/>
-                    <!-- 駕駛室 -->
-                    <rect x="160" y="46" width="42" height="58" rx="3"/>
-                    <rect x="152" y="40" width="58" height="8"  rx="2"/>
-                    <rect x="166" y="56" width="14" height="11" rx="1" fill="#F5F0E8" opacity="0.28"/>
-                    <rect x="184" y="56" width="14" height="11" rx="1" fill="#F5F0E8" opacity="0.28"/>
-                    <!-- 排障器 -->
-                    <path d="M38,98 L20,118 L40,118 L44,96 Z"/>
-                    <!-- 動輪 -->
-                    <circle cx="74"  cy="116" r="14"/>
-                    <circle cx="74"  cy="116" r="6" fill="#B89B72" opacity="0.4"/>
-                    <circle cx="120" cy="116" r="18"/>
-                    <circle cx="120" cy="116" r="8" fill="#B89B72" opacity="0.4"/>
-                    <circle cx="168" cy="116" r="18"/>
-                    <circle cx="168" cy="116" r="8" fill="#B89B72" opacity="0.4"/>
-                    <circle cx="206" cy="116" r="12"/>
-                    <!-- 連桿 -->
-                    <line x1="74" y1="116" x2="206" y2="116" stroke="#B89B72" stroke-width="6" opacity="0.5"/>
-                </svg>
-            </div>
-            <!-- 林業會社印章（右上） -->
-            <div class="shrine-deco hide-tablet" style="top:90px; right:max(4vw, 28px); width:clamp(85px, 8vw, 115px); height:auto; color:#2D2A26;">
-                <svg viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3">
-                    <rect x="8" y="8" width="114" height="114" rx="6"/>
-                    <rect x="16" y="16" width="98" height="98" rx="3" opacity="0.5"/>
-                    <text x="65" y="62" text-anchor="middle" font-family="serif" font-size="28" font-weight="900" fill="currentColor" stroke="none">營林</text>
-                    <text x="65" y="95" text-anchor="middle" font-family="serif" font-size="22" font-weight="700" fill="currentColor" stroke="none">所</text>
-                </svg>
-            </div>
-            <!-- 檜木材剪影（左下） -->
-            <div class="shrine-deco hide-tablet" style="top:520px; left:max(3vw, 22px); width:clamp(120px, 11vw, 165px); height:auto; color:#2D2A26;">
-                <svg viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg" fill="currentColor" opacity="0.85">
-                    <!-- 木材堆疊 -->
-                    <ellipse cx="22"  cy="20" rx="20" ry="8"/>
-                    <ellipse cx="56"  cy="20" rx="20" ry="8"/>
-                    <ellipse cx="90"  cy="20" rx="20" ry="8"/>
-                    <ellipse cx="124" cy="20" rx="20" ry="8"/>
-                    <rect x="2"  y="20" width="40" height="32"/>
-                    <rect x="36" y="20" width="40" height="32"/>
-                    <rect x="70" y="20" width="40" height="32"/>
-                    <rect x="104" y="20" width="40" height="32"/>
-                    <ellipse cx="22"  cy="52" rx="20" ry="6" opacity="0.6"/>
-                    <ellipse cx="56"  cy="52" rx="20" ry="6" opacity="0.6"/>
-                    <ellipse cx="90"  cy="52" rx="20" ry="6" opacity="0.6"/>
-                    <ellipse cx="124" cy="52" rx="20" ry="6" opacity="0.6"/>
-                    <!-- 第二層 -->
-                    <ellipse cx="40"  cy="68" rx="18" ry="6" opacity="0.85"/>
-                    <ellipse cx="74"  cy="68" rx="18" ry="6" opacity="0.85"/>
-                    <ellipse cx="108" cy="68" rx="18" ry="6" opacity="0.85"/>
-                    <rect x="22" y="68" width="36" height="22" opacity="0.85"/>
-                    <rect x="56" y="68" width="36" height="22" opacity="0.85"/>
-                    <rect x="90" y="68" width="36" height="22" opacity="0.85"/>
-                    <ellipse cx="40"  cy="90" rx="18" ry="5" opacity="0.5"/>
-                    <ellipse cx="74"  cy="90" rx="18" ry="5" opacity="0.5"/>
-                    <ellipse cx="108" cy="90" rx="18" ry="5" opacity="0.5"/>
-                </svg>
-            </div>
+                </g><!-- ／鐵軌群組 -->
+
+                <!-- ══════════════════════════════════════
+                     火車編組（頭＋車廂）
+                     改 translate(TRAIN_X, TRAIN_Y) 移動整組；改 scale() 調整大小
+                     目前 TRAIN_X=300  TRAIN_Y=100  scale=0.65
+                     ↓ 各車廂的 LOCO_X / CAR_X 是相對火車群組的水平偏移
+                ══════════════════════════════════════ -->
+                <g transform="translate(300, 125) scale(0.65)" opacity="2"><!-- 改 opacity 調整火車透明度（0=全透明 1=與背景同） -->
+
+                    <!-- 火車頭（蒸汽機車）— 改 translate(LOCO_X, LOCO_Y) 移動 目前(430,0) 面朝右 -->
+                    <g transform="translate(430, 0)">
+                        <!-- translate(193,0) scale(-1,1) = 以 x=96.5 為軸水平翻轉，車頭（煙囪）朝右 -->
+                        <g transform="translate(193, 0) scale(-1, 1)" fill="#2D2A26">
+                        <!-- 煙霧 -->
+                        <circle cx="20"  cy="-60" r="19" opacity="0.14"/>
+                        <circle cx="6"   cy="-80" r="13" opacity="0.09"/>
+                        <circle cx="22"  cy="-97" r="9"  opacity="0.06"/>
+                        <!-- 煙囪（喇叭狀，前端朝左） -->
+                        <rect x="10" y="-30" width="14" height="34" rx="2"/>
+                        <rect x="2"  y="-56" width="30" height="10" rx="5"/>
+                        <!-- 煙箱（smokebox，圓形前臉） -->
+                        <ellipse cx="26" cy="46" rx="36" ry="34"/>
+                        <!-- 鍋爐主體（長圓柱） -->
+                        <rect x="20" y="16" width="152" height="60" rx="10"/>
+                        <!-- 蒸汽穹（steam dome，鍋爐頂部圓隆） -->
+                        <ellipse cx="110" cy="12" rx="22" ry="18"/>
+                        <!-- 安全閥（小穹） -->
+                        <ellipse cx="148" cy="13" rx="10" ry="9"/>
+                        <!-- 走板（running board） -->
+                        <rect x="-6" y="72" width="220" height="8" rx="3"/>
+                        <!-- 駕駛室（cab，後端朝右） -->
+                        <rect x="158" y="-8" width="56" height="94" rx="4"/>
+                        <!-- 屋頂懸挑 -->
+                        <rect x="145" y="-15" width="76" height="10" rx="3"/>
+                        <!-- 駕駛室窗戶 -->
+                        <rect x="164" y="5"  width="18" height="14" rx="2" fill="#F5F0E8" opacity="0.28"/>
+                        <rect x="164" y="25" width="18" height="14" rx="2" fill="#F5F0E8" opacity="0.28"/>
+                        <!-- 排障器（cowcatcher） -->
+                        <path d="M-4,74 L-28,96 L0,96 L6,72 Z"/>
+                        <!-- 前緩衝 -->
+                        <rect x="-22" y="78" width="14" height="7" rx="2"/>
+                        <!-- 汽缸（cylinder）+ 活塞桿 -->
+                        <rect x="-18" y="90" width="52" height="18" rx="7"/>
+                        <line x1="4"   y1="99" x2="56" y2="99" stroke="#B89B72" stroke-width="6" opacity="0.42"/>
+                        <!-- 先輪（前方導輪，較小） -->
+                        <circle cx="-12" cy="116" r="18"/>
+                        <circle cx="-12" cy="116" r="7"  fill="#B89B72" opacity="0.3"/>
+                        <!-- 動輪 1（大驅動輪） -->
+                        <circle cx="56"  cy="112" r="28"/>
+                        <circle cx="56"  cy="112" r="12" fill="#B89B72" opacity="0.35"/>
+                        <!-- 動輪 2 -->
+                        <circle cx="128" cy="112" r="28"/>
+                        <circle cx="128" cy="112" r="12" fill="#B89B72" opacity="0.35"/>
+                        <!-- 從輪（後方小輪） -->
+                        <circle cx="188" cy="116" r="18"/>
+                        <circle cx="188" cy="116" r="7"  fill="#B89B72" opacity="0.3"/>
+                        <!-- 主連桿（連結兩動輪） -->
+                        <line x1="56" y1="112" x2="128" y2="112" stroke="#B89B72" stroke-width="11" opacity="0.5"/>
+                        </g><!-- ／翻轉群組 -->
+                    </g><!-- ／火車頭 -->
+
+                    <!-- 木材車廂 1 — 改 translate(CAR1_X, CAR1_Y) 目前(210,0) -->
+                    <g transform="translate(210, 0)" fill="#2D2A26">
+                        <rect x="0" y="68" width="200" height="44" rx="3"/>
+                        <!-- 木材圓木 A -->
+                        <ellipse cx="40" cy="68" rx="24" ry="12" fill="#5C3A1E"/>
+                        <rect x="16" y="28" width="48" height="40" fill="#5C3A1E"/>
+                        <ellipse cx="40" cy="28" rx="24" ry="12" fill="#6B4525"/>
+                        <circle cx="40" cy="28" r="11" fill="#2D1A0A" opacity="0.55"/>
+                        <circle cx="40" cy="28" r="5" fill="#1A0E00" opacity="0.6"/>
+                        <!-- 木材圓木 B -->
+                        <ellipse cx="100" cy="68" rx="24" ry="12" fill="#4A2E18"/>
+                        <rect x="76" y="28" width="48" height="40" fill="#4A2E18"/>
+                        <ellipse cx="100" cy="28" rx="24" ry="12" fill="#5C3A1E"/>
+                        <circle cx="100" cy="28" r="11" fill="#2D1A0A" opacity="0.55"/>
+                        <circle cx="100" cy="28" r="5" fill="#1A0E00" opacity="0.6"/>
+                        <!-- 木材圓木 C -->
+                        <ellipse cx="160" cy="68" rx="24" ry="12" fill="#5C3A1E"/>
+                        <rect x="136" y="28" width="48" height="40" fill="#5C3A1E"/>
+                        <ellipse cx="160" cy="28" rx="24" ry="12" fill="#6B4525"/>
+                        <circle cx="160" cy="28" r="11" fill="#2D1A0A" opacity="0.55"/>
+                        <circle cx="160" cy="28" r="5" fill="#1A0E00" opacity="0.6"/>
+                        <!-- 固定架 + 鋼索 -->
+                        <rect x="8" y="26" width="9" height="46" rx="2"/>
+                        <rect x="183" y="26" width="9" height="46" rx="2"/>
+                        <line x1="8" y1="46" x2="192" y2="46" stroke="#2D2A26" stroke-width="3" stroke-dasharray="6 3"/>
+                        <!-- 車輪 -->
+                        <circle cx="30" cy="116" r="18"/><circle cx="30" cy="116" r="7" fill="#B89B72" opacity="0.35"/>
+                        <circle cx="168" cy="116" r="18"/><circle cx="168" cy="116" r="7" fill="#B89B72" opacity="0.35"/>
+                    </g>
+
+                    <!-- 木材車廂 2 — 改 translate(CAR2_X, CAR2_Y) 目前(0,0) -->
+                    <g transform="translate(0, 0)" fill="#2D2A26">
+                        <rect x="0" y="68" width="190" height="44" rx="3"/>
+                        <ellipse cx="36" cy="68" rx="22" ry="11" fill="#4A2E18"/>
+                        <rect x="14" y="32" width="44" height="36" fill="#4A2E18"/>
+                        <ellipse cx="36" cy="32" rx="22" ry="11" fill="#5C3A1E"/>
+                        <circle cx="36" cy="32" r="10" fill="#2D1A0A" opacity="0.55"/>
+                        <ellipse cx="95" cy="68" rx="22" ry="11" fill="#5C3A1E"/>
+                        <rect x="73" y="32" width="44" height="36" fill="#5C3A1E"/>
+                        <ellipse cx="95" cy="32" rx="22" ry="11" fill="#6B4525"/>
+                        <circle cx="95" cy="32" r="10" fill="#2D1A0A" opacity="0.55"/>
+                        <ellipse cx="154" cy="68" rx="22" ry="11" fill="#4A2E18"/>
+                        <rect x="132" y="32" width="44" height="36" fill="#4A2E18"/>
+                        <ellipse cx="154" cy="32" rx="22" ry="11" fill="#5C3A1E"/>
+                        <circle cx="154" cy="32" r="10" fill="#2D1A0A" opacity="0.55"/>
+                        <rect x="6" y="30" width="8" height="42" rx="2"/>
+                        <rect x="176" y="30" width="8" height="42" rx="2"/>
+                        <line x1="6" y1="48" x2="184" y2="48" stroke="#2D2A26" stroke-width="3" stroke-dasharray="6 3"/>
+                        <circle cx="26" cy="116" r="18"/><circle cx="26" cy="116" r="7" fill="#B89B72" opacity="0.35"/>
+                        <circle cx="162" cy="116" r="18"/><circle cx="162" cy="116" r="7" fill="#B89B72" opacity="0.35"/>
+                    </g>
+                </g><!-- ／火車編組 -->
+
+                <!-- ══════════════════════════════════════
+                     左側：慶典人群剪影
+                     各人物改各自的 translate(X, Y) 移動
+                ══════════════════════════════════════ -->
+
+                <!-- 人物 1 雙手高舉歡呼 — translate(70,530) -->
+                <g transform="translate(70,530)" fill="#2D2A26">
+                    <circle cx="0" cy="-52" r="13"/>
+                    <path d="M-12,-39 Q0,-32 12,-39 L14,0 Q0,6 -14,0 Z"/>
+                    <path d="M-12,-30 L-38,-10 L-33,-3 L-10,-18 Z"/>
+                    <path d="M12,-30 L38,-10 L33,-3 L10,-18 Z"/>
+                    <path d="M-10,0 L-14,46 L-4,46 L0,18 Z"/><path d="M10,0 L14,46 L4,46 L0,18 Z"/>
+                </g>
+                <!-- 人物 3 小孩 — translate(230,570) -->
+                <g transform="translate(550,570)" fill="#2D2A26">
+                    <circle cx="0" cy="-38" r="9"/>
+                    <path d="M-8,-29 Q0,-24 8,-29 L9,2 Q0,5 -9,2 Z"/>
+                    <path d="M-8,-21 L-20,-7 L-16,-2 L-5,-14 Z"/>
+                    <path d="M8,-21 L20,-7 L16,-2 L5,-14 Z"/>
+                    <path d="M-6,2 L-10,35 L-3,35 L0,14 Z"/><path d="M6,2 L10,35 L3,35 L0,14 Z"/>
+                </g>
+                <!-- 人物 4 拿燈籠 — translate(310,520) -->
+                <g transform="translate(70,300)" fill="#2D2A26">
+                    <circle cx="0" cy="-50" r="12"/>
+                    <path d="M-11,-38 Q0,-32 11,-38 L12,2 Q0,6 -12,2 Z"/>
+                    <path d="M11,-28 L32,-36 L34,-28 L14,-21 Z"/>
+                    <ellipse cx="38" cy="-34" rx="9" ry="12" fill="none" stroke="#2D2A26" stroke-width="3"/>
+                    <line x1="38" y1="-46" x2="38" y2="-22" stroke="#2D2A26" stroke-width="2"/>
+                    <path d="M-11,-28 L-26,-13 L-21,-7 L-8,-20 Z"/>
+                    <path d="M-10,2 L-14,44 L-4,44 L0,18 Z"/><path d="M10,2 L14,44 L4,44 L0,18 Z"/>
+                </g>
+                <!-- 人物 5 和服女性 — translate(400,535) -->
+                <g transform="translate(510,560)" fill="#2D2A26">
+                    <circle cx="0" cy="-50" r="11"/>
+                    <path d="M-10,-39 Q0,-33 10,-39 L11,5 Q0,9 -11,5 Z"/>
+                    <path d="M-10,-28 L-23,-12 L-18,-6 L-7,-20 Z"/>
+                    <path d="M10,-28 L23,-12 L18,-6 L7,-20 Z"/>
+                    <path d="M-14,5 L-26,48 L26,48 L14,5 Q0,13 -14,5 Z"/>
+                </g>
+                <!-- 人物 7 老翁拄杖 — translate(30,555) -->
+                <g transform="translate(560,350)" fill="#2D2A26">
+                    <circle cx="0" cy="-42" r="10"/>
+                    <path d="M-9,-32 Q5,-16 9,2 Q-2,8 -12,2 Q-14,-13 -9,-32 Z"/>
+                    <path d="M-9,-23 L-25,-13 L-20,-7 L-7,-15 Z"/>
+                    <line x1="9" y1="2" x2="22" y2="42" stroke="#2D2A26" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M-8,2 L-12,42 L-4,42 L0,18 Z"/>
+                </g>
+
+                <!-- ══════════════════════════════════════
+                     夏祭屋台攤販
+                     改各自的 translate(STALL_X, STALL_Y) 移動
+                ══════════════════════════════════════ -->
+
+                <!-- 屋台 1（たこ焼き風）— 改 translate(STALL1_X, STALL1_Y) 移動 目前(460,490) -->
+                <g transform="translate(400, 300)" fill="#2D2A26">
+                    <!-- 帆布屋頂（梯形） -->
+                    <path d="M-10,-58 L114,-58 L126,-38 L-22,-38 Z"/>
+                    <!-- 頂棚飾穗（波浪邊） -->
+                    <path d="M-22,-38 Q-11,-28 0,-38 Q11,-28 22,-38 Q33,-28 44,-38 Q55,-28 66,-38 Q77,-28 88,-38 Q99,-28 110,-38 Q121,-28 126,-38" fill="none" stroke="#2D2A26" stroke-width="4"/>
+                    <!-- 支柱 left -->
+                    <rect x="-6"  y="-38" width="7" height="99" rx="2"/>
+                    <!-- 支柱 right -->
+                    <rect x="103" y="-38" width="7" height="99" rx="2"/>
+                    <!-- 攤桌桌面 -->
+                    <rect x="-18" y="36" width="148" height="11" rx="3"/>
+                    <!-- 桌腳 -->
+                    <rect x="-10" y="47" width="6" height="24" rx="2"/>
+                    <rect x="108" y="47" width="6" height="24" rx="2"/>
+                    <!-- 商品（圓形＝食物剪影） -->
+                    <circle cx="16" cy="31" r="7"/>
+                    <circle cx="40" cy="31" r="7"/>
+                    <circle cx="64" cy="31" r="7"/>
+                    <circle cx="88" cy="31" r="7"/>
+                    <!-- 懸掛燈籠 -->
+                    <ellipse cx="52" cy="-48" rx="9" ry="12"/>
+                    <line x1="52" y1="-60" x2="52" y2="-36" stroke="#2D2A26" stroke-width="2"/>
+                    <!-- 攤販人物（站在攤後） -->
+                    <circle cx="52" cy="-15" r="12"/>
+                    <path d="M40,-3 Q52,4 64,-3 L66,22 Q52,27 38,22 Z"/>
+                </g>
+
+                <!-- 屋台 2（金魚撈風）— 改 translate(STALL2_X, STALL2_Y) 移動 目前(590,505) -->
+                <g transform="translate(590, 540)" fill="#2D2A26">
+                    <!-- 帆布屋頂 -->
+                    <path d="M-8,-50 L100,-50 L110,-33 L-18,-33 Z"/>
+                    <!-- 頂棚飾穗 -->
+                    <path d="M-18,-33 Q-8,-24 2,-33 Q12,-24 22,-33 Q32,-24 42,-33 Q52,-24 62,-33 Q72,-24 82,-33 Q92,-24 102,-33 Q110,-24 110,-33" fill="none" stroke="#2D2A26" stroke-width="3.5"/>
+                    <!-- 支柱 left -->
+                    <rect x="-4"  y="-33" width="6" height="86" rx="2"/>
+                    <!-- 支柱 right -->
+                    <rect x="90"  y="-33" width="6" height="86" rx="2"/>
+                    <!-- 攤桌桌面 -->
+                    <rect x="-16" y="30" width="128" height="10" rx="3"/>
+                    <!-- 桌腳 -->
+                    <rect x="-8"  y="40" width="6" height="20" rx="2"/>
+                    <rect x="94"  y="40" width="6" height="20" rx="2"/>
+                    <!-- 商品（方形＝盒裝商品） -->
+                    <rect x="5"  y="22" width="18" height="8" rx="2"/>
+                    <rect x="30" y="22" width="18" height="8" rx="2"/>
+                    <rect x="55" y="22" width="18" height="8" rx="2"/>
+                    <rect x="80" y="22" width="18" height="8" rx="2"/>
+                    <!-- 懸掛燈籠 -->
+                    <ellipse cx="46" cy="-42" rx="8" ry="10"/>
+                    <line x1="46" y1="-52" x2="46" y2="-32" stroke="#2D2A26" stroke-width="2"/>
+                    <!-- 攤販人物 -->
+                    <circle cx="48" cy="-8" r="11"/>
+                    <path d="M37,3 Q48,9 59,3 L61,26 Q48,31 35,26 Z"/>
+                </g>
+            </svg>
         </div>
         <button onclick="navigateTo('view-map')" class="floating-nav flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase bg-white/90 px-6 py-3 rounded-full backdrop-blur-md shadow-lg transition-all border border-white">
             <iconify-icon icon="ph:map-trifold"></iconify-icon> 返回地圖
@@ -2462,56 +2287,55 @@
 
     <!-- 6. 蘇澳神社 -->
     <div id="view-suao" class="view bg-vintage-cream">
-        <!-- 蘇澳背景裝飾：船錨 + 帆船 + 魚群 + 海浪（穩定定位） -->
-        <div aria-hidden="true" class="shrine-deco-layer" style="opacity:0.42;">
-            <!-- 大船錨（左上） -->
-            <div class="shrine-deco" style="top:130px; left:max(3vw, 20px); width:clamp(85px, 8vw, 120px); height:auto; color:#1A3C5C;">
-                <svg viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
+        <!-- 蘇澳背景裝飾：海浪＋船錨＋魚群 -->
+        <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;opacity:0.5;">
+            <svg width="100%" height="100%" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <!-- 海浪 bottom -->
+                <g fill="none" stroke="#1A3C5C" stroke-width="3.5" stroke-linecap="round">
+                    <path d="M0,760 Q80,730 160,760 Q240,790 320,760 Q400,730 480,760 Q560,790 640,760 Q720,730 800,760 Q880,790 960,760 Q1040,730 1120,760 Q1200,790 1280,760 Q1360,730 1440,760"/>
+                    <path d="M0,800 Q80,772 160,800 Q240,828 320,800 Q400,772 480,800 Q560,828 640,800 Q720,772 800,800 Q880,828 960,800 Q1040,772 1120,800 Q1200,828 1280,800 Q1360,772 1440,800" opacity="0.6"/>
+                    <path d="M0,840 Q80,815 160,840 Q240,865 320,840 Q400,815 480,840 Q560,865 640,840 Q720,815 800,840 Q880,865 960,840 Q1040,815 1120,840 Q1200,865 1280,840 Q1360,815 1440,840" opacity="0.4"/>
+                </g>
+                <!-- 錨 left -->
+                <g transform="translate(60,200)" fill="none" stroke="#1A3C5C" stroke-width="4" stroke-linecap="round">
                     <circle cx="50" cy="18" r="15"/>
                     <line x1="50" y1="33" x2="50" y2="140"/>
                     <line x1="20" y1="65" x2="80" y2="65"/>
-                    <path d="M50,140 Q20,120 10,100"/>
-                    <path d="M50,140 Q80,120 90,100"/>
-                    <line x1="10" y1="100" x2="30" y2="100"/>
-                    <line x1="70" y1="100" x2="90" y2="100"/>
-                </svg>
-            </div>
-            <!-- 帆船剪影（右上） -->
-            <div class="shrine-deco" style="top:100px; right:max(3vw, 20px); width:clamp(95px, 9vw, 140px); height:auto; color:#1A3C5C;">
-                <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="60" y1="180" x2="60" y2="20"/>
-                    <path d="M60,20 L60,120 L20,120 Z"/>
-                    <path d="M60,30 L60,110 L100,110 Z"/>
-                    <path d="M20,120 Q60,160 100,120 L100,170 L20,170 Z" fill="currentColor" stroke="none" opacity="0.18"/>
-                    <path d="M20,120 Q60,160 100,120 L100,170 L20,170 Z"/>
-                </svg>
-            </div>
-            <!-- 小船錨（右側中下） -->
-            <div class="shrine-deco hide-tablet" style="top:540px; right:max(2vw, 16px); width:clamp(55px, 5vw, 80px); height:auto; color:#1A3C5C; opacity:0.7;">
-                <svg viewBox="0 0 60 110" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                    <path d="M50,140 Q20,120 10,100"/><path d="M50,140 Q80,120 90,100"/>
+                    <line x1="10" y1="100" x2="30" y2="100"/><line x1="70" y1="100" x2="90" y2="100"/>
+                </g>
+                <!-- 錨 right (small) -->
+                <g transform="translate(1340,600)" fill="none" stroke="#1A3C5C" stroke-width="3" stroke-linecap="round" opacity="0.7">
                     <circle cx="30" cy="12" r="10"/>
                     <line x1="30" y1="22" x2="30" y2="90"/>
                     <line x1="10" y1="45" x2="50" y2="45"/>
-                    <path d="M30,90 Q12,76 6,62"/>
-                    <path d="M30,90 Q48,76 54,62"/>
-                </svg>
-            </div>
-            <!-- 魚群（左下） -->
-            <div class="shrine-deco hide-tablet" style="top:680px; left:max(4vw, 24px); width:clamp(260px, 26vw, 380px); height:auto; color:#1A3C5C;">
-                <svg viewBox="0 0 380 70" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                    <g opacity="0.75"><path d="M10,30 Q25,22 35,30 Q25,38 10,30 Z"/><path d="M35,30 L55,26 L55,34 Z"/></g>
-                    <g opacity="0.65" transform="translate(110,-12)"><path d="M0,30 Q15,22 25,30 Q15,38 0,30 Z"/><path d="M25,30 L45,26 L45,34 Z"/></g>
-                    <g opacity="0.72" transform="translate(200,5)"><path d="M0,30 Q15,22 25,30 Q15,38 0,30 Z"/><path d="M25,30 L45,26 L45,34 Z"/></g>
-                    <g opacity="0.60" transform="translate(300,-8)"><path d="M0,30 Q15,22 25,30 Q15,38 0,30 Z"/><path d="M25,30 L45,26 L45,34 Z"/></g>
-                </svg>
-            </div>
-            <!-- 海浪（橫向，置於頁面 800-900 px 位置，不會延伸到正文） -->
-            <div class="shrine-deco" style="top:830px; left:0; right:0; width:100%; height:auto; color:#1A3C5C; opacity:0.55;">
-                <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="width:100%; height:90px;">
-                    <path d="M0,20 Q80,-10 160,20 Q240,50 320,20 Q400,-10 480,20 Q560,50 640,20 Q720,-10 800,20 Q880,50 960,20 Q1040,-10 1120,20 Q1200,50 1280,20 Q1360,-10 1440,20"/>
-                    <path d="M0,50 Q80,22 160,50 Q240,78 320,50 Q400,22 480,50 Q560,78 640,50 Q720,22 800,50 Q880,78 960,50 Q1040,22 1120,50 Q1200,78 1280,50 Q1360,22 1440,50" opacity="0.55"/>
-                </svg>
-            </div>
+                    <path d="M30,90 Q12,76 6,62"/><path d="M30,90 Q48,76 54,62"/>
+                </g>
+                <!-- 魚群（改各自的 translate(FISH_X, FISH_Y) 移動位置） -->
+                <!-- 魚1 --> <g transform="translate(180, 730)" fill="#1A3C5C" opacity="0.7"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
+                </g>
+                <!-- 魚2 --> <g transform="translate(370, 703)" fill="#1A3C5C" opacity="0.65"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
+                </g>
+                <!-- 魚3 --> <g transform="translate(550, 728)" fill="#1A3C5C" opacity="0.7"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
+                </g>
+                <!-- 魚4 --> <g transform="translate(740, 712)" fill="#1A3C5C" opacity="0.6"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
+                </g>
+                <!-- 帆船剪影 right -->
+                <g transform="translate(1300,100)" fill="none" stroke="#1A3C5C" stroke-width="3">
+                    <line x1="60" y1="180" x2="60" y2="20"/>
+                    <path d="M60,20 L60,120 L20,120 Z"/>
+                    <path d="M60,30 L60,110 L100,110 Z"/>
+                    <path d="M20,120 Q60,160 100,120 L100,170 L20,170 Z" fill="#1A3C5C" opacity="0.15"/>
+                </g>
+            </svg>
         </div>
         <button onclick="navigateTo('view-map')" class="floating-nav flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase bg-white/90 px-6 py-3 rounded-full backdrop-blur-md shadow-lg transition-all border border-white">
             <iconify-icon icon="ph:map-trifold"></iconify-icon> 返回地圖
@@ -2962,593 +2786,50 @@
             });
         });
 
-        // ============================================================
-        //  頁面切換路由 + 所有過場動畫
-        // ============================================================
-        const SHRINE_VIEWS = ['view-yilan', 'view-luodong', 'view-suao'];
-        const SHRINE_NAMES = { 'view-yilan': '宜蘭神社', 'view-luodong': '羅東神社', 'view-suao': '蘇澳神社' };
-
-        // 共用：切換 view DOM 並觸發後續邏輯
-        function _switchView(oldView, targetView, targetViewId, opts) {
-            oldView.classList.remove('active');
-            oldView.style.opacity = '';
-            targetView.classList.add('active');
-            currentView = targetViewId;
-            triggerViewAnimations(targetViewId);
-            initLeafletMaps();
-            invalidateMapSizes();
-            if (targetViewId === 'view-map') document.getElementById('passport-widget').classList.add('visible');
-            if (!opts.noStamp) {
-                if (targetViewId === 'view-yilan')    { showStampOverlay('宜','宜蘭神社'); stampPassport('yilan'); }
-                else if (targetViewId === 'view-luodong') { showStampOverlay('羅','羅東神社'); stampPassport('luodong'); }
-                else if (targetViewId === 'view-suao')    { showStampOverlay('蘇','蘇澳神社'); stampPassport('suao'); }
-            }
-            if (targetViewId === 'view-conclusion') setTimeout(initQuiz, 400);
-        }
-
+        // 頁面切換與地圖尺寸自適應
         function navigateTo(targetViewId, opts) {
             opts = opts || {};
             if (currentView === targetViewId) return;
+            const flipPage = document.getElementById('flip-page');
             const targetView = document.getElementById(targetViewId);
-            const oldView    = document.getElementById(currentView);
+            const oldView = document.getElementById(currentView);
+            const logo = flipPage.querySelector('.curtain-logo');
             targetView.scrollTop = 0;
-
             if (typeof gsap === 'undefined') {
-                _switchView(oldView, targetView, targetViewId, opts); return;
+                oldView.classList.remove('active'); targetView.classList.add('active'); currentView = targetViewId; return;
             }
-
-            const from = currentView, to = targetViewId;
-            const enteringShrine = SHRINE_VIEWS.includes(to);
-            const leavingShrine  = SHRINE_VIEWS.includes(from);
-
-            const doSwitch = () => _switchView(oldView, targetView, targetViewId, opts);
-
-            // 優先級：鳥居 > 客製 > 預設淡入淡出
-            if (enteringShrine || leavingShrine) {
-                playToriiTransition(enteringShrine ? 'enter' : 'exit',
-                                    enteringShrine ? SHRINE_NAMES[to] : null, doSwitch);
-
-            } else if (from === 'view-cover' && to === 'view-map') {
-                playWalkpathTransition(doSwitch);
-
-            } else if (from === 'view-cover' && to === 'view-inquiry') {
-                playTearTransition(doSwitch);
-
-            } else if (from === 'view-map' && to === 'view-compare') {
-                playUnfoldTransition(doSwitch);
-
-            } else if (from === 'view-map' && to === 'view-guide') {
-                playScrollTransition(doSwitch);
-
-            } else if (from === 'view-map' && to === 'view-conclusion') {
-                playTimelineTransition(doSwitch);
-
-            } else if (to === 'view-cover') {
-                playStarpullTransition(doSwitch);
-
-            } else {
-                // 預設：簡潔淡入淡出
-                gsap.timeline()
-                    .to(oldView, { opacity: 0, duration: 0.25, ease: 'power2.in',
-                        onComplete: () => { oldView.classList.remove('active'); oldView.style.opacity = ''; } })
-                    .call(() => {
-                        targetView.classList.add('active');
-                        gsap.fromTo(targetView, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+            gsap.timeline()
+                .set(flipPage, { display: 'flex', transformPerspective: 1600, rotateY: 80, transformOrigin: 'left center', opacity: 1 })
+                .to(flipPage, { rotateY: 0, duration: 0.5, ease: 'power3.out' })
+                .to(logo, { opacity: 1, duration: 0.2 })
+                .call(() => { oldView.classList.remove('active'); targetView.classList.add('active'); })
+                .to(logo, { opacity: 0, duration: 0.2, delay: 0.1 })
+                .set(flipPage, { transformOrigin: 'right center' })
+                .to(flipPage, {
+                    rotateY: -80, duration: 0.5, ease: 'power3.in',
+                    onComplete: () => {
+                        gsap.set(flipPage, { display: 'none', rotateY: 80, transformOrigin: 'left center' });
                         currentView = targetViewId;
                         triggerViewAnimations(targetViewId);
-                        initLeafletMaps(); invalidateMapSizes();
-                        if (targetViewId === 'view-map') document.getElementById('passport-widget').classList.add('visible');
+                        
+                        // 延遲初始化與重設 Leaflet，確保地圖在 DOM 完全顯示後正確渲染
+                        initLeafletMaps();
+                        invalidateMapSizes();
+
+                        // Feature 2: 護照蓋章 + 顯示護照（進入地圖時）
+                        if (targetViewId === 'view-map') {
+                            document.getElementById('passport-widget').classList.add('visible');
+                        }
+                        if (!opts.noStamp) {
+                            if (targetViewId === 'view-yilan') { showStampOverlay('宜', '宜蘭神社'); stampPassport('yilan'); }
+                            else if (targetViewId === 'view-luodong') { showStampOverlay('羅', '羅東神社'); stampPassport('luodong'); }
+                            else if (targetViewId === 'view-suao') { showStampOverlay('蘇', '蘇澳神社'); stampPassport('suao'); }
+                        }
+
+                        // Feature 5: 地景解謎初始化（進入結論頁時）
                         if (targetViewId === 'view-conclusion') setTimeout(initQuiz, 400);
-                    });
-            }
-        }
-
-        // ─────────────────────────────────────────────
-        //  ① 鳥居穿越（地圖 ↔ 神社）
-        // ─────────────────────────────────────────────
-        function playToriiTransition(mode, shrineLabel, onSwitch) {
-            const overlay  = document.getElementById('torii-transition');
-            const bg       = document.getElementById('torii-bg');
-            const pathSvg  = document.getElementById('torii-path');
-            const svgWrap  = document.getElementById('torii-svg-wrap');
-            const label    = document.getElementById('torii-label');
-            const flash    = document.getElementById('torii-flash');
-            const toriiSvg = document.getElementById('torii-main-svg');
-            gsap.set(overlay,  { display: 'flex' });
-            gsap.set([bg, pathSvg, svgWrap, flash], { opacity: 0 });
-            gsap.set(label,    { opacity: 0, y: 20 });
-            gsap.set(toriiSvg, { scale: mode === 'enter' ? 0.18 : 2.8, transformOrigin: '50% 42%' });
-            if (shrineLabel) label.textContent = '⛩  ' + shrineLabel;
-            const tl = gsap.timeline();
-            if (mode === 'enter') {
-                tl.to(bg,      { opacity: 1, duration: 0.38, ease: 'power2.in' })
-                  .to(pathSvg, { opacity: 1, duration: 0.32 }, '<0.05')
-                  .to(svgWrap, { opacity: 1, duration: 0.3  }, '<0.05')
-                  .to(label,   { opacity: 0.88, y: 0, duration: 0.5, ease: 'back.out(1.4)' }, '<0.1')
-                  .to(toriiSvg,{ scale: 5.5, duration: 1.05, ease: 'power3.in', transformOrigin:'50% 42%' }, '-=0.15')
-                  .to(pathSvg, { scale: 1.6, transformOrigin:'50% 100%', opacity: 0.85, duration: 1.05, ease: 'power3.in' }, '<')
-                  .call(onSwitch)
-                  .to(flash, { opacity: 1, duration: 0.12, ease: 'power4.in' })
-                  .to(flash, { opacity: 0, duration: 0.35, ease: 'power2.out' })
-                  .to([bg, svgWrap, pathSvg, label], { opacity: 0, duration: 0.3 }, '-=0.1')
-                  .set(overlay, { display: 'none' })
-                  .set([toriiSvg, pathSvg], { clearProps: 'transform' });
-            } else {
-                tl.to(bg,      { opacity: 1, duration: 0.35 })
-                  .to(pathSvg, { opacity: 0.85, scale: 1.55, transformOrigin:'50% 100%', duration: 0.01 }, '<')
-                  .to(svgWrap, { opacity: 1, duration: 0.3 }, '<')
-                  .to(flash,   { opacity: 0.75, duration: 0.12, ease: 'power3.in' })
-                  .call(onSwitch)
-                  .to(flash,   { opacity: 0, duration: 0.25 })
-                  .to(toriiSvg,{ scale: 0.2, duration: 0.95, ease: 'power3.out', transformOrigin:'50% 42%' }, '-=0.05')
-                  .to(pathSvg, { scale: 1, opacity: 0.3, transformOrigin:'50% 100%', duration: 0.95, ease: 'power3.out' }, '<')
-                  .to([bg, svgWrap, pathSvg], { opacity: 0, duration: 0.35 }, '-=0.15')
-                  .set(overlay, { display: 'none' })
-                  .set([toriiSvg, pathSvg], { clearProps: 'transform' });
-            }
-        }
-
-        // ─────────────────────────────────────────────
-        //  ② 石板踏步（封面 → 地圖）
-        // ─────────────────────────────────────────────
-        function playWalkpathTransition(onSwitch) {
-            const overlay = document.getElementById('walkpath-transition');
-            const canvas  = document.getElementById('walkpath-canvas');
-            const label   = document.getElementById('walkpath-label');
-            const ctx     = canvas.getContext('2d');
-
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            canvas.width  = window.innerWidth  * dpr;
-            canvas.height = window.innerHeight * dpr;
-            canvas.style.width  = window.innerWidth + 'px';
-            canvas.style.height = window.innerHeight + 'px';
-            ctx.scale(dpr, dpr);
-            const W = window.innerWidth, H = window.innerHeight;
-
-            // 預生成竹林位置（左右各6根，京都嵐山感）
-            const bambooL = [22, 50, 78, 110, 145, 178].map((x,i) => ({
-                x, topY: 0.32 + (i%2)*0.04, w: 4 + (i%3), tint: ['#0e1808','#101c08','#0c1606'][i%3]
-            }));
-            const bambooR = [22, 50, 78, 110, 145, 178].map((x,i) => ({
-                x: W - x, topY: 0.30 + (i%2)*0.05, w: 4 + (i%3), tint: ['#0e1808','#101c08','#0c1606'][i%3]
-            }));
-
-            function drawFrame(p) {
-                ctx.clearRect(0, 0, W, H);
-
-                // 京都夜空背景
-                const sky = ctx.createLinearGradient(0, 0, 0, H);
-                sky.addColorStop(0,    '#05060e');
-                sky.addColorStop(0.45, '#080a18');
-                sky.addColorStop(1,    '#0a0d1c');
-                ctx.fillStyle = sky;
-                ctx.fillRect(0, 0, W, H);
-
-                // 月亮（偏左低位，暈散）
-                const moonX = W * 0.22, moonY = H * 0.18;
-                const moonR = Math.min(W, H) * 0.045;
-                ctx.save();
-                const haloG = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, moonR * 4);
-                haloG.addColorStop(0,    'rgba(232,223,192,0.18)');
-                haloG.addColorStop(0.4,  'rgba(192,184,152,0.06)');
-                haloG.addColorStop(1,    'rgba(232,223,192,0)');
-                ctx.fillStyle = haloG;
-                ctx.beginPath(); ctx.arc(moonX, moonY, moonR * 4, 0, Math.PI*2); ctx.fill();
-                const moonG = ctx.createRadialGradient(moonX - 6, moonY - 6, 0, moonX, moonY, moonR);
-                moonG.addColorStop(0,   '#F0E8D0');
-                moonG.addColorStop(0.7, '#D8CCB0');
-                moonG.addColorStop(1,   '#A89880');
-                ctx.fillStyle = moonG; ctx.globalAlpha = 0.86;
-                ctx.beginPath(); ctx.arc(moonX, moonY, moonR, 0, Math.PI*2); ctx.fill();
-                ctx.restore();
-
-                // 遠山三層
-                ctx.fillStyle = 'rgba(12,16,32,0.72)';
-                ctx.beginPath();
-                ctx.moveTo(0, H*0.58);
-                ctx.quadraticCurveTo(W*0.2, H*0.48, W*0.4, H*0.55);
-                ctx.quadraticCurveTo(W*0.6, H*0.42, W*0.8, H*0.5);
-                ctx.quadraticCurveTo(W*0.95, H*0.45, W, H*0.5);
-                ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
-
-                ctx.fillStyle = 'rgba(9,13,26,0.88)';
-                ctx.beginPath();
-                ctx.moveTo(0, H*0.7);
-                ctx.quadraticCurveTo(W*0.25, H*0.62, W*0.5, H*0.66);
-                ctx.quadraticCurveTo(W*0.75, H*0.58, W, H*0.62);
-                ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
-
-                // 竹林（左右兩側，輕微搖曳：用 progress 微擺）
-                const swayL = Math.sin(p * Math.PI * 1.5) * 1.2;
-                const swayR = Math.cos(p * Math.PI * 1.3) * 1.0;
-                bambooL.forEach(b => {
-                    ctx.fillStyle = b.tint;
-                    ctx.globalAlpha = 0.88;
-                    ctx.fillRect(b.x + swayL, b.topY * H, b.w, H - b.topY * H);
-                    // 竹節
-                    ctx.fillStyle = 'rgba(26,44,16,0.6)';
-                    for (let yy = b.topY * H + 80; yy < H; yy += 110) {
-                        ctx.fillRect(b.x + swayL - 1, yy, b.w + 2, 1.5);
                     }
                 });
-                bambooR.forEach(b => {
-                    ctx.fillStyle = b.tint;
-                    ctx.globalAlpha = 0.88;
-                    ctx.fillRect(b.x + swayR, b.topY * H, b.w, H - b.topY * H);
-                    ctx.fillStyle = 'rgba(26,44,16,0.6)';
-                    for (let yy = b.topY * H + 80; yy < H; yy += 110) {
-                        ctx.fillRect(b.x + swayR - 1, yy, b.w + 2, 1.5);
-                    }
-                });
-                ctx.globalAlpha = 1;
-
-                // 消失點（隨 p 上移，鏡頭前進感）
-                const vpX = W * 0.5;
-                const vpY = H * 0.30 - p * H * 0.05;
-
-                // 石板參道
-                const pathW0 = W * 0.08;
-                const pathW1 = W * 0.30;
-                const tileCount = 16;
-                for (let i = 0; i < tileCount; i++) {
-                    const t0 = i / tileCount;
-                    const t1 = (i + 1) / tileCount;
-                    const y0 = vpY + (H - vpY) * t0;
-                    const y1 = vpY + (H - vpY) * t1;
-                    const hw0 = pathW0 + (pathW1 - pathW0) * t0;
-                    const hw1 = pathW0 + (pathW1 - pathW0) * t1;
-                    const stepShift = Math.sin((i + p * tileCount * 1.5) * Math.PI) * 1.6;
-
-                    const dark = 18 + t1 * 36 + (i % 2 === 0 ? 4 : 0);
-                    ctx.fillStyle = `rgb(${dark},${Math.round(dark*0.78)},${Math.round(dark*0.55)})`;
-                    ctx.globalAlpha = 0.92;
-                    ctx.beginPath();
-                    ctx.moveTo(vpX - hw0, y0 + stepShift);
-                    ctx.lineTo(vpX + hw0, y0 + stepShift);
-                    ctx.lineTo(vpX + hw1, y1 + stepShift);
-                    ctx.lineTo(vpX - hw1, y1 + stepShift);
-                    ctx.closePath(); ctx.fill();
-                    // 石板縫
-                    ctx.strokeStyle = 'rgba(0,0,0,0.32)';
-                    ctx.lineWidth = 0.8;
-                    ctx.beginPath();
-                    ctx.moveTo(vpX - hw1, y1 + stepShift);
-                    ctx.lineTo(vpX + hw1, y1 + stepShift);
-                    ctx.stroke();
-                }
-                ctx.globalAlpha = 1;
-
-                // 石燈籠對（5對，琥珀克制光）
-                const lanternPairs = [0.85, 0.66, 0.50, 0.36, 0.24];
-                lanternPairs.forEach((t) => {
-                    const adjT = Math.min(1, t + p * 0.45);
-                    if (adjT > 1.05) return;
-                    const y = vpY + (H - vpY) * adjT;
-                    const hw = pathW0 + (pathW1 - pathW0) * adjT;
-                    const scale = 0.22 + adjT * 0.85;
-                    const alpha = 0.28 + adjT * 0.55;
-
-                    [-1, 1].forEach(side => {
-                        const x = vpX + side * (hw + 16 * scale);
-                        ctx.save(); ctx.globalAlpha = alpha;
-                        // 柱
-                        ctx.fillStyle = '#3a1808';
-                        ctx.fillRect(x - 2.5*scale, y - 50*scale, 5*scale, 50*scale);
-                        // 燈箱
-                        ctx.fillStyle = '#100806';
-                        ctx.fillRect(x - 9*scale, y - 62*scale, 18*scale, 14*scale);
-                        // 屋頂
-                        ctx.fillStyle = '#0e1a0a';
-                        ctx.beginPath();
-                        ctx.moveTo(x - 12*scale, y - 62*scale);
-                        ctx.lineTo(x, y - 73*scale);
-                        ctx.lineTo(x + 12*scale, y - 62*scale);
-                        ctx.closePath(); ctx.fill();
-                        // 琥珀燈光暈
-                        const glow = ctx.createRadialGradient(x, y - 55*scale, 0, x, y - 55*scale, 18*scale);
-                        glow.addColorStop(0, 'rgba(192,112,24,0.65)');
-                        glow.addColorStop(1, 'rgba(144,56,8,0)');
-                        ctx.fillStyle = glow;
-                        ctx.beginPath(); ctx.arc(x, y - 55*scale, 18*scale, 0, Math.PI*2); ctx.fill();
-                        ctx.restore();
-                    });
-                });
-
-                // 鳥居（遠景剪影，隨進度從小變稍大）
-                const trS = 0.5 + p * 0.4;
-                const trX = vpX, trY = vpY + 8;
-                ctx.save(); ctx.globalAlpha = 0.55;
-                ctx.fillStyle = '#3d0808';
-                ctx.fillRect(trX - 50*trS, trY,       7*trS, 100*trS);
-                ctx.fillRect(trX + 43*trS, trY,       7*trS, 100*trS);
-                ctx.beginPath();
-                ctx.moveTo(trX - 64*trS, trY);
-                ctx.quadraticCurveTo(trX, trY - 20*trS, trX + 64*trS, trY);
-                ctx.lineTo(trX + 60*trS, trY + 6*trS);
-                ctx.quadraticCurveTo(trX, trY - 14*trS, trX - 60*trS, trY + 6*trS);
-                ctx.closePath(); ctx.fill();
-                ctx.fillRect(trX - 46*trS, trY + 18*trS, 92*trS, 4*trS);
-                ctx.restore();
-
-                // 消失點光暈
-                const vpGlow = ctx.createRadialGradient(vpX, vpY, 0, vpX, vpY, H*0.16);
-                vpGlow.addColorStop(0, 'rgba(200,144,64,0.18)');
-                vpGlow.addColorStop(1, 'rgba(200,144,64,0)');
-                ctx.fillStyle = vpGlow;
-                ctx.beginPath(); ctx.ellipse(vpX, vpY, H*0.14, H*0.08, 0, 0, Math.PI*2); ctx.fill();
-
-                // 月光帶（暗淡）
-                const beam = ctx.createLinearGradient(vpX, vpY, vpX, H);
-                beam.addColorStop(0, 'rgba(232,223,192,0.06)');
-                beam.addColorStop(1, 'rgba(232,223,192,0)');
-                ctx.fillStyle = beam;
-                ctx.beginPath();
-                ctx.moveTo(vpX - 14, vpY);
-                ctx.lineTo(vpX + 14, vpY);
-                ctx.lineTo(vpX + pathW1*0.8, H);
-                ctx.lineTo(vpX - pathW1*0.8, H);
-                ctx.closePath(); ctx.fill();
-
-                // 暗角
-                const vig = ctx.createRadialGradient(W/2, H/2, H*0.32, W/2, H/2, H*0.85);
-                vig.addColorStop(0, 'rgba(0,0,0,0)');
-                vig.addColorStop(1, 'rgba(4,6,8,0.78)');
-                ctx.fillStyle = vig; ctx.fillRect(0, 0, W, H);
-            }
-
-            gsap.set(overlay, { display: 'block', opacity: 0 });
-            gsap.set(label,   { opacity: 0, y: 15 });
-
-            const tl = gsap.timeline();
-            tl.to(overlay, { opacity: 1, duration: 0.3, ease: 'power2.in',
-                onUpdate: function() { drawFrame(0); } })
-              .to(label, { opacity: 0.85, y: 0, duration: 0.4, ease: 'power2.out' }, '<0.1')
-              .to({ val: 0 }, {
-                    val: 1, duration: 1.2, ease: 'power2.inOut',
-                    onUpdate: function() { drawFrame(this.targets()[0].val); }
-              })
-              .call(onSwitch)
-              .to([overlay, label], { opacity: 0, duration: 0.35, ease: 'power2.in' })
-              .set(overlay, { display: 'none' });
-        }
-
-        // ─────────────────────────────────────────────
-        //  ③ 摺頁攤開（地圖 → 比較）
-        // ─────────────────────────────────────────────
-        function playUnfoldTransition(onSwitch) {
-            const overlay = document.getElementById('unfold-transition');
-            const left    = document.getElementById('unfold-left');
-            const right   = document.getElementById('unfold-right');
-            const title   = document.getElementById('unfold-title');
-
-            gsap.set(overlay, { display: 'block', opacity: 1 });
-            gsap.set(left,  { rotateY: 0, opacity: 1, transformPerspective: 900 });
-            gsap.set(right, { rotateY: 0, opacity: 1, transformPerspective: 900 });
-            gsap.set(title, { opacity: 0, scale: 0.88, y: 8 });
-
-            const tl = gsap.timeline();
-            tl
-              // 先合上（折起）
-              .to(left,  { rotateY: -55, duration: 0.38, ease: 'power2.in', transformPerspective: 900 })
-              .to(right, { rotateY:  55, duration: 0.38, ease: 'power2.in', transformPerspective: 900 }, '<')
-              .call(onSwitch)
-              .to(title, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'back.out(1.6)' }, '<0.05')
-              // 攤開
-              .to(left,  { rotateY: 0, duration: 0.55, ease: 'power2.out', transformPerspective: 900 }, '+=0.12')
-              .to(right, { rotateY: 0, duration: 0.55, ease: 'power2.out', transformPerspective: 900 }, '<')
-              .to(title, { opacity: 0, duration: 0.2 }, '-=0.15')
-              .to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in' })
-              .set(overlay, { display: 'none' })
-              .set([left, right], { clearProps: 'all' });
-        }
-
-        // ─────────────────────────────────────────────
-        //  ④ 捲軸展開（地圖 → 踏查指南）
-        // ─────────────────────────────────────────────
-        function playScrollTransition(onSwitch) {
-            const overlay = document.getElementById('scroll-transition');
-            const rollTop = document.getElementById('scroll-roll-top');
-            const rollBot = document.getElementById('scroll-roll-bottom');
-            const inner   = document.getElementById('scroll-inner');
-            const kanji   = document.getElementById('scroll-kanji');
-
-            gsap.set(overlay, { display: 'flex', opacity: 1 });
-            gsap.set(rollTop, { scaleY: 1, opacity: 1 });
-            gsap.set(rollBot, { scaleY: 1, opacity: 1 });
-            gsap.set(inner,   { clipPath: 'inset(50% 0 50% 0)' });
-            gsap.set(kanji,   { opacity: 0, scale: 0.85 });
-
-            const tl = gsap.timeline();
-            tl
-              // 捲軸滾開
-              .to(rollTop, { scaleY: 0, duration: 0.55, ease: 'power2.inOut' })
-              .to(rollBot, { scaleY: 0, duration: 0.55, ease: 'power2.inOut' }, '<')
-              .to(inner,   { clipPath: 'inset(0% 0 0% 0)', duration: 0.55, ease: 'power2.inOut' }, '<')
-              // 文字出現
-              .to(kanji, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, '-=0.1')
-              .call(onSwitch)
-              .to(kanji, { opacity: 0, duration: 0.2 }, '+=0.12')
-              // 捲軸捲回
-              .to(rollTop, { scaleY: 1, duration: 0.4, ease: 'power2.in' })
-              .to(rollBot, { scaleY: 1, duration: 0.4, ease: 'power2.in' }, '<')
-              .to(inner,   { clipPath: 'inset(50% 0 50% 0)', duration: 0.4, ease: 'power2.in' }, '<')
-              .to(overlay, { opacity: 0, duration: 0.3 })
-              .set(overlay, { display: 'none' })
-              .set([rollTop, rollBot, inner, kanji], { clearProps: 'all' });
-        }
-
-        // ─────────────────────────────────────────────
-        //  ⑤ 時光軸年份掠過（地圖 → 探究結論）
-        // ─────────────────────────────────────────────
-        function playTimelineTransition(onSwitch) {
-            const overlay  = document.getElementById('timeline-transition');
-            const bg       = document.getElementById('timeline-bg');
-            const years    = overlay.querySelectorAll('.tl-year');
-            const crack    = document.getElementById('tl-crack');
-            const nowLabel = document.getElementById('timeline-now');
-            const flash    = document.getElementById('timeline-flash');
-
-            gsap.set(overlay,  { display: 'block', opacity: 0 });
-            gsap.set(bg,       { background: 'linear-gradient(180deg,#06060e 0%,#0e0808 55%,#180e06 100%)' });
-            gsap.set(years,    { opacity: 0, y: 60 });
-            gsap.set(crack,    { opacity: 0, scaleX: 0, transformOrigin: '50% 50%' });
-            gsap.set(nowLabel, { opacity: 0 });
-            gsap.set(flash,    { opacity: 0 });
-
-            const tl = gsap.timeline();
-            tl.to(overlay, { opacity: 1, duration: 0.28, ease: 'power2.in' })
-              .to(years[0], { opacity: 1, y: 0, duration: 0.22, ease: 'power3.out' })
-              .to(years[0], { opacity: 0, y: -50, duration: 0.18, ease: 'power2.in' }, '+=0.08')
-              .to(years[1], { opacity: 1, y: 0, duration: 0.20, ease: 'power3.out' }, '-=0.06')
-              .to(years[1], { opacity: 0, y: -50, duration: 0.15, ease: 'power2.in' }, '+=0.07')
-              .to(years[2], { opacity: 1, y: 0, duration: 0.18, ease: 'power3.out' }, '-=0.05')
-              .to(years[2], { opacity: 0, y: -50, duration: 0.14, ease: 'power2.in' }, '+=0.06')
-              .to(years[3], { opacity: 1, y: 0, duration: 0.16, ease: 'power3.out' }, '-=0.04')
-              .to(years[3], { opacity: 0, y: -50, duration: 0.13, ease: 'power2.in' }, '+=0.05')
-              .to(years[4], { opacity: 1, y: 0, duration: 0.15, ease: 'power3.out' }, '-=0.04')
-              .to(years[4], { opacity: 0, y: -50, duration: 0.12, ease: 'power2.in' }, '+=0.04')
-              // 1945 — 背景轉暖（戰爭灰燼感），停留最久
-              .to(bg, { background: 'linear-gradient(180deg,#18100a 0%,#2a1a08 55%,#3a2410 100%)', duration: 0.5, ease: 'power2.inOut' }, '<')
-              .to(years[5], { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out' }, '-=0.02')
-              // 1945 裂線爆開
-              .to(crack, { opacity: 1, scaleX: 1, duration: 0.35, ease: 'power3.out' }, '+=0.18')
-              .to(years[5], { opacity: 0, y: -80, scale: 1.15, duration: 0.32, ease: 'power3.in' }, '+=0.18')
-              .to(crack, { opacity: 0, duration: 0.25 }, '<')
-              .to(nowLabel, { opacity: 1, duration: 0.28, ease: 'power2.out' })
-              .to(flash, { opacity: 1, duration: 0.12, ease: 'power4.in' }, '+=0.12')
-              .call(onSwitch)
-              .to(flash, { opacity: 0, duration: 0.28, ease: 'power2.out' })
-              .to(nowLabel, { opacity: 0, duration: 0.18 }, '-=0.1')
-              .to(overlay, { opacity: 0, duration: 0.32, ease: 'power2.in' })
-              .set(overlay, { display: 'none' })
-              .set([bg, ...years, crack, nowLabel, flash], { clearProps: 'all' });
-        }
-
-        // ─────────────────────────────────────────────
-        //  ⑥ 星空後拉（任何頁 → 封面）
-        // ─────────────────────────────────────────────
-        function playStarpullTransition(onSwitch) {
-            const overlay = document.getElementById('starpull-transition');
-            const bg      = document.getElementById('starpull-bg');
-            const moon    = document.getElementById('starpull-moon');
-            const stars   = document.getElementById('starpull-stars');
-            const label   = document.getElementById('starpull-label');
-
-            // 動態生成星點（從四角向中心聚攏，再爆散）
-            stars.innerHTML = '';
-            const NS = 'http://www.w3.org/2000/svg';
-            const cx = 720, cy = 450;
-            const numStars = 38;
-            const starEls = [];
-            for (let i = 0; i < numStars; i++) {
-                const angle = (i / numStars) * Math.PI * 2;
-                const radius = 380 + Math.random() * 220;
-                const x = cx + Math.cos(angle) * radius;
-                const y = cy + Math.sin(angle) * radius;
-                const c = document.createElementNS(NS, 'circle');
-                c.setAttribute('cx', cx); c.setAttribute('cy', cy);
-                c.setAttribute('r', 0.5 + Math.random() * 1.1);
-                c.setAttribute('fill', '#F0ECD8');
-                c.setAttribute('opacity', '0');
-                c.dataset.tx = x; c.dataset.ty = y;
-                stars.appendChild(c);
-                starEls.push(c);
-            }
-
-            gsap.set(overlay, { display: 'block', opacity: 0 });
-            gsap.set(bg,      { opacity: 0 });
-            gsap.set(moon,    { opacity: 0, scale: 0.5 });
-            gsap.set(stars,   { opacity: 0 });
-            gsap.set(label,   { opacity: 0, y: 12 });
-
-            const tl = gsap.timeline();
-            tl.to(overlay, { opacity: 1, duration: 0.28, ease: 'power2.in' })
-              .to(bg,      { opacity: 1, duration: 0.4 }, '<')
-              .to(stars,   { opacity: 1, duration: 0.3 }, '<')
-              // 星點從中心向外擴散
-              .to(starEls, {
-                    attr: { cx: function(i){ return starEls[i].dataset.tx; },
-                            cy: function(i){ return starEls[i].dataset.ty; } },
-                    opacity: function(i){ return 0.5 + Math.random()*0.45; },
-                    duration: 0.85,
-                    ease: 'power2.out',
-                    stagger: { each: 0.012, from: 'random' }
-              }, '<0.05')
-              // 月亮從深處浮現
-              .to(moon,  { opacity: 0.85, scale: 1, duration: 0.7, ease: 'power2.out' }, '<0.1')
-              .to(label, { opacity: 0.82, y: 0, duration: 0.4, ease: 'power2.out' }, '<0.15')
-              .call(onSwitch)
-              // 鏡頭繼續後拉 — 星點再擴散，月亮微縮
-              .to(starEls, {
-                    attr: { r: function(i){ return parseFloat(starEls[i].getAttribute('r')) * 0.5; } },
-                    opacity: 0.25,
-                    duration: 0.6, ease: 'power2.in'
-              })
-              .to(moon, { scale: 0.7, opacity: 0.3, duration: 0.55, ease: 'power2.in' }, '<')
-              .to(label, { opacity: 0, duration: 0.25 }, '<')
-              .to(overlay, { opacity: 0, duration: 0.4, ease: 'power2.in' }, '-=0.1')
-              .set(overlay, { display: 'none' })
-              .set([bg, moon, stars, label], { clearProps: 'all' });
-        }
-
-        // ─────────────────────────────────────────────
-        //  ⑦ 紙張撕裂（封面 → 探究問題）
-        // ─────────────────────────────────────────────
-        function playTearTransition(onSwitch) {
-            const overlay  = document.getElementById('tear-transition');
-            const tearLeft = document.getElementById('tear-left');
-            const tearRight= document.getElementById('tear-right');
-            const edgeSvg  = document.getElementById('tear-edge-svg');
-            const edgePath = document.getElementById('tear-path-fill');
-            const kanji    = document.getElementById('tear-kanji');
-            const W = window.innerWidth, H = window.innerHeight;
-
-            // 有機撕裂曲線（貝茲曲線 + 微擾動，比鋸齒更像真撕痕）
-            const steps = 22;
-            const pts = [];
-            for (let i = 0; i <= steps; i++) {
-                const t = i / steps;
-                const y = t * H;
-                // 主撕裂幅度：低頻長波 + 高頻微擾
-                const longWave = Math.sin(t * Math.PI * 2.2) * 14;
-                const midWave  = Math.sin(t * Math.PI * 7.5) * 6;
-                const jitter   = (Math.random() - 0.5) * 5;
-                const x = W/2 + longWave + midWave + jitter;
-                pts.push([x, y]);
-            }
-            // 用 Catmull-Rom-ish 貝茲串接
-            let d = `M${pts[0][0]},${pts[0][1]} `;
-            for (let i = 1; i < pts.length; i++) {
-                const [x0,y0] = pts[i-1], [x1,y1] = pts[i];
-                const cx = (x0 + x1) / 2;
-                d += `Q${x0},${(y0+y1)/2 - 3} ${cx},${(y0+y1)/2} `;
-                d += `T${x1},${y1} `;
-            }
-            // 閉合（向右延伸做白色填充，遮住接縫）
-            d += `L${W+80},${H} L${W+80},0 Z`;
-            edgePath.setAttribute('d', d);
-            edgeSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-            edgeSvg.setAttribute('preserveAspectRatio', 'none');
-
-            gsap.set(overlay,   { display: 'block', opacity: 1 });
-            gsap.set(tearLeft,  { x: 0, rotation: 0 });
-            gsap.set(tearRight, { x: 0, rotation: 0 });
-            gsap.set(edgeSvg,   { opacity: 1, x: 0 });
-            gsap.set(kanji,     { opacity: 0, scale: 0.94 });
-
-            const tl = gsap.timeline();
-            tl
-              // 文字先預示
-              .to(kanji, { opacity: 1, scale: 1, duration: 0.32, ease: 'back.out(1.4)' })
-              .to(kanji, { opacity: 0, duration: 0.18 }, '+=0.2')
-              // 撕裂飛走：左右各帶輕微旋轉
-              .to(tearLeft,  { x: -W * 0.55, rotation: -3.5, duration: 0.48, ease: 'power3.in' })
-              .to(tearRight, { x:  W * 0.55, rotation:  3.5, duration: 0.48, ease: 'power3.in' }, '<')
-              .to(edgeSvg,   { x: W * 0.55, opacity: 0, duration: 0.4 }, '<0.05')
-              .call(onSwitch)
-              .to(overlay, { opacity: 0, duration: 0.32, ease: 'power2.in' }, '+=0.05')
-              .set(overlay, { display: 'none' })
-              .set([tearLeft, tearRight, edgeSvg, kanji], { clearProps: 'all' });
         }
 
         // 初始化 Leaflet 互動套疊地圖
@@ -3876,45 +3157,19 @@
             seal.style.background = theme.bg;
             seal.style.boxShadow = `0 0 60px ${theme.glow}, inset 0 0 30px rgba(0,0,0,0.25)`;
             iconSvg.innerHTML = theme.icon;
+
             kanjiEl.textContent = kanji;
             subEl.textContent = name + ' · 御守獲得';
-
-            // 清除 CSS animation 殘留
             seal.classList.remove('thud');
-
-            if (typeof gsap === 'undefined') {
-                overlay.classList.add('show');
-                seal.classList.add('thud');
-                setTimeout(() => { overlay.classList.remove('show'); }, 2400);
-                return;
-            }
-
+            overlay.classList.remove('show');
+            void seal.offsetWidth;
             overlay.classList.add('show');
-            gsap.killTweensOf(seal);
-            gsap.set(seal, { scale: 0, rotation: -25, opacity: 0, filter: 'blur(4px)' });
-
-            const tl = gsap.timeline();
-            tl
-              // 預備：從遠方旋轉飛入
-              .to(seal, { scale: 3.2, opacity: 0.4, rotation: -15, duration: 0.18, ease: 'power1.out' })
-              .to(seal, { filter: 'blur(0px)', duration: 0.15 }, '<')
-              // 撞擊：快速縮小落地（重量感）
-              .to(seal, { scale: 0.78, rotation: 4, opacity: 1, duration: 0.18, ease: 'power3.in' })
-              // 反彈
-              .to(seal, { scale: 1.08, rotation: -1.5, duration: 0.16, ease: 'power2.out' })
-              // 微震回穩
-              .to(seal, { scale: 0.97, rotation: 0.5, duration: 0.12, ease: 'power2.inOut' })
-              .to(seal, { scale: 1, rotation: 0, duration: 0.12, ease: 'power2.out' })
-              // 停留
-              .to({}, { duration: 1.4 })
-              // 淡出
-              .to(overlay, { opacity: 0, duration: 0.5, ease: 'power2.in',
-                onComplete: () => {
-                    overlay.classList.remove('show');
-                    overlay.style.opacity = '';
-                    gsap.set(seal, { clearProps: 'all' });
-                }
-              });
+            seal.classList.add('thud');
+            setTimeout(() => {
+                overlay.style.transition = 'opacity 0.6s';
+                overlay.classList.remove('show');
+                setTimeout(() => { overlay.style.transition = ''; }, 700);
+            }, 2400);
         }
 
         function getACtx_unused() {
@@ -4154,10 +3409,10 @@
             },
             {
                 icon: 'ph:anchor-light',
-                clue: '神社坐落於兩座山峰之間的山谷，背倚層巒、面朝海港方向，是帝國「海洋國境最前線」的鎮守。',
+                clue: '神社選址於背山面海的山麓，從這裡可俯視整個天然軍港與漁港的進出。',
                 options: ['宜蘭神社', '羅東神社', '蘇澳神社'],
                 correct: 2,
-                analysis: '<strong>蘇澳神社</strong>1940年建於金面山與七星嶺之間的山谷地，並非高處俯瞰港口，而是隱於山坳之中——這是日本神社「神域隱於山林」的典型配置，藉自然地形屏蔽世俗、凝聚神聖。神社主要守護鄰近的海軍要港與漁業聚落，象徵帝國對「海洋國境最前線」的空間宣示。'
+                analysis: '<strong>蘇澳神社</strong>1940年建於金面山與七星嶺交界的山麓，是帝國對「海洋國境最前線」的空間宣示，主要守護日本海軍與漁民。背山面海的選址展現殖民地理觀。'
             },
             {
                 icon: 'ph:graduation-cap-light',
