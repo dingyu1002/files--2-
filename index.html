@@ -8,7 +8,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
@@ -55,7 +55,27 @@
         .historical-filter { filter: sepia(0.15) contrast(1.05) brightness(0.95); }
         
 
-        /* Timeline arrow buttons */
+             /* Stamp nav tiles */
+        .stamp-nav-tile {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            background: transparent; border: none; padding: 0; cursor: pointer;
+            width: 58px; transition: transform 0.18s ease;
+        }
+        .stamp-nav-tile:hover { transform: translateY(-4px); }
+        .stamp-nav-box {
+            width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            transition: box-shadow 0.18s ease;
+        }
+        .stamp-nav-tile:hover .stamp-nav-box { box-shadow: 0 6px 18px rgba(0,0,0,0.28); }
+        .stamp-nav-lbl {
+            font-family: sans-serif; font-size: 9px; letter-spacing: 0.08em;
+            text-align: center; line-height: 1.3;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+
+      /* Timeline arrow buttons */
         .tl-arrow { opacity: 0.85; }
         .tl-arrow:hover { opacity: 1; }
         @media (max-width: 640px) { .tl-arrow { display: none; } }
@@ -524,6 +544,115 @@
         .field-note-body { font-family:'Noto Serif TC',serif; color:#2a2535; opacity:0.82; }
         .field-note-body p { margin-bottom:0; }
         .field-note-thought { font-family:'Noto Serif TC',serif; font-style:italic; color:rgba(92,26,27,0.72); margin-top:0.25rem; }
+
+        /* ===== HERO COVER PHOTO — VINTAGE FRAMED ===== */
+
+        /* ===== CINEMATIC CONCLUSION BUTTON ===== */
+        @keyframes concStarTwinkle {
+            0%, 100% { opacity: 0.25; transform: scale(0.85); }
+            50%      { opacity: 0.95; transform: scale(1.15); }
+        }
+
+        /* ===== HISTORICAL PHOTO SOURCE ATTRIBUTION ===== */
+        .cs-source {
+            position: absolute;
+            bottom: 0.9rem;
+            right: 1rem;
+            z-index: 5;
+            padding: 0.4rem 0.85rem 0.42rem;
+            background: linear-gradient(135deg, rgba(40,22,10,0.78), rgba(28,15,7,0.84));
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(200,160,110,0.38);
+            border-radius: 2px;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-weight: 500;
+            font-style: italic;
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            color: rgba(248,236,216,0.94);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.55), 0 0 8px rgba(0,0,0,0.3);
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.35),
+                inset 0 0 0 1px rgba(255,220,170,0.1),
+                inset 0 -2px 0 rgba(0,0,0,0.2);
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            line-height: 1.1;
+        }
+        .cs-source::before {
+            content: '';
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: #D4B47C;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(212,180,124,0.85), 0 0 0 2px rgba(212,180,124,0.2);
+            flex-shrink: 0;
+        }
+        .cs-source .cs-source-cn {
+            font-family: 'Noto Serif TC', serif;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+        }
+        .cs-source-sub {
+            font-family: 'Cinzel', 'Cormorant Garamond', serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 0.55rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(212,180,124,0.78);
+            margin-left: 0.5rem;
+            padding-left: 0.6rem;
+            border-left: 1px solid rgba(200,160,110,0.4);
+        }
+
+        /* ===== MAP PAGE EXTRA DECORATIONS ===== */
+        @keyframes mapPetalFall {
+            0%   { transform: translateY(-10px) rotate(0deg) translateX(0); opacity: 0; }
+            10%  { opacity: 0.7; }
+            90%  { opacity: 0.5; }
+            100% { transform: translateY(105vh) rotate(540deg) translateX(40px); opacity: 0; }
+        }
+        @keyframes mapCloudDrift {
+            0%   { transform: translateX(-5%); }
+            100% { transform: translateX(105%); }
+        }
+        @keyframes mapInkBreathe {
+            0%, 100% { opacity: 0.05; }
+            50%      { opacity: 0.12; }
+        }
+        .map-petal {
+            position: absolute;
+            top: -20px;
+            width: 10px; height: 12px;
+            background: linear-gradient(135deg, rgba(220,140,150,0.6), rgba(195,110,125,0.42));
+            border-radius: 50% 0 50% 0;
+            pointer-events: none;
+            z-index: 1;
+            animation: mapPetalFall linear infinite;
+        }
+        .map-cloud-svg {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            animation: mapCloudDrift linear infinite;
+        }
+        .map-ink-stamp {
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+            animation: mapInkBreathe 6s ease-in-out infinite;
+        }
+
+        /* mobile adaptations */
+        @media (max-width: 768px) {
+            .cs-source { font-size: 0.55rem; padding: 0.25rem 0.55rem; }
+            .cs-source-sub { display: none; }
+        }
     </style>
 </head>
 <body class="font-serif text-vintage-charcoal">
@@ -683,316 +812,15 @@
             
             <!-- Hero 視覺與標題 -->
             <div class="relative w-full min-h-screen flex items-center justify-center p-6 md:p-12">
-                <div class="absolute inset-0 z-0 overflow-hidden" style="background:linear-gradient(180deg,#06081c 0%,#0d0d2e 25%,#160d38 55%,#0e0a28 80%,#08061a 100%)">
-                    <!-- 星空 SVG -->
-                    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <radialGradient id="moonG" cx="50%" cy="23%" r="34%"><stop offset="0%" stop-color="#FFF8E7" stop-opacity="0.72"/><stop offset="55%" stop-color="#C8C0E8" stop-opacity="0.20"/><stop offset="100%" stop-color="#FFF8E7" stop-opacity="0"/></radialGradient>
-                            <radialGradient id="moonBody" cx="42%" cy="38%" r="60%"><stop offset="0%" stop-color="#FFF8EC"/><stop offset="70%" stop-color="#EDE0C4"/><stop offset="100%" stop-color="#C8BA98"/></radialGradient>
-                            <clipPath id="moonClip"><circle cx="720" cy="210" r="54"/></clipPath>
-                            <radialGradient id="lgGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFBE50" stop-opacity="1"/><stop offset="100%" stop-color="#E8A030" stop-opacity="0"/></radialGradient>
-                            <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
-                            <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
-                            <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
-                            <linearGradient id="pathG" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#1a0e0a" stop-opacity="0.45"/><stop offset="100%" stop-color="#120a08" stop-opacity="0.82"/></linearGradient>
-                            <linearGradient id="mbG" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#FFF8D0" stop-opacity="0.13"/><stop offset="100%" stop-color="#FFF8D0" stop-opacity="0"/></linearGradient>
-                            <radialGradient id="vpGlow" cx="50%" cy="0%" r="70%"><stop offset="0%" stop-color="#FFE880" stop-opacity="0.55"/><stop offset="100%" stop-color="#FFE880" stop-opacity="0"/></radialGradient>
-                            <radialGradient id="pathSurf" cx="50%" cy="20%" r="60%"><stop offset="0%" stop-color="#C8A060" stop-opacity="0.18"/><stop offset="100%" stop-color="#C8A060" stop-opacity="0"/></radialGradient>
-                            <linearGradient id="vigL" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#06081c" stop-opacity="0.95"/><stop offset="100%" stop-color="#06081c" stop-opacity="0"/></linearGradient>
-                            <linearGradient id="vigR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#06081c" stop-opacity="0"/><stop offset="100%" stop-color="#06081c" stop-opacity="0.95"/></linearGradient>
-                            <linearGradient id="vigT" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06081c" stop-opacity="0.85"/><stop offset="100%" stop-color="#06081c" stop-opacity="0"/></linearGradient>
-                        </defs>
-                        <!-- Moon -->
-                        <ellipse cx="720" cy="210" rx="320" ry="290" fill="url(#moonG)"/>
-                        <!-- 大氣散射暈 atmosphere halo -->
-                        <circle cx="720" cy="210" r="82" fill="#D8D0B8" opacity="0.07" filter="url(#blur8)"/>
-                        <circle cx="720" cy="210" r="66" fill="#EEE4C0" opacity="0.13" filter="url(#blur4)"/>
-                        <!-- 月球本體 + limb darkening -->
-                        <circle cx="720" cy="210" r="54" fill="url(#moonBody)" opacity="0.96"/>
-                        <!-- 月海 maria（暗斑） -->
-                        <g clip-path="url(#moonClip)" opacity="0.22" fill="#7A7060">
-                            <ellipse cx="706" cy="198" rx="14" ry="10"/>
-                            <ellipse cx="732" cy="215" rx="10" ry="7"/>
-                            <ellipse cx="698" cy="220" rx="8" ry="6"/>
-                            <ellipse cx="744" cy="200" rx="6" ry="5"/>
-                            <ellipse cx="718" cy="232" rx="9" ry="5"/>
-                        </g>
-                        <!-- 月緣高光 limb highlight -->
-                        <circle cx="720" cy="210" r="54" fill="none" stroke="#FFF8E0" stroke-width="2" opacity="0.30"/>
-                        <!-- Stars -->
-                        <g fill="white" opacity="0.82">
-                            <circle cx="80" cy="55" r="1.2"/><circle cx="185" cy="38" r="0.8"/><circle cx="338" cy="72" r="1.4"/><circle cx="468" cy="28" r="0.9"/><circle cx="138" cy="112" r="0.7"/>
-                            <circle cx="948" cy="62" r="0.8"/><circle cx="1158" cy="44" r="1.2"/><circle cx="1288" cy="26" r="1.0"/><circle cx="1388" cy="60" r="1.3"/>
-                            <circle cx="258" cy="92" r="1.0"/><circle cx="1198" cy="108" r="0.9"/><circle cx="1338" cy="132" r="0.7"/>
-                            <circle cx="52" cy="192" r="0.9"/><circle cx="162" cy="172" r="0.6"/><circle cx="308" cy="208" r="1.1"/>
-                        </g>
-                        <!-- Far mountains -->
-                        <path d="M0,900 L0,558 Q102,448 222,518 Q362,413 502,478 Q642,373 722,438 Q802,373 942,473 Q1082,373 1222,433 Q1342,393 1440,448 L1440,900 Z" fill="#110d2a" opacity="0.92"/>
-                        <path d="M0,900 L0,692 Q202,625 422,662 Q582,612 722,642 Q862,610 1022,654 Q1242,620 1440,662 L1440,900 Z" fill="#0c0a20" opacity="0.96"/>
-                        <!-- Trees left -->
-                        <g fill="#0d0c22" opacity="0.88">
-                            <ellipse cx="92" cy="542" rx="88" ry="108"/><rect x="85" y="648" width="22" height="252"/>
-                            <ellipse cx="245" cy="555" rx="76" ry="94"/><rect x="238" y="645" width="20" height="255"/>
-                            <ellipse cx="46" cy="588" rx="58" ry="75"/><rect x="41" y="658" width="16" height="242"/>
-                            <ellipse cx="368" cy="570" rx="62" ry="80"/><rect x="362" y="646" width="18" height="254"/>
-                            <ellipse cx="172" cy="618" rx="48" ry="62"/><rect x="168" y="676" width="14" height="224"/>
-                        </g>
-                        <!-- Trees right -->
-                        <g fill="#0d0c22" opacity="0.88">
-                            <ellipse cx="1348" cy="542" rx="88" ry="108"/><rect x="1341" y="648" width="22" height="252"/>
-                            <ellipse cx="1195" cy="555" rx="76" ry="94"/><rect x="1188" y="645" width="20" height="255"/>
-                            <ellipse cx="1394" cy="588" rx="58" ry="75"/><rect x="1389" y="658" width="16" height="242"/>
-                            <ellipse cx="1072" cy="570" rx="62" ry="80"/><rect x="1066" y="646" width="18" height="254"/>
-                            <ellipse cx="1268" cy="618" rx="48" ry="62"/><rect x="1264" y="676" width="14" height="224"/>
-                        </g>
-                        <!-- 参道 Stone path perspective (vanishing pt 720,300) -->
-                        <path d="M432,900 L688,300 L752,300 L1008,900 Z" fill="url(#pathG)"/>
-                        <g stroke="#2a1a10" stroke-width="1" opacity="0.28">
-                            <line x1="432" y1="900" x2="688" y2="300"/><line x1="1008" y1="900" x2="752" y2="300"/>
-                            <line x1="442" y1="868" x2="998" y2="868"/><line x1="455" y1="832" x2="985" y2="832"/><line x1="470" y1="796" x2="970" y2="796"/>
-                            <line x1="487" y1="760" x2="953" y2="760"/><line x1="504" y1="726" x2="936" y2="726"/><line x1="520" y1="694" x2="920" y2="694"/>
-                            <line x1="536" y1="663" x2="904" y2="663"/><line x1="550" y1="634" x2="890" y2="634"/><line x1="563" y1="607" x2="877" y2="607"/>
-                            <line x1="575" y1="581" x2="865" y2="581"/><line x1="585" y1="557" x2="855" y2="557"/><line x1="604" y1="513" x2="836" y2="513"/>
-                            <line x1="620" y1="474" x2="820" y2="474"/><line x1="634" y1="439" x2="806" y2="439"/><line x1="646" y1="408" x2="794" y2="408"/>
-                            <line x1="656" y1="381" x2="784" y2="381"/><line x1="665" y1="356" x2="775" y2="356"/><line x1="672" y1="334" x2="768" y2="334"/>
-                        </g>
-                        <!-- 月光柱 moonbeam shaft down the center path -->
-                        <polygon points="710,264 730,264 820,900 620,900" fill="url(#mbG)" opacity="0.85"/>
-                        <!-- 消失點光暈 vanishing-point glow -->
-                        <ellipse cx="720" cy="300" rx="110" ry="55" fill="url(#vpGlow)" filter="url(#blur8)"/>
-                        <ellipse cx="720" cy="308" rx="42" ry="21" fill="#FFF4A0" opacity="0.10" filter="url(#blur4)"/>
-                        <!-- 參道地面暖光 path surface warm glow -->
-                        <ellipse cx="720" cy="680" rx="230" ry="110" fill="url(#pathSurf)" filter="url(#blur8)"/>
-                        <!-- Torii mid-distance -->
-                        <g opacity="0.8">
-                            <rect x="533" y="388" width="19" height="512" rx="4" fill="#8B1515"/>
-                            <rect x="888" y="388" width="19" height="512" rx="4" fill="#8B1515"/>
-                            <path d="M494,388 Q720,314 946,388" fill="none" stroke="#8B1515" stroke-width="25" stroke-linecap="round"/>
-                            <path d="M524,438 Q720,394 916,438" fill="none" stroke="#8B1515" stroke-width="15" stroke-linecap="round"/>
-                            <rect x="540" y="478" width="360" height="11" rx="3" fill="#8B1515" opacity="0.9"/>
-                        </g>
-                        <!-- Torii distant near vanishing point -->
-                        <g opacity="0.35">
-                            <rect x="688" y="308" width="8" height="292" rx="1" fill="#8B1515"/>
-                            <rect x="744" y="308" width="8" height="292" rx="1" fill="#8B1515"/>
-                            <path d="M678,308 Q720,291 762,308" fill="none" stroke="#8B1515" stroke-width="10" stroke-linecap="round"/>
-                            <path d="M682,326 Q720,315 758,326" fill="none" stroke="#8B1515" stroke-width="6" stroke-linecap="round"/>
-                        </g>
-                        <!-- 朱塗り燈籠台 Pair 1 front (baseY≈870) -->
-                        <g opacity="0.9"><!-- LEFT cx=435 -->
-                            <rect x="418" y="862" width="36" height="10" rx="2" fill="#5a1010"/>
-                            <rect x="428" y="644" width="14" height="219" rx="2" fill="#8B1515"/>
-                            <rect x="425" y="638" width="20" height="8" rx="2" fill="#6B1010"/>
-                            <rect x="407" y="578" width="56" height="61" rx="3" fill="#160c08"/>
-                            <path d="M399,578 L435,554 L471,578 Z" fill="#1e4020"/>
-                            <path d="M399,578 Q435,563 471,578" fill="none" stroke="#2a5828" stroke-width="3"/>
-                            <ellipse cx="435" cy="608" rx="30" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.72"/>
-                            <ellipse cx="435" cy="608" rx="14" ry="11" fill="#FFB040" opacity="0.42"/>
-                        </g>
-                        <g opacity="0.9"><!-- RIGHT cx=1005 -->
-                            <rect x="986" y="862" width="36" height="10" rx="2" fill="#5a1010"/>
-                            <rect x="998" y="644" width="14" height="219" rx="2" fill="#8B1515"/>
-                            <rect x="995" y="638" width="20" height="8" rx="2" fill="#6B1010"/>
-                            <rect x="977" y="578" width="56" height="61" rx="3" fill="#160c08"/>
-                            <path d="M969,578 L1005,554 L1041,578 Z" fill="#1e4020"/>
-                            <path d="M969,578 Q1005,563 1041,578" fill="none" stroke="#2a5828" stroke-width="3"/>
-                            <ellipse cx="1005" cy="608" rx="30" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.72"/>
-                            <ellipse cx="1005" cy="608" rx="14" ry="11" fill="#FFB040" opacity="0.42"/>
-                        </g>
-                        <!-- Pair 2 (baseY≈800) -->
-                        <g opacity="0.83"><!-- LEFT cx=465 -->
-                            <rect x="451" y="793" width="28" height="8" rx="1" fill="#5a1010"/>
-                            <rect x="460" y="617" width="11" height="177" rx="2" fill="#8B1515"/>
-                            <rect x="458" y="611" width="16" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="442" y="562" width="46" height="50" rx="2" fill="#160c08"/>
-                            <path d="M434,562 L465,544 L496,562 Z" fill="#1e4020"/>
-                            <path d="M434,562 Q465,549 496,562" fill="none" stroke="#2a5828" stroke-width="2.5"/>
-                            <ellipse cx="465" cy="587" rx="24" ry="19" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.62"/>
-                            <ellipse cx="465" cy="587" rx="11" ry="9" fill="#FFB040" opacity="0.36"/>
-                        </g>
-                        <g opacity="0.83"><!-- RIGHT cx=975 -->
-                            <rect x="961" y="793" width="28" height="8" rx="1" fill="#5a1010"/>
-                            <rect x="969" y="617" width="11" height="177" rx="2" fill="#8B1515"/>
-                            <rect x="967" y="611" width="16" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="952" y="562" width="46" height="50" rx="2" fill="#160c08"/>
-                            <path d="M944,562 L975,544 L1006,562 Z" fill="#1e4020"/>
-                            <path d="M944,562 Q975,549 1006,562" fill="none" stroke="#2a5828" stroke-width="2.5"/>
-                            <ellipse cx="975" cy="587" rx="24" ry="19" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.62"/>
-                            <ellipse cx="975" cy="587" rx="11" ry="9" fill="#FFB040" opacity="0.36"/>
-                        </g>
-                        <!-- Pair 3 (baseY≈738) -->
-                        <g opacity="0.76"><!-- LEFT cx=498 -->
-                            <rect x="489" y="731" width="22" height="7" rx="1" fill="#5a1010"/>
-                            <rect x="493" y="588" width="9" height="144" rx="2" fill="#8B1515"/>
-                            <rect x="491" y="582" width="14" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="479" y="542" width="38" height="41" rx="2" fill="#160c08"/>
-                            <path d="M471,542 L498,528 L525,542 Z" fill="#1e4020"/>
-                            <path d="M471,542 Q498,531 525,542" fill="none" stroke="#2a5828" stroke-width="2"/>
-                            <ellipse cx="498" cy="562" rx="20" ry="16" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.56"/>
-                            <ellipse cx="498" cy="562" rx="9" ry="7" fill="#FFB040" opacity="0.3"/>
-                        </g>
-                        <g opacity="0.76"><!-- RIGHT cx=942 -->
-                            <rect x="929" y="731" width="22" height="7" rx="1" fill="#5a1010"/>
-                            <rect x="938" y="588" width="9" height="144" rx="2" fill="#8B1515"/>
-                            <rect x="936" y="582" width="14" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="923" y="542" width="38" height="41" rx="2" fill="#160c08"/>
-                            <path d="M915,542 L942,528 L969,542 Z" fill="#1e4020"/>
-                            <path d="M915,542 Q942,531 969,542" fill="none" stroke="#2a5828" stroke-width="2"/>
-                            <ellipse cx="942" cy="562" rx="20" ry="16" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.56"/>
-                            <ellipse cx="942" cy="562" rx="9" ry="7" fill="#FFB040" opacity="0.3"/>
-                        </g>
-                        <!-- Pair 4 (baseY≈686) -->
-                        <g opacity="0.68"><!-- LEFT cx=524 -->
-                            <rect x="517" y="680" width="18" height="6" rx="1" fill="#5a1010"/>
-                            <rect x="521" y="558" width="7" height="123" rx="1" fill="#8B1515"/>
-                            <rect x="519" y="552" width="12" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="509" y="519" width="31" height="34" rx="2" fill="#160c08"/>
-                            <path d="M503,519 L524,507 L545,519 Z" fill="#1e4020"/>
-                            <path d="M503,519 Q524,510 545,519" fill="none" stroke="#2a5828" stroke-width="1.5"/>
-                            <ellipse cx="524" cy="536" rx="16" ry="13" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.5"/>
-                        </g>
-                        <g opacity="0.68"><!-- RIGHT cx=916 -->
-                            <rect x="905" y="680" width="18" height="6" rx="1" fill="#5a1010"/>
-                            <rect x="913" y="558" width="7" height="123" rx="1" fill="#8B1515"/>
-                            <rect x="911" y="552" width="12" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="901" y="519" width="31" height="34" rx="2" fill="#160c08"/>
-                            <path d="M895,519 L916,507 L937,519 Z" fill="#1e4020"/>
-                            <path d="M895,519 Q916,510 937,519" fill="none" stroke="#2a5828" stroke-width="1.5"/>
-                            <ellipse cx="916" cy="536" rx="16" ry="13" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.5"/>
-                        </g>
-                        <!-- Pair 5 (baseY≈642) -->
-                        <g opacity="0.60"><!-- LEFT cx=548 -->
-                            <rect x="542" y="637" width="14" height="5" rx="1" fill="#5a1010"/>
-                            <rect x="545" y="537" width="6" height="101" rx="1" fill="#8B1515"/>
-                            <rect x="543" y="531" width="10" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="535" y="502" width="26" height="30" rx="2" fill="#160c08"/>
-                            <path d="M529,502 L548,492 L567,502 Z" fill="#1e4020"/>
-                            <ellipse cx="548" cy="517" rx="14" ry="11" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.46"/>
-                        </g>
-                        <g opacity="0.60"><!-- RIGHT cx=892 -->
-                            <rect x="885" y="637" width="14" height="5" rx="1" fill="#5a1010"/>
-                            <rect x="889" y="537" width="6" height="101" rx="1" fill="#8B1515"/>
-                            <rect x="887" y="531" width="10" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="879" y="502" width="26" height="30" rx="2" fill="#160c08"/>
-                            <path d="M873,502 L892,492 L911,502 Z" fill="#1e4020"/>
-                            <ellipse cx="892" cy="517" rx="14" ry="11" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.46"/>
-                        </g>
-                        <!-- Pair 6 smallest (baseY≈606) -->
-                        <g opacity="0.50"><!-- LEFT cx=568 -->
-                            <rect x="564" y="601" width="10" height="4" rx="1" fill="#5a1010"/>
-                            <rect x="566" y="519" width="5" height="83" rx="1" fill="#8B1515"/>
-                            <rect x="564" y="513" width="8" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="557" y="489" width="22" height="25" rx="1" fill="#160c08"/>
-                            <path d="M553,489 L568,481 L583,489 Z" fill="#1e4020"/>
-                            <ellipse cx="568" cy="501" rx="11" ry="9" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.4"/>
-                        </g>
-                        <g opacity="0.50"><!-- RIGHT cx=872 -->
-                            <rect x="866" y="601" width="10" height="4" rx="1" fill="#5a1010"/>
-                            <rect x="869" y="519" width="5" height="83" rx="1" fill="#8B1515"/>
-                            <rect x="867" y="513" width="8" height="7" rx="1" fill="#6B1010"/>
-                            <rect x="861" y="489" width="22" height="25" rx="1" fill="#160c08"/>
-                            <path d="M857,489 L872,481 L887,489 Z" fill="#1e4020"/>
-                            <ellipse cx="872" cy="501" rx="11" ry="9" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.4"/>
-                        </g>
-                        <!-- 石燈籠 Stone lanterns between posts -->
-                        <g opacity="0.62"><!-- LEFT y≈835 -->
-                            <rect x="447" y="800" width="8" height="36" rx="1" fill="#3a2a18"/><rect x="440" y="834" width="22" height="6" rx="1" fill="#2a1e10"/>
-                            <rect x="438" y="839" width="26" height="4" rx="1" fill="#221808"/><rect x="441" y="775" width="20" height="26" rx="3" fill="#4a3825"/>
-                            <rect x="437" y="771" width="28" height="6" rx="2" fill="#3a2a18"/><rect x="441" y="762" width="20" height="10" rx="3" fill="#4a3825"/>
-                            <ellipse cx="451" cy="788" rx="10" ry="8" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.24"/>
-                        </g>
-                        <g opacity="0.62"><!-- RIGHT y≈835 -->
-                            <rect x="985" y="800" width="8" height="36" rx="1" fill="#3a2a18"/><rect x="978" y="834" width="22" height="6" rx="1" fill="#2a1e10"/>
-                            <rect x="976" y="839" width="26" height="4" rx="1" fill="#221808"/><rect x="979" y="775" width="20" height="26" rx="3" fill="#4a3825"/>
-                            <rect x="975" y="771" width="28" height="6" rx="2" fill="#3a2a18"/><rect x="979" y="762" width="20" height="10" rx="3" fill="#4a3825"/>
-                            <ellipse cx="989" cy="788" rx="10" ry="8" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.24"/>
-                        </g>
-                        <g opacity="0.54"><!-- LEFT y≈766 -->
-                            <rect x="478" y="734" width="7" height="33" rx="1" fill="#3a2a18"/><rect x="472" y="765" width="19" height="5" rx="1" fill="#2a1e10"/>
-                            <rect x="471" y="721" width="17" height="14" rx="2" fill="#4a3825"/><rect x="468" y="717" width="22" height="5" rx="1" fill="#3a2a18"/>
-                            <ellipse cx="480" cy="728" rx="9" ry="7" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.2"/>
-                        </g>
-                        <g opacity="0.54"><!-- RIGHT y≈766 -->
-                            <rect x="955" y="734" width="7" height="33" rx="1" fill="#3a2a18"/><rect x="949" y="765" width="19" height="5" rx="1" fill="#2a1e10"/>
-                            <rect x="949" y="721" width="17" height="14" rx="2" fill="#4a3825"/><rect x="946" y="717" width="22" height="5" rx="1" fill="#3a2a18"/>
-                            <ellipse cx="958" cy="728" rx="9" ry="7" fill="url(#lgGlow)" filter="url(#blur2)" opacity="0.2"/>
-                        </g>
-                        <!-- 夏祭 Festival stall left edge -->
-                        <ellipse cx="148" cy="720" rx="200" ry="80" fill="#C86820" opacity="0.10" filter="url(#blur8)"/>
-                        <g opacity="0.92" fill="#4a2c14">
-                            <path d="M-20,655 L295,655 L314,675 L-20,675 Z"/>
-                            <path d="M-20,675 Q10,690 40,675 Q70,690 100,675 Q130,690 160,675 Q190,690 220,675 Q250,690 280,675 Q298,690 314,675" fill="none" stroke="#6a3c1c" stroke-width="5"/>
-                            <rect x="-20" y="675" width="12" height="225"/><rect x="296" y="675" width="12" height="225"/>
-                            <rect x="-20" y="768" width="338" height="11" rx="2" fill="#5a3018"/>
-                            <rect x="-20" y="779" width="12" height="121"/><rect x="296" y="779" width="12" height="121"/>
-                            <circle cx="38" cy="760" r="10" fill="#7a4020"/><circle cx="78" cy="760" r="10" fill="#6a3818"/>
-                            <circle cx="118" cy="760" r="10" fill="#7a4824"/><circle cx="158" cy="760" r="10" fill="#6a3018"/>
-                            <circle cx="198" cy="760" r="10" fill="#7a4020"/><circle cx="238" cy="760" r="10" fill="#6a3818"/>
-                            <ellipse cx="76" cy="645" rx="14" ry="18" fill="#C02020"/>
-                            <ellipse cx="156" cy="643" rx="14" ry="18" fill="#C02020"/>
-                            <ellipse cx="236" cy="646" rx="12" ry="16" fill="#C02020"/>
-                            <ellipse cx="76" cy="645" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
-                            <ellipse cx="156" cy="643" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
-                            <ellipse cx="236" cy="646" rx="24" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.68"/>
-                            <circle cx="148" cy="712" r="14" fill="#3a2010"/>
-                            <path d="M134,726 Q148,733 162,726 L165,766 Q148,771 131,766 Z" fill="#3a2010"/>
-                        </g>
-                        <!-- Festival stall right edge -->
-                        <ellipse cx="1292" cy="720" rx="200" ry="80" fill="#C86820" opacity="0.10" filter="url(#blur8)"/>
-                        <g opacity="0.92" fill="#4a2c14">
-                            <path d="M1126,655 L1460,655 L1460,675 L1106,675 Z"/>
-                            <path d="M1126,675 Q1146,690 1166,675 Q1186,690 1206,675 Q1226,690 1246,675 Q1266,690 1286,675 Q1306,690 1326,675 Q1346,690 1366,675 Q1386,690 1406,675 Q1426,690 1446,675 Q1456,690 1460,675" fill="none" stroke="#6a3c1c" stroke-width="5"/>
-                            <rect x="1132" y="675" width="12" height="225"/><rect x="1448" y="675" width="12" height="225"/>
-                            <rect x="1126" y="768" width="334" height="11" rx="2" fill="#5a3018"/>
-                            <rect x="1132" y="779" width="12" height="121"/><rect x="1448" y="779" width="12" height="121"/>
-                            <circle cx="1174" cy="760" r="10" fill="#7a4020"/><circle cx="1214" cy="760" r="10" fill="#6a3818"/>
-                            <circle cx="1254" cy="760" r="10" fill="#7a4824"/><circle cx="1294" cy="760" r="10" fill="#6a3018"/>
-                            <circle cx="1334" cy="760" r="10" fill="#7a4020"/><circle cx="1374" cy="760" r="10" fill="#6a3818"/>
-                            <ellipse cx="1196" cy="645" rx="14" ry="18" fill="#C02020"/>
-                            <ellipse cx="1276" cy="643" rx="14" ry="18" fill="#C02020"/>
-                            <ellipse cx="1356" cy="646" rx="12" ry="16" fill="#C02020"/>
-                            <ellipse cx="1196" cy="645" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
-                            <ellipse cx="1276" cy="643" rx="28" ry="28" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.75"/>
-                            <ellipse cx="1356" cy="646" rx="24" ry="24" fill="url(#lgGlow)" filter="url(#blur4)" opacity="0.68"/>
-                            <circle cx="1292" cy="712" r="14" fill="#3a2010"/>
-                            <path d="M1278,726 Q1292,733 1306,726 L1309,766 Q1292,771 1275,766 Z" fill="#3a2010"/>
-                        </g>
-                        <!-- Walking figures on path -->
-                        <g transform="translate(698,678)" fill="#160e0a" opacity="0.58">
-                            <circle cx="0" cy="-50" r="11"/>
-                            <path d="M-14,-38 Q0,-30 14,-38 L18,10 Q0,16 -18,10 Z"/>
-                            <path d="M-18,10 L-28,56 L28,56 L18,10 Q0,20 -18,10 Z"/>
-                            <path d="M-14,-28 L-32,-10 L-27,-4 L-10,-20 Z"/><path d="M14,-28 L32,-10 L27,-4 L10,-20 Z"/>
-                        </g>
-                        <g transform="translate(730,682)" fill="#160e0a" opacity="0.52">
-                            <circle cx="0" cy="-45" r="10"/>
-                            <path d="M-10,-35 Q0,-28 10,-35 L11,4 Q0,8 -11,4 Z"/>
-                            <path d="M-10,-26 L-24,-10 L-19,-5 L-7,-18 Z"/><path d="M10,-26 L20,-8 L15,-3 L5,-18 Z"/>
-                            <path d="M-8,4 L-12,46 L-3,46 L0,18 Z"/><path d="M8,4 L12,46 L3,46 L0,18 Z"/>
-                        </g>
-                        <g transform="translate(716,658)" fill="#160e0a" opacity="0.42">
-                            <circle cx="0" cy="-38" r="9"/>
-                            <path d="M-9,-29 Q0,-23 9,-29 L10,3 Q0,7 -10,3 Z"/>
-                            <path d="M-13,3 L-18,40 L18,40 L13,3 Q0,11 -13,3 Z"/>
-                        </g>
-                        <!-- 大氣霧帶 — 3 depth layers, figures emerge from mist -->
-                        <rect x="330" y="590" width="780" height="28" fill="#8898C8" opacity="0.07" filter="url(#blur8)" rx="14"/>
-                        <rect x="290" y="678" width="860" height="38" fill="#8898C8" opacity="0.09" filter="url(#blur8)" rx="18"/>
-                        <rect x="220" y="760" width="1000" height="52" fill="#8898C8" opacity="0.12" filter="url(#blur8)" rx="24"/>
-                        <!-- Mist at bottom -->
-                        <linearGradient id="mistG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06081c" stop-opacity="0"/><stop offset="100%" stop-color="#04060e" stop-opacity="0.94"/></linearGradient>
-                        <rect x="0" y="800" width="1440" height="100" fill="url(#mistG)"/>
-                        <ellipse cx="720" cy="900" rx="400" ry="80" fill="#04060e" opacity="0.35"/>
-                        <!-- 暗角 vignette tunnel -->
-                        <rect x="0" y="0" width="400" height="900" fill="url(#vigL)"/>
-                        <rect x="1040" y="0" width="400" height="900" fill="url(#vigR)"/>
-                        <rect x="0" y="0" width="1440" height="340" fill="url(#vigT)"/>
-                        <!-- 四角加深 corner darks -->
-                        <ellipse cx="0" cy="900" rx="300" ry="220" fill="#04060e" opacity="0.65"/>
-                        <ellipse cx="1440" cy="900" rx="300" ry="220" fill="#04060e" opacity="0.65"/>
-                        <ellipse cx="0" cy="0" rx="260" ry="180" fill="#04060e" opacity="0.50"/>
-                        <ellipse cx="1440" cy="0" rx="260" ry="180" fill="#04060e" opacity="0.50"/>
-                    </svg>
+                <div class="absolute inset-0 z-0 overflow-hidden">
+                    <!-- 鳥居實景全幅背景 -->
+                    <img src="https://images.unsplash.com/photo-1549124151-844d2a02fe9a?q=90&w=1920&auto=format&fit=crop&ixlib=rb-4.1.0" alt="鳥居參道實景" class="absolute inset-0 w-full h-full object-cover" style="filter:brightness(0.88) saturate(1.06) contrast(1.02);">
+                    <!-- 中央柔暈遮罩 (讓卡片更突出) -->
+                    <div class="absolute inset-0" style="background:radial-gradient(ellipse 75% 65% at center,rgba(20,12,5,0.15) 0%,rgba(20,12,5,0.32) 55%,rgba(12,7,3,0.58) 100%);"></div>
+                    <!-- 頂底漸層加深 (景深感) -->
+                    <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(15,10,5,0.42) 0%,rgba(15,10,5,0) 22%,rgba(15,10,5,0) 78%,rgba(15,10,5,0.38) 100%);"></div>
+                    <!-- 細微金光紋理 (溫度) -->
+                    <div class="absolute inset-0" style="background:radial-gradient(ellipse 40% 50% at 50% 110%,rgba(232,168,80,0.18) 0%,rgba(232,168,80,0) 70%); mix-blend-mode:screen;"></div>
                     <!-- 螢火蟲 -->
                     <div class="firefly" style="left:22%;top:55%;width:4px;height:4px;animation-duration:5s;animation-delay:0s"></div>
                     <div class="firefly" style="left:35%;top:65%;width:3px;height:3px;animation-duration:7s;animation-delay:1.5s"></div>
@@ -1010,44 +838,44 @@
                         <div class="petal" style="left:88%;width:8px;height:10px;background:rgba(255,200,210,0.65);animation-duration:8.5s;animation-delay:6s"></div>
                     </div>
                 </div>
-                <div class="card-shimmer relative z-10 w-full max-w-2xl bg-vintage-cream/90 backdrop-blur-2xl p-10 md:p-14 text-center rounded-[2rem] cover-content" style="border:1px solid rgba(140,80,10,0.18);">
+                <div class="card-shimmer relative z-10 w-full max-w-2xl backdrop-blur-2xl p-10 md:p-14 text-center rounded-[2rem] cover-content" style="background:linear-gradient(135deg,rgba(52,38,24,0.34) 0%,rgba(64,46,30,0.40) 50%,rgba(48,34,22,0.36) 100%); border:1px solid rgba(232,200,148,0.22);">
 
                     <!-- 社會證明 × 稀缺感 — 注意力捕捉 -->
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-red-950/8 border border-red-900/20 text-red-900 font-sans text-[11px] tracking-[0.18em] mb-7 rounded-full">
-                        <span class="w-2 h-2 rounded-full bg-red-700 dot-live inline-block"></span>
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-black/25 border border-vintage-cream/30 text-vintage-cream/95 font-sans text-[11px] tracking-[0.18em] mb-7 rounded-full backdrop-blur-md">
+                        <span class="w-2 h-2 rounded-full bg-red-500 dot-live inline-block shadow-[0_0_8px_2px_rgba(239,68,68,0.55)]"></span>
                         正在探索中 · 3 座神社遺址待揭秘
                     </div>
 
                     <!-- 好奇缺口主標題 — 問句勾住讀者 -->
-                    <h2 class="text-lg md:text-xl font-light mb-3 text-vintage-charcoal/55 tracking-[0.3em]">鳥居後面，藏著什麼？</h2>
-                    <h1 class="text-4xl md:text-[3.4rem] font-black mb-5 text-vintage-burgundy leading-tight tracking-tight">尋訪宜蘭神社遺址</h1>
+                    <h2 class="text-lg md:text-xl font-light mb-3 text-vintage-cream/75 tracking-[0.3em]" style="text-shadow:0 1px 12px rgba(0,0,0,0.5);">鳥居後面，藏著什麼？</h2>
+                    <h1 class="text-4xl md:text-[3.4rem] font-black mb-5 text-vintage-cream leading-tight tracking-tight" style="text-shadow:0 2px 24px rgba(0,0,0,0.65),0 1px 4px rgba(0,0,0,0.45);">尋訪宜蘭神社遺址</h1>
                     <div class="w-12 h-[2px] bg-vintage-gold mx-auto mb-7"></div>
 
                     <!-- 情感文案 — 損失規避 + 個人代入 -->
-                    <p class="text-[15px] md:text-base text-vintage-charcoal/68 leading-[1.95] font-light mb-8 px-2">
+                    <p class="text-[15px] md:text-base text-vintage-cream/85 leading-[1.95] font-light mb-8 px-2" style="text-shadow:0 1px 8px rgba(0,0,0,0.45);">
                         日治時代，宜蘭每座山丘都曾有神明守護。<br>
                         戰後，它們靜悄悄消失了——<br>
-                        <span class="text-vintage-burgundy font-semibold">有的埋在土裡，有的你每天路過卻不知道。</span>
+                        <span class="font-semibold" style="color:#F0CB85;text-shadow:0 1px 12px rgba(0,0,0,0.45),0 0 16px rgba(232,168,80,0.32);">有的埋在土裡，有的你每天路過卻不知道。</span>
                     </p>
 
                     <!-- Zeigarnik Effect — 3 個未完成遺址，觸發完成衝動 -->
                     <div class="flex justify-center gap-8 mb-9">
                         <div class="flex flex-col items-center gap-1.5">
-                            <div class="w-3.5 h-3.5 rounded-full border-2 border-vintage-burgundy/35"></div>
-                            <span class="text-[10px] text-vintage-charcoal/38 font-sans tracking-wider">員山</span>
+                            <div class="w-3.5 h-3.5 rounded-full border-2" style="border-color:rgba(240,203,133,0.65);box-shadow:0 0 8px rgba(240,203,133,0.35);"></div>
+                            <span class="text-[10px] font-sans tracking-wider" style="color:rgba(245,240,232,0.72);text-shadow:0 1px 6px rgba(0,0,0,0.5);">員山</span>
                         </div>
                         <div class="flex flex-col items-center gap-1.5">
-                            <div class="w-3.5 h-3.5 rounded-full border-2 border-vintage-burgundy/35"></div>
-                            <span class="text-[10px] text-vintage-charcoal/38 font-sans tracking-wider">羅東</span>
+                            <div class="w-3.5 h-3.5 rounded-full border-2" style="border-color:rgba(240,203,133,0.65);box-shadow:0 0 8px rgba(240,203,133,0.35);"></div>
+                            <span class="text-[10px] font-sans tracking-wider" style="color:rgba(245,240,232,0.72);text-shadow:0 1px 6px rgba(0,0,0,0.5);">羅東</span>
                         </div>
                         <div class="flex flex-col items-center gap-1.5">
-                            <div class="w-3.5 h-3.5 rounded-full border-2 border-vintage-burgundy/35"></div>
-                            <span class="text-[10px] text-vintage-charcoal/38 font-sans tracking-wider">蘇澳</span>
+                            <div class="w-3.5 h-3.5 rounded-full border-2" style="border-color:rgba(240,203,133,0.65);box-shadow:0 0 8px rgba(240,203,133,0.35);"></div>
+                            <span class="text-[10px] font-sans tracking-wider" style="color:rgba(245,240,232,0.72);text-shadow:0 1px 6px rgba(0,0,0,0.5);">蘇澳</span>
                         </div>
                     </div>
 
                     <!-- 次要 CTA — 探究問題頁 -->
-                    <button onclick="navigateTo('view-inquiry')" class="inline-flex items-center gap-2 text-vintage-burgundy border border-vintage-burgundy/30 px-7 py-3 rounded-full font-sans text-[12px] tracking-[0.18em] hover:bg-vintage-burgundy hover:text-vintage-cream transition-all duration-300 mb-3">
+                    <button onclick="navigateTo('view-inquiry')" class="inline-flex items-center gap-2 text-vintage-cream/95 border border-vintage-cream/40 px-7 py-3 rounded-full font-sans text-[12px] tracking-[0.18em] hover:bg-vintage-cream/15 hover:border-vintage-cream/65 transition-all duration-300 mb-3 backdrop-blur-md" style="background:rgba(255,255,255,0.06);">
                       <iconify-icon icon="ph:question-light"></iconify-icon>
                       探究問題與架構
                     </button>
@@ -1060,7 +888,7 @@
 
                     <!-- 次要導引 — 向下漂浮提示 -->
                     <div class="block">
-                        <a href="#inquiry-framework" class="inline-flex flex-col items-center gap-1 text-vintage-charcoal/32 hover:text-vintage-burgundy/70 transition-colors duration-300">
+                        <a href="#inquiry-framework" class="inline-flex flex-col items-center gap-1 hover:text-vintage-cream transition-colors duration-300" style="color:rgba(245,240,232,0.5);">
                             <span class="font-sans text-[10px] tracking-[0.2em] uppercase">先了解探究脈絡</span>
                             <iconify-icon icon="ph:caret-double-down" class="text-base"></iconify-icon>
                         </a>
@@ -1391,29 +1219,347 @@
     <div id="view-map" class="view">
         <!-- 裝飾剪影背景 -->
         <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <!-- 鳥居（左上） -->
-            <g transform="translate(120,80)" opacity="0.09" fill="#5C1A1B">
+            <defs>
+                <!-- 雲霧漸層 -->
+                <linearGradient id="mapCloudG" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#F5F0E8" stop-opacity="0.65"/>
+                    <stop offset="100%" stop-color="#F5F0E8" stop-opacity="0.1"/>
+                </linearGradient>
+                <!-- 山脈水墨漸層 -->
+                <linearGradient id="mapMtnG" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#5C1A1B" stop-opacity="0.08"/>
+                    <stop offset="100%" stop-color="#5C1A1B" stop-opacity="0.02"/>
+                </linearGradient>
+                <!-- 印章紋路 -->
+                <pattern id="mapStampGrid" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+                    <rect width="14" height="14" fill="none"/>
+                    <circle cx="7" cy="7" r="1" fill="#5C1A1B" opacity="0.4"/>
+                </pattern>
+                <radialGradient id="mapSunWash" cx="50%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#fff6dc" stop-opacity="0.18"/>
+                    <stop offset="60%" stop-color="#e8c890" stop-opacity="0.05"/>
+                    <stop offset="100%" stop-color="#e8c890" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+
+            <!-- ★ 全景暖陽光暈底層 ★ -->
+            <rect x="0" y="0" width="1440" height="900" fill="url(#mapSunWash)"/>
+
+            <!-- ★ 遠景水墨山脈（最底層，非常淡） ★ -->
+            <path d="M0,300 Q120,240 240,290 Q360,230 480,280 Q600,210 720,260 Q840,200 960,250 Q1080,220 1200,255 Q1320,230 1440,265 L1440,350 L0,350 Z" fill="url(#mapMtnG)"/>
+            <path d="M0,330 Q160,290 320,320 Q480,280 640,310 Q800,270 960,305 Q1120,280 1280,308 Q1360,295 1440,310 L1440,380 L0,380 Z" fill="#5C1A1B" opacity="0.05"/>
+
+            <!-- ★ 巨大背景書法字「蘭陽」（極淡） ★ -->
+            <g opacity="0.035">
+                <text x="180" y="540" font-size="280" font-family="'Noto Serif TC', serif" font-weight="900" fill="#5C1A1B" style="font-style:normal">蘭</text>
+                <text x="1080" y="540" font-size="280" font-family="'Noto Serif TC', serif" font-weight="900" fill="#5C1A1B" style="font-style:normal">陽</text>
+            </g>
+            <!-- 中央極淡漢字「神域」 -->
+            <g opacity="0.025">
+                <text x="540" y="700" font-size="180" font-family="'Noto Serif TC', serif" font-weight="900" fill="#5C1A1B">神</text>
+                <text x="780" y="700" font-size="180" font-family="'Noto Serif TC', serif" font-weight="900" fill="#5C1A1B">域</text>
+            </g>
+
+            <!-- ★ 復古地圖網格 — 經緯線 ★ -->
+            <g opacity="0.06" stroke="#5C1A1B" stroke-width="0.5" fill="none">
+                <line x1="0" y1="200" x2="1440" y2="200"/>
+                <line x1="0" y1="450" x2="1440" y2="450"/>
+                <line x1="0" y1="700" x2="1440" y2="700"/>
+                <line x1="240" y1="0" x2="240" y2="900"/>
+                <line x1="720" y1="0" x2="720" y2="900"/>
+                <line x1="1200" y1="0" x2="1200" y2="900"/>
+            </g>
+
+            <!-- ★ 鳥居（左上） ★ -->
+            <g transform="translate(120,80)" opacity="0.11" fill="#5C1A1B">
                 <rect x="0" y="30" width="90" height="8" rx="2"/>
                 <rect x="5" y="16" width="80" height="6" rx="1"/>
                 <rect x="12" y="20" width="9" height="65" rx="2"/>
                 <rect x="69" y="20" width="9" height="65" rx="2"/>
+                <!-- 神額 -->
+                <rect x="30" y="22" width="30" height="14" rx="1" opacity="0.55"/>
             </g>
-            <!-- 石燈籠（右上） -->
-            <g transform="translate(1260,80)" opacity="0.09" fill="#5C1A1B">
+
+            <!-- ★ 櫻花枝條（左上延伸進畫面） ★ -->
+            <g transform="translate(0,140)" opacity="0.18">
+                <!-- 枝幹 -->
+                <path d="M0,30 Q60,40 110,50 Q170,55 230,40 Q280,25 320,35" stroke="#5a3c20" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M60,40 Q80,20 95,8" stroke="#5a3c20" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M180,52 Q190,72 195,88" stroke="#5a3c20" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M230,40 Q245,22 254,10" stroke="#5a3c20" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <!-- 櫻花朵 -->
+                <g fill="#d88aa0">
+                    <circle cx="48"  cy="42" r="5"/>
+                    <circle cx="52"  cy="36" r="3.5"/>
+                    <circle cx="92"  cy="10" r="4.5"/>
+                    <circle cx="98"  cy="6"  r="3"/>
+                    <circle cx="140" cy="48" r="5"/>
+                    <circle cx="148" cy="44" r="3"/>
+                    <circle cx="186" cy="60" r="4"/>
+                    <circle cx="196" cy="86" r="5"/>
+                    <circle cx="232" cy="42" r="4.5"/>
+                    <circle cx="254" cy="12" r="5"/>
+                    <circle cx="260" cy="6"  r="3"/>
+                    <circle cx="300" cy="36" r="4"/>
+                    <circle cx="320" cy="32" r="5"/>
+                </g>
+                <!-- 花蕊（深色點綴） -->
+                <g fill="#a04060" opacity="0.7">
+                    <circle cx="48" cy="42" r="1.2"/>
+                    <circle cx="92" cy="10" r="1.2"/>
+                    <circle cx="140" cy="48" r="1.2"/>
+                    <circle cx="232" cy="42" r="1.2"/>
+                    <circle cx="320" cy="32" r="1.2"/>
+                </g>
+            </g>
+
+            <!-- ★ 櫻花枝條（右上對稱） ★ -->
+            <g transform="translate(1140,170) scale(-1,1)" opacity="0.16">
+                <path d="M0,30 Q60,40 110,50 Q170,55 230,40 Q280,25 300,35" stroke="#5a3c20" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M80,42 Q100,20 115,6" stroke="#5a3c20" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M200,48 Q220,70 230,86" stroke="#5a3c20" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <g fill="#d88aa0">
+                    <circle cx="68"  cy="42" r="5"/>
+                    <circle cx="112" cy="8"  r="4.5"/>
+                    <circle cx="150" cy="48" r="5"/>
+                    <circle cx="206" cy="60" r="4"/>
+                    <circle cx="226" cy="84" r="5"/>
+                    <circle cx="262" cy="38" r="4.5"/>
+                    <circle cx="298" cy="32" r="4"/>
+                </g>
+            </g>
+
+            <!-- ★ 石燈籠（右上） ★ -->
+            <g transform="translate(1280,80)" opacity="0.13" fill="#5C1A1B">
                 <rect x="-18" y="0" width="36" height="22" rx="3"/>
                 <rect x="-12" y="22" width="24" height="5"/>
                 <rect x="-22" y="27" width="44" height="32" rx="2"/>
+                <!-- 光火紋 -->
+                <rect x="-10" y="35" width="20" height="14" rx="1" fill="#B89B72" opacity="0.6"/>
                 <rect x="-10" y="59" width="20" height="7"/>
                 <rect x="-25" y="66" width="50" height="9" rx="2"/>
                 <rect x="-5" y="75" width="10" height="24"/>
                 <rect x="-26" y="99" width="52" height="8" rx="2"/>
             </g>
-            <!-- 指南針（右下） -->
-            <g transform="translate(1280,760)" opacity="0.1">
-                <circle cx="0" cy="0" r="36" fill="none" stroke="#5C1A1B" stroke-width="2"/>
+
+            <!-- ★ 五重塔遠景剪影（左中上方，模糊遠處） ★ -->
+            <g transform="translate(220,280)" opacity="0.08" fill="#5C1A1B">
+                <!-- 塔頂相輪 -->
+                <line x1="35" y1="0" x2="35" y2="-20" stroke="#5C1A1B" stroke-width="2"/>
+                <circle cx="35" cy="-22" r="3" fill="#5C1A1B"/>
+                <circle cx="35" cy="-15" r="2" fill="none" stroke="#5C1A1B" stroke-width="1"/>
+                <circle cx="35" cy="-10" r="2" fill="none" stroke="#5C1A1B" stroke-width="1"/>
+                <!-- 五層屋頂 -->
+                <polygon points="20,0 50,0 47,-3 23,-3"/>
+                <rect x="26" y="0" width="18" height="18"/>
+                <polygon points="14,18 56,18 50,14 20,14"/>
+                <rect x="22" y="18" width="26" height="20"/>
+                <polygon points="10,38 60,38 53,33 17,33"/>
+                <rect x="18" y="38" width="34" height="22"/>
+                <polygon points="6,60 64,60 56,55 14,55"/>
+                <rect x="14" y="60" width="42" height="24"/>
+                <polygon points="0,84 70,84 60,78 10,78"/>
+                <rect x="10" y="84" width="50" height="28"/>
+                <!-- 基座 -->
+                <rect x="0" y="112" width="70" height="6"/>
+            </g>
+
+            <!-- ★ 神社拜殿遠景剪影（右中上方） ★ -->
+            <g transform="translate(1100,290)" opacity="0.08" fill="#5C1A1B">
+                <!-- 千木 -->
+                <line x1="22" y1="-10" x2="30" y2="2" stroke="#5C1A1B" stroke-width="2.5"/>
+                <line x1="58" y1="-10" x2="50" y2="2" stroke="#5C1A1B" stroke-width="2.5"/>
+                <!-- 屋頂 -->
+                <polygon points="0,12 80,12 70,0 10,0"/>
+                <rect x="6" y="12" width="68" height="4"/>
+                <!-- 主殿 -->
+                <rect x="14" y="16" width="52" height="36"/>
+                <!-- 門 -->
+                <rect x="34" y="32" width="12" height="20" fill="#3a1010"/>
+                <!-- 階梯 -->
+                <rect x="8" y="52" width="64" height="4"/>
+                <rect x="4" y="56" width="72" height="4"/>
+            </g>
+
+            <!-- ★ 左側竹林（垂直） ★ -->
+            <g opacity="0.10" stroke="#3d5040" stroke-width="3" stroke-linecap="round" fill="none">
+                <line x1="60"  y1="200" x2="60"  y2="780"/>
+                <line x1="75"  y1="240" x2="75"  y2="760"/>
+                <line x1="40"  y1="280" x2="40"  y2="800"/>
+                <!-- 竹節 -->
+                <g stroke-width="2" opacity="0.7">
+                    <line x1="52" y1="300" x2="68" y2="300"/>
+                    <line x1="52" y1="420" x2="68" y2="420"/>
+                    <line x1="52" y1="540" x2="68" y2="540"/>
+                    <line x1="52" y1="660" x2="68" y2="660"/>
+                    <line x1="67" y1="340" x2="83" y2="340"/>
+                    <line x1="67" y1="460" x2="83" y2="460"/>
+                    <line x1="67" y1="580" x2="83" y2="580"/>
+                    <line x1="67" y1="700" x2="83" y2="700"/>
+                    <line x1="32" y1="380" x2="48" y2="380"/>
+                    <line x1="32" y1="500" x2="48" y2="500"/>
+                    <line x1="32" y1="620" x2="48" y2="620"/>
+                    <line x1="32" y1="740" x2="48" y2="740"/>
+                </g>
+                <!-- 竹葉 -->
+                <g fill="#4a6048" stroke="none" opacity="0.85">
+                    <ellipse cx="50" cy="270" rx="14" ry="3" transform="rotate(-30 50 270)"/>
+                    <ellipse cx="80" cy="320" rx="14" ry="3" transform="rotate(30 80 320)"/>
+                    <ellipse cx="32" cy="370" rx="14" ry="3" transform="rotate(-30 32 370)"/>
+                    <ellipse cx="86" cy="500" rx="14" ry="3" transform="rotate(30 86 500)"/>
+                    <ellipse cx="34" cy="600" rx="14" ry="3" transform="rotate(-30 34 600)"/>
+                    <ellipse cx="82" cy="680" rx="14" ry="3" transform="rotate(30 82 680)"/>
+                </g>
+            </g>
+
+            <!-- ★ 右側竹林（垂直） ★ -->
+            <g transform="translate(1340,0)" opacity="0.09" stroke="#3d5040" stroke-width="3" stroke-linecap="round" fill="none">
+                <line x1="0"  y1="200" x2="0"  y2="780"/>
+                <line x1="20" y1="250" x2="20" y2="800"/>
+                <line x1="40" y1="280" x2="40" y2="760"/>
+                <g stroke-width="2" opacity="0.7">
+                    <line x1="-8" y1="320" x2="8"  y2="320"/>
+                    <line x1="-8" y1="440" x2="8"  y2="440"/>
+                    <line x1="-8" y1="560" x2="8"  y2="560"/>
+                    <line x1="-8" y1="680" x2="8"  y2="680"/>
+                    <line x1="12" y1="360" x2="28" y2="360"/>
+                    <line x1="12" y1="480" x2="28" y2="480"/>
+                    <line x1="12" y1="600" x2="28" y2="600"/>
+                    <line x1="32" y1="400" x2="48" y2="400"/>
+                    <line x1="32" y1="520" x2="48" y2="520"/>
+                    <line x1="32" y1="640" x2="48" y2="640"/>
+                </g>
+                <g fill="#4a6048" stroke="none" opacity="0.85">
+                    <ellipse cx="8"  cy="290" rx="14" ry="3" transform="rotate(30 8 290)"/>
+                    <ellipse cx="-8" cy="340" rx="14" ry="3" transform="rotate(-30 -8 340)"/>
+                    <ellipse cx="44" cy="450" rx="14" ry="3" transform="rotate(30 44 450)"/>
+                    <ellipse cx="6"  cy="540" rx="14" ry="3" transform="rotate(-30 6 540)"/>
+                    <ellipse cx="42" cy="630" rx="14" ry="3" transform="rotate(30 42 630)"/>
+                </g>
+            </g>
+
+            <!-- ★ 日式雲紋（kumo）漂浮 — 左 ★ -->
+            <g transform="translate(80,460)" opacity="0.10" fill="#5C1A1B">
+                <path d="M0,20 Q5,5 18,8 Q22,-2 36,2 Q44,-4 56,4 Q64,0 72,8 Q80,4 86,16 Q90,28 78,32 Q74,40 60,38 Q52,46 38,40 Q28,46 18,38 Q6,40 0,30 Z"/>
+                <!-- 雲紋細部線條 -->
+                <g fill="none" stroke="#5C1A1B" stroke-width="1" opacity="0.6">
+                    <path d="M14,22 Q22,18 30,22"/>
+                    <path d="M40,18 Q48,14 56,18"/>
+                    <path d="M62,24 Q70,20 76,24"/>
+                </g>
+            </g>
+
+            <!-- ★ 日式雲紋（kumo）— 右 ★ -->
+            <g transform="translate(1280,520)" opacity="0.10" fill="#5C1A1B">
+                <path d="M0,20 Q5,5 18,8 Q22,-2 36,2 Q44,-4 56,4 Q64,0 72,8 Q80,4 86,16 Q90,28 78,32 Q74,40 60,38 Q52,46 38,40 Q28,46 18,38 Q6,40 0,30 Z"/>
+                <g fill="none" stroke="#5C1A1B" stroke-width="1" opacity="0.6">
+                    <path d="M14,22 Q22,18 30,22"/>
+                    <path d="M40,18 Q48,14 56,18"/>
+                    <path d="M62,24 Q70,20 76,24"/>
+                </g>
+            </g>
+
+            <!-- ★ 日式雲紋（kumo）— 中下方 ★ -->
+            <g transform="translate(720,200) scale(0.7)" opacity="0.07" fill="#5C1A1B">
+                <path d="M0,20 Q5,5 18,8 Q22,-2 36,2 Q44,-4 56,4 Q64,0 72,8 Q80,4 86,16 Q90,28 78,32 Q74,40 60,38 Q52,46 38,40 Q28,46 18,38 Q6,40 0,30 Z"/>
+            </g>
+
+            <!-- ★ 鶴飛翔剪影（左上空中） ★ -->
+            <g transform="translate(380,140)" opacity="0.13" fill="#2D2A26">
+                <!-- 鶴1 -->
+                <path d="M0,0 Q-10,-8 -22,-5 L-18,2 Q-12,3 -6,0 Z"/>
+                <path d="M0,0 Q10,-8 22,-5 L18,2 Q12,3 6,0 Z"/>
+                <ellipse cx="0" cy="2" rx="3" ry="1.5"/>
+                <line x1="3" y1="2" x2="9" y2="3" stroke="#2D2A26" stroke-width="0.8"/>
+            </g>
+            <g transform="translate(420,170) scale(0.7)" opacity="0.10" fill="#2D2A26">
+                <path d="M0,0 Q-10,-8 -22,-5 L-18,2 Q-12,3 -6,0 Z"/>
+                <path d="M0,0 Q10,-8 22,-5 L18,2 Q12,3 6,0 Z"/>
+                <ellipse cx="0" cy="2" rx="3" ry="1.5"/>
+                <line x1="3" y1="2" x2="9" y2="3" stroke="#2D2A26" stroke-width="0.8"/>
+            </g>
+            <g transform="translate(360,200) scale(0.55)" opacity="0.08" fill="#2D2A26">
+                <path d="M0,0 Q-10,-8 -22,-5 L-18,2 Q-12,3 -6,0 Z"/>
+                <path d="M0,0 Q10,-8 22,-5 L18,2 Q12,3 6,0 Z"/>
+                <ellipse cx="0" cy="2" rx="3" ry="1.5"/>
+            </g>
+
+            <!-- ★ 復古印章（朱印） — 左中 ★ -->
+            <g transform="translate(200,460)" opacity="0.16">
+                <rect x="-26" y="-26" width="52" height="52" rx="3" fill="none" stroke="#8B1818" stroke-width="2.5"/>
+                <rect x="-22" y="-22" width="44" height="44" rx="2" fill="rgba(139,24,24,0.06)"/>
+                <text x="0" y="-3" font-size="14" fill="#8B1818" text-anchor="middle" font-family="'Noto Serif TC', serif" font-weight="900">蘭陽</text>
+                <text x="0" y="14" font-size="14" fill="#8B1818" text-anchor="middle" font-family="'Noto Serif TC', serif" font-weight="900">踏查</text>
+            </g>
+
+            <!-- ★ 復古印章（朱印） — 右下 ★ -->
+            <g transform="translate(1220,640) rotate(-8)" opacity="0.15">
+                <circle cx="0" cy="0" r="34" fill="none" stroke="#8B1818" stroke-width="2.5"/>
+                <circle cx="0" cy="0" r="28" fill="rgba(139,24,24,0.05)"/>
+                <text x="0" y="-2" font-size="11" fill="#8B1818" text-anchor="middle" font-family="'Noto Serif TC', serif" font-weight="900">神社</text>
+                <text x="0" y="14" font-size="11" fill="#8B1818" text-anchor="middle" font-family="'Noto Serif TC', serif" font-weight="900">遺址</text>
+                <text x="0" y="-18" font-size="6" fill="#8B1818" text-anchor="middle" font-family="'Inter', sans-serif" letter-spacing="2">YILAN</text>
+            </g>
+
+            <!-- ★ 復古印章（落款） — 中上方小印 ★ -->
+            <g transform="translate(720,80) rotate(4)" opacity="0.12">
+                <rect x="-18" y="-18" width="36" height="36" rx="2" fill="rgba(139,24,24,0.05)" stroke="#8B1818" stroke-width="1.5"/>
+                <text x="0" y="6" font-size="20" fill="#8B1818" text-anchor="middle" font-family="'Noto Serif TC', serif" font-weight="900">壱</text>
+            </g>
+
+            <!-- ★ 水墨筆觸（sumi-e style） — 左下方 ★ -->
+            <g opacity="0.09" fill="#2D2A26">
+                <path d="M40,820 Q70,810 100,815 Q130,818 150,824 Q120,830 90,828 Q60,830 40,820 Z"/>
+                <path d="M50,840 Q80,832 110,835 Q140,840 165,848 Q130,852 95,850 Q65,852 50,840 Z" opacity="0.7"/>
+            </g>
+
+            <!-- ★ 水墨筆觸 — 右下方 ★ -->
+            <g opacity="0.08" fill="#2D2A26">
+                <path d="M1280,840 Q1310,832 1340,835 Q1370,840 1400,848 Q1365,852 1325,850 Q1295,852 1280,840 Z"/>
+            </g>
+
+            <!-- ★ 楓葉散落 — 左中下 ★ -->
+            <g opacity="0.18">
+                <g transform="translate(90,640) rotate(15)" fill="#a85020">
+                    <path d="M0,-8 L-2,-3 L-7,-4 L-4,1 L-7,5 L-2,4 L0,9 L2,4 L7,5 L4,1 L7,-4 L2,-3 Z"/>
+                    <line x1="0" y1="9" x2="0" y2="14" stroke="#a85020" stroke-width="1"/>
+                </g>
+                <g transform="translate(150,720) rotate(-20) scale(0.7)" fill="#b86038">
+                    <path d="M0,-8 L-2,-3 L-7,-4 L-4,1 L-7,5 L-2,4 L0,9 L2,4 L7,5 L4,1 L7,-4 L2,-3 Z"/>
+                    <line x1="0" y1="9" x2="0" y2="14" stroke="#b86038" stroke-width="1"/>
+                </g>
+            </g>
+            <!-- 楓葉 — 右中 -->
+            <g opacity="0.16">
+                <g transform="translate(1340,400) rotate(35) scale(0.85)" fill="#a85020">
+                    <path d="M0,-8 L-2,-3 L-7,-4 L-4,1 L-7,5 L-2,4 L0,9 L2,4 L7,5 L4,1 L7,-4 L2,-3 Z"/>
+                    <line x1="0" y1="9" x2="0" y2="14" stroke="#a85020" stroke-width="1"/>
+                </g>
+                <g transform="translate(1300,560) rotate(-15)" fill="#b86038">
+                    <path d="M0,-8 L-2,-3 L-7,-4 L-4,1 L-7,5 L-2,4 L0,9 L2,4 L7,5 L4,1 L7,-4 L2,-3 Z"/>
+                </g>
+            </g>
+
+            <!-- ★ 指南針（右下） ★ -->
+            <g transform="translate(1280,760)" opacity="0.14">
+                <!-- 外裝飾環 -->
+                <circle cx="0" cy="0" r="44" fill="none" stroke="#5C1A1B" stroke-width="0.8" stroke-dasharray="3 2"/>
+                <circle cx="0" cy="0" r="36" fill="rgba(245,240,232,0.4)" stroke="#5C1A1B" stroke-width="2"/>
                 <circle cx="0" cy="0" r="28" fill="none" stroke="#5C1A1B" stroke-width="0.5"/>
+                <!-- 八方刻度 -->
+                <g stroke="#5C1A1B" stroke-width="0.8" opacity="0.7">
+                    <line x1="0" y1="-32" x2="0" y2="-36"/>
+                    <line x1="0" y1="32" x2="0" y2="36"/>
+                    <line x1="-32" y1="0" x2="-36" y2="0"/>
+                    <line x1="32" y1="0" x2="36" y2="0"/>
+                    <line x1="-22" y1="-22" x2="-25" y2="-25"/>
+                    <line x1="22" y1="-22" x2="25" y2="-25"/>
+                    <line x1="-22" y1="22" x2="-25" y2="25"/>
+                    <line x1="22" y1="22" x2="25" y2="25"/>
+                </g>
                 <polygon points="0,-22 6,0 0,-5 -6,0" fill="#5C1A1B"/>
                 <polygon points="0,22 6,0 0,5 -6,0" fill="#8B6914"/>
+                <circle cx="0" cy="0" r="3" fill="#5C1A1B"/>
                 <text x="0" y="-26" font-size="11" fill="#5C1A1B" text-anchor="middle" font-family="sans-serif" font-weight="700">N</text>
                 <text x="0" y="36" font-size="11" fill="#5C1A1B" text-anchor="middle" font-family="sans-serif">S</text>
                 <text x="30" y="5" font-size="11" fill="#5C1A1B" text-anchor="middle" font-family="sans-serif">E</text>
@@ -1421,34 +1567,133 @@
                 <line x1="0" y1="-20" x2="0" y2="20" stroke="#5C1A1B" stroke-width="0.5"/>
                 <line x1="-20" y1="0" x2="20" y2="0" stroke="#5C1A1B" stroke-width="0.5"/>
             </g>
-            <!-- 放大鏡（左下） -->
-            <g transform="translate(120,720)" opacity="0.09">
+
+            <!-- ★ 放大鏡（左下） ★ -->
+            <g transform="translate(120,720)" opacity="0.11">
                 <circle cx="35" cy="35" r="30" fill="rgba(92,26,27,0.06)" stroke="#5C1A1B" stroke-width="5"/>
                 <circle cx="35" cy="35" r="18" fill="none" stroke="#5C1A1B" stroke-width="2"/>
+                <!-- 鏡面反光 -->
+                <ellipse cx="28" cy="28" rx="6" ry="3" fill="rgba(245,240,232,0.5)" transform="rotate(-30 28 28)"/>
                 <line x1="57" y1="57" x2="82" y2="82" stroke="#5C1A1B" stroke-width="6" stroke-linecap="round"/>
                 <rect x="76" y="72" width="18" height="30" rx="8" fill="#5C1A1B" transform="rotate(45,85,87)"/>
             </g>
-            <!-- 小石燈籠（左中） -->
-            <g transform="translate(120,380)" opacity="0.08" fill="#5C1A1B">
+
+            <!-- ★ 小石燈籠（左中） ★ -->
+            <g transform="translate(120,380)" opacity="0.1" fill="#5C1A1B">
                 <rect x="5" y="0" width="24" height="16" rx="2"/>
                 <rect x="9" y="16" width="14" height="4"/>
                 <rect x="0" y="20" width="34" height="28" rx="3"/>
+                <!-- 燭火紋 -->
+                <rect x="8" y="26" width="18" height="14" rx="1" fill="#B89B72" opacity="0.55"/>
                 <rect x="12" y="48" width="10" height="5"/>
                 <rect x="-4" y="53" width="42" height="7" rx="2"/>
                 <rect x="12" y="60" width="10" height="18"/>
                 <rect x="-5" y="78" width="44" height="7" rx="2"/>
             </g>
-            <!-- 小鳥居（右中） -->
-            <g transform="translate(1260,390)" opacity="0.07" fill="#5C1A1B">
+
+            <!-- ★ 小鳥居（右中） ★ -->
+            <g transform="translate(1260,390)" opacity="0.09" fill="#5C1A1B">
                 <rect x="-28" y="20" width="56" height="6" rx="1"/>
                 <rect x="-22" y="11" width="44" height="5" rx="1"/>
                 <rect x="-20" y="14" width="6" height="40" rx="1"/>
                 <rect x="14" y="14" width="6" height="40" rx="1"/>
+                <rect x="-8" y="18" width="16" height="6" opacity="0.5"/>
             </g>
-            <!-- 波浪裝飾（底部） -->
-            <path d="M 0 860 Q 90 845 180 860 Q 270 875 360 860 Q 450 845 540 860 Q 630 875 720 860 Q 810 845 900 860 Q 990 875 1080 860 Q 1170 845 1260 860 Q 1350 875 1440 860" fill="none" stroke="#5C1A1B" stroke-width="2" opacity="0.07"/>
-            <path d="M 0 875 Q 90 860 180 875 Q 270 890 360 875 Q 450 860 540 875 Q 630 890 720 875 Q 810 860 900 875 Q 990 890 1080 875 Q 1170 860 1260 875 Q 1350 890 1440 875" fill="none" stroke="#5C1A1B" stroke-width="1.5" opacity="0.05"/>
+
+            <!-- ★ 蘭花裝飾（左中下） ★ -->
+            <g transform="translate(80,560)" opacity="0.14">
+                <!-- 葉 -->
+                <path d="M0,40 Q-10,20 -16,0 Q-14,-4 -10,-2 Q-6,12 0,40 Z" fill="#4a6048"/>
+                <path d="M0,40 Q12,18 22,0 Q24,-4 20,-2 Q14,14 0,40 Z" fill="#4a6048"/>
+                <path d="M0,40 Q-4,16 -2,-10 Q2,-12 4,-10 Q3,18 0,40 Z" fill="#5a7058"/>
+                <!-- 花 -->
+                <g fill="#c890a8">
+                    <ellipse cx="-8" cy="-6" rx="3" ry="6" transform="rotate(-20 -8 -6)"/>
+                    <ellipse cx="8"  cy="-8" rx="3" ry="6" transform="rotate(20 8 -8)"/>
+                    <ellipse cx="0"  cy="-14" rx="3" ry="5"/>
+                </g>
+                <circle cx="0" cy="-8" r="1.5" fill="#8a4060"/>
+            </g>
+
+            <!-- ★ 古地圖風玫瑰羅盤裝飾（中上方，極淡） ★ -->
+            <g transform="translate(720,420)" opacity="0.04" fill="#5C1A1B">
+                <circle cx="0" cy="0" r="80" fill="none" stroke="#5C1A1B" stroke-width="1"/>
+                <circle cx="0" cy="0" r="50" fill="none" stroke="#5C1A1B" stroke-width="0.6"/>
+                <g>
+                    <polygon points="0,-78 8,-10 0,-20 -8,-10"/>
+                    <polygon points="0,78 8,10 0,20 -8,10"/>
+                    <polygon points="-78,0 -10,-8 -20,0 -10,8"/>
+                    <polygon points="78,0 10,-8 20,0 10,8"/>
+                    <polygon points="55,-55 6,-6 14,-14 -6,6" opacity="0.55"/>
+                    <polygon points="-55,55 -6,6 -14,14 6,-6" opacity="0.55"/>
+                    <polygon points="-55,-55 -6,-6 -14,-14 6,6" opacity="0.55"/>
+                    <polygon points="55,55 6,6 14,14 -6,-6" opacity="0.55"/>
+                </g>
+            </g>
+
+            <!-- ★ 古地圖風海浪紋 — 增強底部 ★ -->
+            <g opacity="0.10" fill="none" stroke="#5C1A1B" stroke-linecap="round">
+                <!-- 主浪 -->
+                <path d="M 0 858 Q 60 838 120 858 Q 180 878 240 858 Q 300 838 360 858 Q 420 878 480 858 Q 540 838 600 858 Q 660 878 720 858 Q 780 838 840 858 Q 900 878 960 858 Q 1020 838 1080 858 Q 1140 878 1200 858 Q 1260 838 1320 858 Q 1380 878 1440 858" stroke-width="2"/>
+                <path d="M 0 875 Q 60 858 120 875 Q 180 892 240 875 Q 300 858 360 875 Q 420 892 480 875 Q 540 858 600 875 Q 660 892 720 875 Q 780 858 840 875 Q 900 892 960 875 Q 1020 858 1080 875 Q 1140 892 1200 875 Q 1260 858 1320 875 Q 1380 892 1440 875" stroke-width="1.5" opacity="0.75"/>
+                <path d="M 0 890 Q 60 876 120 890 Q 180 904 240 890 Q 300 876 360 890 Q 420 904 480 890 Q 540 876 600 890 Q 660 904 720 890 Q 780 876 840 890 Q 900 904 960 890 Q 1020 876 1080 890 Q 1140 904 1200 890 Q 1260 876 1320 890 Q 1380 904 1440 890" stroke-width="1" opacity="0.55"/>
+                <!-- 浪花圓圈 -->
+                <g stroke-width="1.2">
+                    <circle cx="180" cy="855" r="3"/>
+                    <circle cx="420" cy="855" r="3"/>
+                    <circle cx="660" cy="855" r="3"/>
+                    <circle cx="900" cy="855" r="3"/>
+                    <circle cx="1140" cy="855" r="3"/>
+                    <circle cx="1380" cy="855" r="3"/>
+                </g>
+            </g>
+
+            <!-- ★ 漂浮雲彩（底部） ★ -->
+            <ellipse cx="400" cy="780" rx="160" ry="22" fill="url(#mapCloudG)" opacity="0.45"/>
+            <ellipse cx="1000" cy="800" rx="180" ry="24" fill="url(#mapCloudG)" opacity="0.4"/>
+
+            <!-- ★ 邊框裝飾 — 對稱角落紋飾 ★ -->
+            <g opacity="0.18" stroke="#5C1A1B" fill="none" stroke-width="1">
+                <!-- 左上角 -->
+                <path d="M30,30 L30,72 M30,30 L72,30" stroke-width="1.5"/>
+                <path d="M44,44 L44,60 M44,44 L60,44"/>
+                <circle cx="30" cy="30" r="3" fill="#5C1A1B"/>
+                <!-- 右上角 -->
+                <path d="M1410,30 L1410,72 M1410,30 L1368,30" stroke-width="1.5"/>
+                <path d="M1396,44 L1396,60 M1396,44 L1380,44"/>
+                <circle cx="1410" cy="30" r="3" fill="#5C1A1B"/>
+                <!-- 左下角 -->
+                <path d="M30,870 L30,828 M30,870 L72,870" stroke-width="1.5"/>
+                <path d="M44,856 L44,840 M44,856 L60,856"/>
+                <circle cx="30" cy="870" r="3" fill="#5C1A1B"/>
+                <!-- 右下角 -->
+                <path d="M1410,870 L1410,828 M1410,870 L1368,870" stroke-width="1.5"/>
+                <path d="M1396,856 L1396,840 M1396,856 L1380,856"/>
+                <circle cx="1410" cy="870" r="3" fill="#5C1A1B"/>
+            </g>
         </svg>
+
+        <!-- ★ CSS 動畫漂浮雲層（橫向） ★ -->
+        <svg class="map-cloud-svg" style="top:18%; left:0; width:200px; height:50px; opacity:0.5; animation-duration:65s;" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,30 Q15,15 30,18 Q40,8 55,15 Q70,5 85,15 Q100,10 115,18 Q130,12 145,22 Q160,18 175,28 Q190,22 195,32 L195,40 L10,40 Z" fill="#F5F0E8" opacity="0.55"/>
+        </svg>
+        <svg class="map-cloud-svg" style="top:42%; left:0; width:260px; height:55px; opacity:0.4; animation-duration:90s; animation-delay:-30s;" viewBox="0 0 260 55" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,35 Q18,18 35,22 Q50,10 70,18 Q90,8 110,18 Q130,12 150,22 Q170,16 190,26 Q210,22 230,30 Q245,26 255,36 L255,45 L10,45 Z" fill="#F5F0E8" opacity="0.45"/>
+        </svg>
+        <svg class="map-cloud-svg" style="top:62%; left:0; width:180px; height:42px; opacity:0.45; animation-duration:75s; animation-delay:-15s;" viewBox="0 0 180 42" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,28 Q18,12 32,16 Q45,8 60,14 Q75,6 90,14 Q105,10 120,18 Q138,14 155,22 Q170,20 175,28 L175,35 L10,35 Z" fill="#F5F0E8" opacity="0.5"/>
+        </svg>
+
+        <!-- ★ 落櫻動畫（覆蓋整頁） ★ -->
+        <div class="map-petal" style="left:8%;  width:9px;  height:11px; animation-duration:12s; animation-delay:-1s;"></div>
+        <div class="map-petal" style="left:18%; width:7px;  height:9px;  animation-duration:15s; animation-delay:-5s;"></div>
+        <div class="map-petal" style="left:28%; width:8px;  height:10px; animation-duration:14s; animation-delay:-8s;"></div>
+        <div class="map-petal" style="left:42%; width:6px;  height:8px;  animation-duration:16s; animation-delay:-3s;"></div>
+        <div class="map-petal" style="left:55%; width:9px;  height:11px; animation-duration:13s; animation-delay:-11s;"></div>
+        <div class="map-petal" style="left:68%; width:7px;  height:9px;  animation-duration:15s; animation-delay:-2s;"></div>
+        <div class="map-petal" style="left:78%; width:8px;  height:10px; animation-duration:14s; animation-delay:-9s;"></div>
+        <div class="map-petal" style="left:88%; width:6px;  height:8px;  animation-duration:17s; animation-delay:-6s;"></div>
+        <div class="map-petal" style="left:95%; width:9px;  height:11px; animation-duration:13s; animation-delay:-13s;"></div>
         <div class="map-page-layout">
             <div class="map-topbar animate-fade-in">
                 <button onclick="navigateTo('view-cover')" class="flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-white/90 px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-white">
@@ -1461,20 +1706,84 @@
                     </p>
                 </div>
                 
-                <!-- 按鈕組：探究問題、地理比較、指南與結論 -->
-                <div class="flex gap-2 flex-wrap justify-end">
-                    <button onclick="navigateTo('view-inquiry')" class="flex items-center gap-2 text-vintage-charcoal hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-white/90 px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-white">
-                        <iconify-icon icon="ph:question-light"></iconify-icon> 探究問題
+                <!-- 按鈕組：磁貼圖示式 -->
+                <div class="flex gap-3 items-start">
+
+                    <!-- 探究問題：放大鏡 -->
+                    <button onclick="navigateTo('view-inquiry')" class="stamp-nav-tile group" title="探究問題">
+                        <div class="stamp-nav-box" style="background:rgba(245,240,232,0.95);border-color:rgba(220,210,190,0.9);">
+                            <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
+                                <circle cx="13" cy="13" r="9" stroke="#5C1A1B" stroke-width="1.8" fill="none"/>
+                                <line x1="20" y1="20" x2="27" y2="27" stroke="#5C1A1B" stroke-width="2.2" stroke-linecap="round"/>
+                                <text x="9" y="17" font-size="10" fill="#5C1A1B" font-family="Georgia,serif" font-weight="bold">?</text>
+                            </svg>
+                        </div>
+                        <span class="stamp-nav-lbl" style="color:rgba(45,42,38,0.75);">探究問題</span>
                     </button>
-                    <button onclick="navigateTo('view-compare')" class="flex items-center gap-2 text-vintage-cream hover:bg-white hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-vintage-charcoal px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-vintage-charcoal/20">
-                        <iconify-icon icon="ph:table-light"></iconify-icon> 地理比較
+
+                    <!-- 地理比較：三點地圖 -->
+                    <button onclick="navigateTo('view-compare')" class="stamp-nav-tile group" title="地理比較">
+                        <div class="stamp-nav-box" style="background:#2D2A26;border-color:#1a1816;">
+                            <svg width="28" height="26" viewBox="0 0 30 28" fill="none">
+                                <path d="M3 5 L11 3 L19 5 L27 3 L27 23 L19 25 L11 23 L3 25 Z" fill="none" stroke="#F5F0E8" stroke-width="1.2" opacity="0.7"/>
+                                <line x1="11" y1="3" x2="11" y2="23" stroke="#F5F0E8" stroke-width="0.8" opacity="0.4"/>
+                                <line x1="19" y1="5" x2="19" y2="25" stroke="#F5F0E8" stroke-width="0.8" opacity="0.4"/>
+                                <circle cx="7" cy="12" r="2.2" fill="#B89B72"/>
+                                <circle cx="15" cy="10" r="2.2" fill="#B89B72"/>
+                                <circle cx="23" cy="14" r="2.2" fill="#B89B72"/>
+                                <line x1="7" y1="12" x2="15" y2="10" stroke="#B89B72" stroke-width="1" opacity="0.7"/>
+                                <line x1="15" y1="10" x2="23" y2="14" stroke="#B89B72" stroke-width="1" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <span class="stamp-nav-lbl" style="color:rgba(245,240,232,0.85);">地理比較</span>
                     </button>
-                    <button onclick="navigateTo('view-guide')" class="flex items-center gap-2 text-vintage-cream hover:bg-white hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-vintage-burgundy px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-vintage-burgundy/20">
-                        <iconify-icon icon="ph:book-open-text"></iconify-icon> 踏查指南
+
+                    <!-- 踏查指南：背包 -->
+                    <button onclick="navigateTo('view-guide')" class="stamp-nav-tile group" title="踏查指南">
+                        <div class="stamp-nav-box" style="background:#5C1A1B;border-color:#3d1011;">
+                            <svg width="26" height="28" viewBox="0 0 28 30" fill="none">
+                                <rect x="6" y="10" width="16" height="16" rx="4" fill="rgba(245,240,232,0.9)" stroke="#F5F0E8" stroke-width="1"/>
+                                <path d="M10 10 Q10 5 14 5 Q18 5 18 10" fill="none" stroke="#F5F0E8" stroke-width="1.5"/>
+                                <rect x="10" y="16" width="8" height="5" rx="1.5" fill="rgba(92,26,27,0.25)" stroke="rgba(92,26,27,0.5)" stroke-width="0.8"/>
+                                <line x1="14" y1="10" x2="14" y2="12" stroke="#F5F0E8" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <span class="stamp-nav-lbl" style="color:rgba(245,240,232,0.85);">踏查指南</span>
                     </button>
-                    <button onclick="navigateTo('view-conclusion')" class="flex items-center gap-2 text-vintage-cream hover:bg-white hover:text-vintage-burgundy font-sans text-sm tracking-widest uppercase transition-colors bg-vintage-gold px-5 py-2.5 rounded-full backdrop-blur-md shadow-md border border-vintage-gold/20">
-                        <iconify-icon icon="ph:file-text"></iconify-icon> 探究結論
+
+                    <!-- 探究結論：時間軸 (對應結論頁的時間線動畫) -->
+                    <button onclick="navigateTo('view-conclusion')" class="stamp-nav-tile group" title="探究結論">
+                        <div class="stamp-nav-box" style="background:#B89B72;border-color:#9a8058;">
+                            <svg width="30" height="22" viewBox="0 0 32 24" fill="none">
+                                <!-- 上方時間刻度 (短) -->
+                                <line x1="7" y1="5" x2="7" y2="8.5" stroke="rgba(245,240,232,0.7)" stroke-width="1"/>
+                                <line x1="16" y1="3.5" x2="16" y2="8.5" stroke="rgba(245,240,232,0.85)" stroke-width="1.2"/>
+                                <line x1="25" y1="5" x2="25" y2="8.5" stroke="rgba(245,240,232,0.7)" stroke-width="1"/>
+                                <!-- 上方時間標記點 (年份代表) -->
+                                <circle cx="7" cy="3.5" r="0.9" fill="rgba(245,240,232,0.65)"/>
+                                <circle cx="16" cy="2" r="1.1" fill="rgba(245,240,232,0.95)"/>
+                                <circle cx="25" cy="3.5" r="0.9" fill="rgba(245,240,232,0.65)"/>
+                                <!-- 時間軸主線 (中央水平) -->
+                                <line x1="3" y1="13.5" x2="29" y2="13.5" stroke="rgba(245,240,232,0.95)" stroke-width="1.6" stroke-linecap="round"/>
+                                <!-- 右側時間箭頭 (流向) -->
+                                <polyline points="27,11.5 30,13.5 27,15.5" fill="none" stroke="rgba(245,240,232,0.95)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                <!-- 三段歷史節點 -->
+                                <circle cx="7" cy="13.5" r="2.6" fill="rgba(245,240,232,0.95)" stroke="#5C1A1B" stroke-width="0.8"/>
+                                <circle cx="16" cy="13.5" r="2.6" fill="rgba(245,240,232,0.95)" stroke="#5C1A1B" stroke-width="0.8"/>
+                                <circle cx="23" cy="13.5" r="2.6" fill="rgba(245,240,232,0.95)" stroke="#5C1A1B" stroke-width="0.8"/>
+                                <!-- 節點內部紅心 -->
+                                <circle cx="7" cy="13.5" r="0.9" fill="#5C1A1B"/>
+                                <circle cx="16" cy="13.5" r="0.9" fill="#5C1A1B"/>
+                                <circle cx="23" cy="13.5" r="0.9" fill="#5C1A1B"/>
+                                <!-- 下方時代標籤短線 (3 個朝代/時期) -->
+                                <line x1="7" y1="18" x2="7" y2="20.5" stroke="rgba(245,240,232,0.55)" stroke-width="0.9"/>
+                                <line x1="16" y1="18" x2="16" y2="20.5" stroke="rgba(245,240,232,0.55)" stroke-width="0.9"/>
+                                <line x1="23" y1="18" x2="23" y2="20.5" stroke="rgba(245,240,232,0.55)" stroke-width="0.9"/>
+                            </svg>
+                        </div>
+                        <span class="stamp-nav-lbl" style="color:rgba(45,42,38,0.75);">探究結論</span>
                     </button>
+
                 </div>
             </div>
 
@@ -1901,6 +2210,7 @@
                 <div class="cs-before-wrap">
                     <img class="cs-img" src="ys.png" alt="員山神社舊貌" style="display:none" onload="this.style.display='block'; var p=this.nextElementSibling; if(p&&p.classList.contains('cs-ph')) p.style.display='none';" onerror="this.style.display='none'">
                     <div class="cs-ph cs-ph-before"><span class="cs-ph-icon">⛩️</span><span class="cs-ph-text">日治時期照片</span><span class="cs-ph-sub">將 cs-before-wrap 內 img 的 src="" 改為歷史照片路徑</span></div>
+                    <div class="cs-source"><span class="cs-source-cn">圖源：宜蘭縣史館官網</span><span class="cs-source-sub">Yilan County History Museum</span></div>
                 </div>
                 <span class="cs-label cs-label-after">現今</span>
                 <span class="cs-label cs-label-before">日治時期</span>
@@ -2272,6 +2582,7 @@
                 <div class="cs-before-wrap">
                     <img class="cs-img" src="ld.png" alt="羅東神社舊貌" style="display:none" onload="this.style.display='block'; var p=this.nextElementSibling; if(p&&p.classList.contains('cs-ph')) p.style.display='none';" onerror="this.style.display='none'">
                     <div class="cs-ph cs-ph-before"><span class="cs-ph-icon">⛩️</span><span class="cs-ph-text">日治時期照片</span><span class="cs-ph-sub">將 cs-before-wrap 內 img 的 src="" 改為歷史照片路徑</span></div>
+                    <div class="cs-source"><span class="cs-source-cn">圖源：宜蘭縣史館官網</span><span class="cs-source-sub">Yilan County History Museum</span></div>
                 </div>
                 <span class="cs-label cs-label-after">現今</span>
                 <span class="cs-label cs-label-before">日治時期</span>
@@ -2442,6 +2753,7 @@
                 <div class="cs-before-wrap">
                     <img class="cs-img" src="sa.jpg" alt="蘇澳神社舊貌" style="display:none" onload="this.style.display='block'; var p=this.nextElementSibling; if(p&&p.classList.contains('cs-ph')) p.style.display='none';" onerror="this.style.display='none'">
                     <div class="cs-ph cs-ph-before"><span class="cs-ph-icon">⛩️</span><span class="cs-ph-text">日治時期照片</span><span class="cs-ph-sub">將 cs-before-wrap 內 img 的 src="" 改為歷史照片路徑</span></div>
+                    <div class="cs-source"><span class="cs-source-cn">圖源：宜蘭縣史館官網</span><span class="cs-source-sub">Yilan County History Museum</span></div>
                 </div>
                 <span class="cs-label cs-label-after">現今</span>
                 <span class="cs-label cs-label-before">日治時期</span>
