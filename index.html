@@ -152,7 +152,7 @@
         .map-topbar { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
         .map-main { display: flex; gap: 1.25rem; flex: 1; min-height: 0; align-items: center; overflow: visible; }
         .map-image-area { flex: 1; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; height: 100%; overflow: visible; }
-        .map-aspect-box { position: relative; height: 90%; width: auto; max-width: 100%; aspect-ratio: 1193 / 833; overflow: visible; flex-shrink: 0; }
+        .map-aspect-box { position: relative; height: 90%; width: auto; max-width: 100%; aspect-ratio: 1265 / 826; overflow: visible; flex-shrink: 0; }
         .map-aspect-box img { width: 100%; height: 100%; object-fit: fill; border-radius: 1.5rem; box-shadow: 0 20px 60px rgba(45,42,38,0.25); border: 4px solid rgba(255,255,255,0.6); display: block; }
         .map-sidebar { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.875rem; justify-content: center; }
         .site-card { background: rgba(245,240,232,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.8); border-radius: 1rem; padding: 1rem 1.25rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 4px 16px rgba(45,42,38,0.1); }
@@ -653,9 +653,76 @@
             .cs-source { font-size: 0.55rem; padding: 0.25rem 0.55rem; }
             .cs-source-sub { display: none; }
         }
+        /* ===== 時光軸過場 overlay ===== */
+        #tl-overlay {
+            position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;
+            pointer-events:none;display:none;overflow:hidden;
+        }
+        #tl-bg {
+            position:absolute;inset:0;
+            background:linear-gradient(180deg,#06060e 0%,#0e0808 55%,#180e06 100%);
+            opacity:0;
+        }
+        #tl-line {
+            position:absolute;left:50%;top:0;bottom:0;width:1px;
+            background:linear-gradient(to bottom,transparent,rgba(184,155,114,0.45) 15%,rgba(184,155,114,0.45) 85%,transparent);
+            transform:translateX(-50%);
+        }
+        #tl-years-wrap {
+            position:absolute;inset:0;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+        }
+        .tl-yr {
+            font-family:'Noto Serif TC',serif;font-weight:900;line-height:1;
+            color:rgba(184,155,114,0.88);letter-spacing:0.08em;
+            opacity:0;position:relative;text-align:center;
+        }
+        .tl-yr-sub {
+            display:block;font-family:'Inter',sans-serif;font-size:0.62rem;
+            color:rgba(184,155,114,0.42);letter-spacing:0.18em;margin-top:3px;
+        }
+        #tl-crack {
+            position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+            width:340px;height:2px;opacity:0;pointer-events:none;
+        }
+        #tl-crack::before {
+            content:'';position:absolute;left:0;right:0;top:0;height:1px;
+            background:linear-gradient(to right,transparent,rgba(220,80,40,0.7) 40%,rgba(220,80,40,0.7) 60%,transparent);
+        }
+        #tl-crack::after {
+            content:'';position:absolute;left:40px;right:40px;top:-1px;height:3px;
+            background:radial-gradient(ellipse at 50% 50%,rgba(255,120,60,0.35) 0%,transparent 100%);
+            filter:blur(2px);
+        }
+        #tl-now {
+            position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+            font-family:'Noto Serif TC',serif;font-size:1.1rem;font-weight:300;
+            color:rgba(245,232,200,0.88);letter-spacing:0.5em;opacity:0;white-space:nowrap;
+        }
+        #tl-flash {
+            position:absolute;inset:0;opacity:0;pointer-events:none;
+            background:radial-gradient(ellipse at 50% 50%,rgba(255,240,200,0.92) 0%,rgba(255,200,100,0.25) 50%,transparent 80%);
+        }
     </style>
 </head>
 <body class="font-serif text-vintage-charcoal">
+
+    <!-- ===== 時光軸過場 OVERLAY ===== -->
+    <div id="tl-overlay">
+        <div id="tl-bg"></div>
+        <div id="tl-line"></div>
+        <div id="tl-years-wrap">
+            <div class="tl-yr" style="font-size:3.4rem"           ><span>1895</span><span class="tl-yr-sub">乙未割台</span></div>
+            <div class="tl-yr" style="font-size:3.0rem;margin-top:0.35em"><span>1906</span><span class="tl-yr-sub">宜蘭神社創建</span></div>
+            <div class="tl-yr" style="font-size:2.8rem;margin-top:0.4em" ><span>1919</span><span class="tl-yr-sub">羅東社上樑</span></div>
+            <div class="tl-yr" style="font-size:3.0rem;margin-top:0.35em"><span>1937</span><span class="tl-yr-sub">皇民化運動</span></div>
+            <div class="tl-yr" style="font-size:3.4rem;margin-top:0.3em" ><span>1940</span><span class="tl-yr-sub">蘇澳社遷座</span></div>
+            <div class="tl-yr" style="font-size:4.8rem;margin-top:0.25em"><span>1945</span><span class="tl-yr-sub">終戰・轉折</span></div>
+        </div>
+        <div id="tl-crack"></div>
+        <div id="tl-now">— 現在 —</div>
+        <div id="tl-flash"></div>
+    </div>
 
 
     <!-- 燈箱 -->
@@ -1167,36 +1234,33 @@
             <div class="field-note-page">
 
               <div class="field-note-entry">
-                <div class="field-note-date">Day 1 · 員山神社</div>
-                <div class="field-note-loc">員山公園（後湖山麓） · 晴，東南風微</div>
+                <div class="field-note-date">上午九點 · 員山神社</div>
+                <div class="field-note-loc">員山公園</div>
                 <div class="field-note-body">
-                  <p>▸ 從公園入口到忠烈祠牌坊：階梯約 74 級，高差目測 15–18 m。原神社參道走向大致保留，石材有局部修補。</p>
-                  <p>▸ 銅馬一對仍在原位，底座有「昭和十四年」字樣，表面已重新噴漆（深咖啡色）。</p>
-                  <p>▸ 與現場老伯聊：「以前小時候這裡叫神社，後來就換牌子了，我們還是一樣來拜。」</p>
+                  <p>▸ 從公園入口到忠烈祠：階梯約有百階。原神社參道大致保留，石材有局部修補。</p>
+                  <p>▸ 地上有贊助遺跡，寫著「宜蘭製酒株式會社」字樣，看來是以前的贊助商。</p>
+                  <p>▸ 與散步老伯聊說：「以前曾聽說過祖父參加神社活動，後來戰後就換了，但我們還是一樣來拜。」</p>
                 </div>
-                <div class="field-note-thought">→ 「換牌子」——民眾對空間符號替換的感知原來如此日常，不像學術論文寫的那麼劇烈。</div>
               </div>
 
               <div class="field-note-entry">
-                <div class="field-note-date">Day 2 · 羅東神社</div>
-                <div class="field-note-loc">純精路沿線 + 中山公園 · 陰，偶有細雨</div>
+                <div class="field-note-date">下午一點 · 羅東神社</div>
+                <div class="field-note-loc">中山公園</div>
                 <div class="field-note-body">
                   <p>▸ 純精路路段：地面上完全無任何遺構標誌，詢問路人皆不知此處曾為神社原址。</p>
-                  <p>▸ 中山公園：找到移置的石燈籠 2 座（底部有裂縫，應是遷移時損傷），狛犬 1 對，基台有水泥修補痕跡。</p>
-                  <p>▸ 向公園管理員確認：遺物係約民國 60 年代由地方仕紳主導遷入，無正式文件記錄。</p>
+                  <p>▸ 中山公園：找到移置的石燈籠 2 座（底部有 S 字樣，應是當時的公司之類的），狛犬 1 對，基台有水泥修補痕跡。</p>
+                  <p>▸ 和附近居民閒聊：神社遺物也是戰後時遷移。</p>
                 </div>
-                <div class="field-note-thought">→ 遷置行為本身也是一種「選擇性記憶」——把遺構從消失地點移走，放到一個新的「可被紀念」的地方。</div>
               </div>
 
               <div class="field-note-entry">
-                <div class="field-note-date">Day 3 · 蘇澳神社</div>
-                <div class="field-note-loc">蘇澳國中校園邊界 · 晴，海風強</div>
+                <div class="field-note-date">下午三點 · 蘇澳神社</div>
+                <div class="field-note-loc">蘇澳國中</div>
                 <div class="field-note-body">
-                  <p>▸ 校園圍牆外可見地勢明顯高於周邊街道約 3–4 m，疑為原神社台基的土方遺留。</p>
-                  <p>▸ 未獲進入校園許可，無法確認有無地面遺構。校方不知有神社歷史。</p>
-                  <p>▸ 從制高點遠望：蘇澳港灣盡收眼底，「海防鎮守」假說在現場視覺上得到直觀支持。</p>
+                  <p>▸ 校園內只剩下一根柱子，但底下石墩有刻上一些文字，是個發現。</p>
+                  <p>▸ 問了蘇澳國中畢業的同學，說是基本上神社遺物都轉移至晉安宮了，可以當作下一個踏查目的地。</p>
+                  <p>▸ 到了晉安宮，有留下來刻字的石柱，看起來像紀念當時有幫忙神社建造的民間團體字樣。</p>
                 </div>
-                <div class="field-note-thought">→ 最能驗證假說的地點，反而是進不去的地方。這本身就是一種研究限制的具體化。</div>
               </div>
 
             </div>
@@ -1700,7 +1764,7 @@
                     <iconify-icon icon="ph:arrow-left"></iconify-icon> 返回首頁
                 </button>
                 <div class="text-center bg-white/90 px-6 py-3 rounded-2xl backdrop-blur-md shadow-md border border-white">
-                    <h2 class="text-xl font-bold text-vintage-charcoal tracking-widest">蘭陽地理探究圖</h2>
+                    <h2 class="text-xl font-bold text-vintage-charcoal tracking-widest">尋訪宜蘭神社遺址</h2>
                     <p class="font-sans text-xs text-vintage-burgundy mt-1 tracking-widest uppercase flex items-center justify-center gap-1">
                         <iconify-icon icon="ph:cursor-click-light"></iconify-icon> 點擊地圖光圈或右側地點卡片
                     </p>
@@ -1802,29 +1866,29 @@
                             </defs>
                             <!-- 主路線：宜蘭(440,170) → 羅東(575,500) → 蘇澳(765,880) -->
                             <path id="route-main" class="route-path-line"
-                                d="M 440 170 C 490 310 540 410 575 500 C 630 640 700 770 765 880"
+                                d="M 439 164 C 489 304 541 407 576 497 C 631 637 702 773 767 883"
                                 filter="url(#glow)" stroke-dashoffset="1100" style="stroke-dasharray:8 7"/>
                             <!-- 宜蘭節點 -->
-                            <g id="rnode-yilan" class="route-node" transform="translate(440,170)" style="transform-origin:440px 170px">
+                            <g id="rnode-yilan" class="route-node" transform="translate(439,164)" style="transform-origin:439px 164px">
                                 <circle r="14" fill="rgba(92,26,27,0.15)" stroke="#5C1A1B" stroke-width="2.5"/>
                                 <circle r="6" fill="#5C1A1B"/>
                                 <text x="20" y="-8" fill="#5C1A1B" font-size="18" font-family="'Noto Serif TC',serif" font-weight="700" style="text-shadow:0 1px 4px rgba(245,240,232,0.9)">宜蘭</text>
                             </g>
                             <!-- 羅東節點 -->
-                            <g id="rnode-luodong" class="route-node" transform="translate(575,500)" style="transform-origin:575px 500px">
+                            <g id="rnode-luodong" class="route-node" transform="translate(576,497)" style="transform-origin:576px 497px">
                                 <circle r="14" fill="rgba(92,26,27,0.15)" stroke="#5C1A1B" stroke-width="2.5"/>
                                 <circle r="6" fill="#5C1A1B"/>
                                 <text x="20" y="-8" fill="#5C1A1B" font-size="18" font-family="'Noto Serif TC',serif" font-weight="700" style="text-shadow:0 1px 4px rgba(245,240,232,0.9)">羅東</text>
                             </g>
                             <!-- 蘇澳節點 -->
-                            <g id="rnode-suao" class="route-node" transform="translate(765,880)" style="transform-origin:765px 880px">
+                            <g id="rnode-suao" class="route-node" transform="translate(767,883)" style="transform-origin:767px 883px">
                                 <circle r="14" fill="rgba(92,26,27,0.15)" stroke="#5C1A1B" stroke-width="2.5"/>
                                 <circle r="6" fill="#5C1A1B"/>
                                 <text x="20" y="-8" fill="#5C1A1B" font-size="18" font-family="'Noto Serif TC',serif" font-weight="700" style="text-shadow:0 1px 4px rgba(245,240,232,0.9)">蘇澳</text>
                             </g>
                         </svg>
 
-                        <div class="map-marker group" style="top: 17%; left: 44%;"
+                        <div class="map-marker group" style="top: 16.4%; left: 43.87%;"
                              onmouseenter="highlightCard('card-yilan')" onmouseleave="unhighlightCard('card-yilan')">
                             <div class="marker-pulse"></div>
                             <div class="map-tooltip">
@@ -1835,7 +1899,7 @@
                             </div>
                         </div>
 
-                        <div class="map-marker group" style="top: 50%; left: 57.5%;"
+                        <div class="map-marker group" style="top: 49.69%; left: 57.62%;"
                              onmouseenter="highlightCard('card-luodong')" onmouseleave="unhighlightCard('card-luodong')">
                             <div class="marker-pulse"></div>
                             <div class="map-tooltip">
@@ -1846,7 +1910,7 @@
                             </div>
                         </div>
 
-                        <div class="map-marker group" style="top: 88%; left: 76.5%;"
+                        <div class="map-marker group" style="top: 88.31%; left: 76.68%;"
                              onmouseenter="highlightCard('card-suao')" onmouseleave="unhighlightCard('card-suao')">
                             <div class="marker-pulse"></div>
                             <div class="map-tooltip tooltip-left">
@@ -2760,13 +2824,15 @@
                 <div class="cs-divider"><div class="cs-handle"><svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M6 7H14M6 7L3 4M6 7L3 10M14 7L17 4M14 7L17 10" stroke="#5C1A1B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
             </div>
 
-            <!-- 原有網格 -->
-            <div class="mb-10 text-center"><h3 class="text-3xl font-bold text-vintage-charcoal tracking-widest">實地踏查與影音紀錄</h3><div class="w-12 h-1 bg-vintage-burgundy mx-auto mt-4"></div></div>
+            <!-- 蘇澳神社 · 踏查相簿（左大右四小 + 底部寬幅） -->
+            <div class="mb-10 text-center"><h3 class="text-3xl font-bold text-vintage-charcoal tracking-widest">實地踏查與影音紀錄</h3><div class="w-12 h-1 bg-vintage-burgundy mx-auto mt-4"></div><p class="text-vintage-charcoal/50 text-sm mt-3 font-sans tracking-wider">點擊圖片可放大並查看說明</p></div>
             <div class="bento-grid">
-                <div class="bento-item bento-large group no-zoom"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/jNQXAC9IVRw?si=Placeholder" frameborder="0" allowfullscreen class="w-full h-full object-cover"></iframe></div>
-                <div class="bento-item bento-wide" onclick="openLightbox(this)"><img loading="lazy" src="https://images.unsplash.com/photo-1542055990-2e0618063a8a?q=80&w=1200&auto=format&fit=crop" alt="山林參道"></div>
-                <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="https://images.unsplash.com/photo-1624253321171-1be53e12f5f4?q=80&w=800&auto=format&fit=crop" alt="殘存石塊"></div>
-                <div class="bento-item bento-small" onclick="openLightbox(this)"><img loading="lazy" src="https://images.unsplash.com/photo-1596404988719-756d115e5aeb?q=80&w=800&auto=format&fit=crop" alt="港口聚落對比"></div>
+                <div class="bento-item bento-large" onclick="openLightbox(this)" data-desc="從蘇澳國中附近拍攝的校園側道景觀，路旁仍可見散落的石燈籠基座遺構，遠方山頭為昔日選址的七星嶺，是神社舊址現貌最完整的全景角度之一。"><img loading="lazy" src="sa school.jpg" alt="蘇澳國中校園側道"><span class="photo-caption">蘇澳國中校園側道</span></div>
+                <div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="原本是刻有當時神號標的神柱，但戰後為了抹除日本神道教色彩並賦予教育意義，後人便將原本的神柱表面磨平，刻上「繼往開來」四個大字。"><img loading="lazy" src="sa jiwang.jpg" alt="繼往開來石柱"><span class="photo-caption">繼往開來石柱</span></div>
+                <div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="近江時五郎曾擔任臺灣化成工業株式會社監察役，與蘇澳地區的工業發展有所關聯。他曾捐贈蘇澳神社石燈籠，其姓名至今仍可見於現存石柱殘件上。這項捐獻不僅展現其對地方建設的支持，也反映日治時期企業家透過神社參與地方社會與殖民統治體系的歷史現象。"><img loading="lazy" src="sa jiangshi.jpg" alt="江時五郎捐獻碑文"><span class="photo-caption">江時五郎捐獻碑文</span></div>
+                <div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="石柱上鐫刻的「棟宇」二字，字面意思是屋樑與屋簷，在神社脈絡中代表著「整座殿宇建築」。這座石柱見證了當年蘇澳神社落成時的宏偉規模。原本位於蘇澳神社內的石柱，如今因戰後移置晉安宮保存，但這兩個字依然默默訴說著日治時期外來信仰與統治力量進駐蘇澳的歷史痕跡。"><img loading="lazy" src="sa dongyu.jpg" alt="棟宇石柱"><span class="photo-caption">棟宇石柱</span></div>
+                <div class="bento-item bento-small" onclick="openLightbox(this)" data-desc="「阮」是宜蘭在地的知名姓氏。日治時期蘇澳興建神社時，極度仰賴地方仕紳與商號的資金奉獻。這個石柱之所以被稱為「護阮牆」，代表該段牆面或周邊設施是由當時蘇澳在地的阮氏家族幫忙出資修築而成。這兩個字不僅記錄了牆面的功能，更是漢人仕紳與日本國家信仰交織、共同參與地方公共建設的歷史見證。"><img loading="lazy" src="sa huyuan.jpg" alt="護阮牆"><span class="photo-caption">護阮牆</span></div>
+                <div class="bento-item bento-wide" style="grid-column:1/-1;" onclick="openLightbox(this)" data-desc="移置晉安宮廟埕的蘇澳神社狛犬，雕刻線條細膩，爪持圓球，頸上繫有古典紋飾，是蘇澳神社遺物中保存最完整的石雕精品。戰後由廟方妥善收存，見證了日本殖民宗教遺產在常民廟宇中的異地共生。"><img loading="lazy" src="sa koma.jpg" alt="晉安宮狛犬（神社原物）" style="object-position:center 30%;"><span class="photo-caption">晉安宮狛犬（神社原物）</span></div>
             </div>
 
             <!-- 周邊探索邀請橫幅 -->
@@ -3139,6 +3205,21 @@
             if (typeof gsap === 'undefined') {
                 oldView.classList.remove('active'); targetView.classList.add('active'); currentView = targetViewId; return;
             }
+
+            // ── 特殊過場：進入結論頁 → 時光軸年份掠過 ──
+            if (targetViewId === 'view-conclusion') {
+                playTimelineTransition(() => {
+                    oldView.classList.remove('active');
+                    targetView.classList.add('active');
+                    currentView = targetViewId;
+                    triggerViewAnimations(targetViewId);
+                    initLeafletMaps(); invalidateMapSizes();
+                    setTimeout(initQuiz, 400);
+                });
+                return;
+            }
+
+            // ── 預設翻頁過場 ──
             gsap.timeline()
                 .set(flipPage, { display: 'flex', transformPerspective: 1600, rotateY: 80, transformOrigin: 'left center', opacity: 1 })
                 .to(flipPage, { rotateY: 0, duration: 0.5, ease: 'power3.out' })
@@ -3171,6 +3252,54 @@
                         if (targetViewId === 'view-conclusion') setTimeout(initQuiz, 400);
                     }
                 });
+        }
+
+        /* ── 時光軸過場動畫 ── */
+        function playTimelineTransition(onSwitch) {
+            const overlay  = document.getElementById('tl-overlay');
+            const bg       = document.getElementById('tl-bg');
+            const years    = overlay.querySelectorAll('.tl-yr');
+            const crack    = document.getElementById('tl-crack');
+            const nowLabel = document.getElementById('tl-now');
+            const flash    = document.getElementById('tl-flash');
+
+            gsap.set(overlay,  { display: 'block', opacity: 0 });
+            gsap.set(bg,       { opacity: 0 });
+            gsap.set(years,    { opacity: 0, y: 60 });
+            gsap.set(crack,    { opacity: 0, scaleX: 0, transformOrigin: '50% 50%' });
+            gsap.set(nowLabel, { opacity: 0 });
+            gsap.set(flash,    { opacity: 0 });
+
+            const tl = gsap.timeline();
+            tl.to(overlay, { opacity: 1, duration: 0.28, ease: 'power2.in' })
+              .to(bg, { opacity: 1, duration: 0.35 }, '<')
+              // 年份依序掠過（加速感）
+              .to(years[0], { opacity: 1, y: 0, duration: 0.22, ease: 'power3.out' })
+              .to(years[0], { opacity: 0, y: -50, duration: 0.18, ease: 'power2.in' }, '+=0.08')
+              .to(years[1], { opacity: 1, y: 0, duration: 0.20, ease: 'power3.out' }, '-=0.06')
+              .to(years[1], { opacity: 0, y: -50, duration: 0.16, ease: 'power2.in' }, '+=0.07')
+              .to(years[2], { opacity: 1, y: 0, duration: 0.18, ease: 'power3.out' }, '-=0.05')
+              .to(years[2], { opacity: 0, y: -50, duration: 0.14, ease: 'power2.in' }, '+=0.06')
+              .to(years[3], { opacity: 1, y: 0, duration: 0.16, ease: 'power3.out' }, '-=0.04')
+              .to(years[3], { opacity: 0, y: -50, duration: 0.13, ease: 'power2.in' }, '+=0.05')
+              .to(years[4], { opacity: 1, y: 0, duration: 0.15, ease: 'power3.out' }, '-=0.04')
+              .to(years[4], { opacity: 0, y: -50, duration: 0.12, ease: 'power2.in' }, '+=0.04')
+              // 1945 — 背景轉暖色調，停留最久
+              .to(bg, { background: 'linear-gradient(180deg,#18100a 0%,#2a1a08 55%,#3a2410 100%)', duration: 0.5, ease: 'power2.inOut' }, '<')
+              .to(years[5], { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out' }, '-=0.02')
+              // 1945 裂線
+              .to(crack, { opacity: 1, scaleX: 1, duration: 0.35, ease: 'power3.out' }, '+=0.18')
+              .to(years[5], { opacity: 0, y: -80, scale: 1.12, duration: 0.3, ease: 'power3.in' }, '+=0.18')
+              .to(crack, { opacity: 0, duration: 0.22 }, '<')
+              // 「現在」出現 + 白閃 → 切換頁面
+              .to(nowLabel, { opacity: 1, duration: 0.28, ease: 'power2.out' })
+              .to(flash, { opacity: 1, duration: 0.12, ease: 'power4.in' }, '+=0.12')
+              .call(onSwitch)
+              .to(flash, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+              .to(nowLabel, { opacity: 0, duration: 0.18 }, '-=0.1')
+              .to(overlay, { opacity: 0, duration: 0.35, ease: 'power2.in' })
+              .set(overlay, { display: 'none' })
+              .set([bg, ...years, crack, nowLabel, flash], { clearProps: 'all' });
         }
 
         // 初始化 Leaflet 互動套疊地圖
@@ -3255,9 +3384,14 @@
             }, 400);
         }
 
+        // 地圖頁進場動畫只播放一次。回到此頁時直接維持原狀，不重播。
+        let mapIntroPlayed = false;
+
         function triggerViewAnimations(viewId) {
             if (typeof gsap === 'undefined') return;
             if (viewId === 'view-map') {
+                if (mapIntroPlayed) return;            // 已播過 → 跳過進場動畫
+                mapIntroPlayed = true;
                 gsap.from("#view-map .animate-fade-in", { y: -20, opacity: 0, duration: 1, ease: "power2.out" });
                 gsap.from(".map-marker", { x: -18, scale: 0.2, opacity: 0, duration: 0.15, stagger: 0.05, ease: "expo.out", delay: 0.2 });
                 // Feature 4: 重置並重播路線繪製動畫
@@ -3709,16 +3843,24 @@
                 { id: 'rnode-luodong', delay: 1700 },
                 { id: 'rnode-suao',    delay: 2600 }
             ];
+            // 讀取 SVG transform attribute 中的 translate(x,y)，避免 CSS transform 覆蓋掉位置
+            // 讓節點在原座標縮放，而不是從左上角 (0,0) 冒出來
+            const parseTranslate = (el) => {
+                const t = el.getAttribute('transform') || '';
+                const m = t.match(/translate\(\s*([-\d.]+)\s*[, ]\s*([-\d.]+)\s*\)/);
+                return m ? `translate(${m[1]}px,${m[2]}px)` : '';
+            };
             nodes.forEach(({ id, delay }) => {
                 const el = document.getElementById(id);
                 if (!el) return;
+                const base = parseTranslate(el);
                 el.style.opacity = '0';
-                el.style.transform = 'scale(0)';
+                el.style.transform = `${base} scale(0)`;
                 el.style.transition = 'none';
                 setTimeout(() => {
                     el.style.transition = 'opacity 0.12s ease, transform 0.15s cubic-bezier(0.22,1,0.36,1)';
                     el.style.opacity = '1';
-                    el.style.transform = 'scale(1)';
+                    el.style.transform = `${base} scale(1)`;
                 }, delay);
             });
         }
