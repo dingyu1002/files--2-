@@ -3003,6 +3003,15 @@
 
     <!-- 6. 蘇澳神社 -->
     <div id="view-suao" class="view bg-vintage-cream">
+        <!-- 蘇澳背景裝飾：海浪＋船錨＋魚群 -->
+        <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;opacity:0.5;">
+            <svg width="100%" height="100%" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <!-- 海浪 bottom -->
+                <g fill="none" stroke="#1A3C5C" stroke-width="3.5" stroke-linecap="round">
+                    <path d="M0,760 Q80,730 160,760 Q240,790 320,760 Q400,730 480,760 Q560,790 640,760 Q720,730 800,760 Q880,790 960,760 Q1040,730 1120,760 Q1200,790 1280,760 Q1360,730 1440,760"/>
+                    <path d="M0,800 Q80,772 160,800 Q240,828 320,800 Q400,772 480,800 Q560,828 640,800 Q720,772 800,800 Q880,828 960,800 Q1040,772 1120,800 Q1200,828 1280,800 Q1360,772 1440,800" opacity="0.6"/>
+                    <path d="M0,840 Q80,815 160,840 Q240,865 320,840 Q400,815 480,840 Q560,865 640,840 Q720,815 800,840 Q880,865 960,840 Q1040,815 1120,840 Q1200,865 1280,840 Q1360,815 1440,840" opacity="0.4"/>
+                </g>
                 <!-- 錨 left -->
                 <g transform="translate(60,200)" fill="none" stroke="#1A3C5C" stroke-width="4" stroke-linecap="round">
                     <circle cx="50" cy="18" r="15"/>
@@ -3017,6 +3026,23 @@
                     <line x1="30" y1="22" x2="30" y2="90"/>
                     <line x1="10" y1="45" x2="50" y2="45"/>
                     <path d="M30,90 Q12,76 6,62"/><path d="M30,90 Q48,76 54,62"/>
+                </g>
+                <!-- 魚群（改各自的 translate(FISH_X, FISH_Y) 移動位置） -->
+                <!-- 魚1 --> <g transform="translate(180, 730)" fill="#1A3C5C" opacity="0.7"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
+                </g>
+                <!-- 魚2 --> <g transform="translate(370, 703)" fill="#1A3C5C" opacity="0.65"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
+                </g>
+                <!-- 魚3 --> <g transform="translate(550, 728)" fill="#1A3C5C" opacity="0.7"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
+                </g>
+                <!-- 魚4 --> <g transform="translate(740, 712)" fill="#1A3C5C" opacity="0.6"><!-- 改 translate(FISH_X, FISH_Y) 移動 -->
+                    <path d="M0,0 Q15,-8 25,0 Q15,8 0,0 Z"/>
+                    <path d="M25,0 L45,-4 L45,4 Z"/>
                 </g>
                 <!-- 帆船剪影 right -->
                 <g transform="translate(1300,100)" fill="none" stroke="#1A3C5C" stroke-width="3">
